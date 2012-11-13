@@ -233,21 +233,59 @@ J_2 &= \frac{\partial F_2}{\partial y}
 \item Das Problem ist sehr hochdimensional
 \end{itemize}
 
+% Das ist jetzt mehr so ein Laberkapitel
 
+\section*{3.4 Ansätze zur Optimierung von DGL-Modellen}
 
+Wir haben bisher kennengelernt:
 
+\begin{itemize}
+\item Single-Shooting ("`Black-Box-Ansatz"')
+\item Multiple Shooting 
+\item Kollokation
+\end{itemize}
 
+Das Optimierungsproblem muss iterativ gelöst werden.
 
+Die konzeptionellen Unterschiede sind:
 
+\begin{itemize}
+\item Beim Single-Shooting wird in jeder Optimierungsiteration die DGL des AWP komplett gelöst. Das ist der sogenannte sequentielle Ansatz.
+\item Bei Multiple Shooting wird die Differentialgleichung in jeder Optimierungsiteration nur auf Teilintervallen gelöst, das AWP wird relaxiert, d.\,h. wir lassen während der Iterationen unstetige Lösungen zu. Erst im Lösungspunkt wird das AWP gelöst, simultan mit Nebenbedingungen und der Optimalität. Das ist ein Beispiel für einen simultanen Ansatz.
+\item Bei Kollokation wird die DGL vollständig diskretisiert und gemeinsam mit dem Optimierungsproblem gelöst. Das nennt man den All-At-Once-Ansatz.
+\end{itemize}
 
+Unsere Optimierungsverfahren lassen unzulässige Iterierte zu. Die Lösungen dieser Formulierungen sind gleich, da die Formulierungen mathematisch äquivalent sind. Die Iterationen der Verfahren können sich aber stark unterscheiden. Es werden während der Optimierung Schritte in verschieden hochdimensionalen Suchräumen berechnet. Dies kann bessere Konvergenzeigenschaften bedeuten.
 
+Verallgemeinerung: Lifting von beliebigen nichtlinearen Problemen in höherdimensionale Räume:
 
+\begin{align*}
+x^{16} &= 2 \\
+&\LRA \\
+x_1^2 - x_2 &= 0 \\
+x_2^2 - x_3 &= 0 \\
+x_3^2 - x_4 &= 0 \\
+x_4^2 -  2  &= 0 \\
+\end{align*}
 
+siehe Albersmeyer, Diehl: The lifted Newton Method and its Apllication in Optimization
 
+\section*{3.5 Relaxierte Formulierung von DAEs}
 
+DAE:
 
+\begin{align*}
+\dot y &= f(t,y,z,p) \\
+0 &= g(t,y,z,p) & \text{ Annahme: Index 1}\\
+\text{Anfangsbedingung: } y(t_0) &= y_0, \quad z(t_0) = z_0\\
+\text{Konsistenzbedingung: } 0 &= g(t_0, y_0, z_0, p) \\
+\end{align*}
 
+Für numerische Lösungsverfahren werden konsistente Anfangswerte benötigt. Dafür gibt es zwei Ansätze:
 
+\begin{itemize}
+\item Berechnung konsistenter Anfangswerte durch Lösen der Konsistenzbedingung mit z.\,B. einem Newton-Verfahren. Kann Schwierigkeiten bereiten, weil das Newton-Verfahren zunächst nur lokal konvergiert und globalisiert werden muss.
+\end{itemize}
 
 
 

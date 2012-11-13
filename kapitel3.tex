@@ -284,8 +284,101 @@ DAE:
 Für numerische Lösungsverfahren werden konsistente Anfangswerte benötigt. Dafür gibt es zwei Ansätze:
 
 \begin{itemize}
-\item Berechnung konsistenter Anfangswerte durch Lösen der Konsistenzbedingung mit z.\,B. einem Newton-Verfahren. Kann Schwierigkeiten bereiten, weil das Newton-Verfahren zunächst nur lokal konvergiert und globalisiert werden muss, z.\,B. mit Homotopie-Ansätzen.
+\item Berechnung konsistenter Anfangswerte durch Lösen der Konsistenzbedingung mit z.\,B. einem Newton-Verfahren. Kann Schwierigkeiten bereiten, weil das Newton-Verfahren zunächst nur lokal konvergiert und globalisiert werden muss, z.\,B. mit Homotopie-Ansätzen. Das muss vor jeder Integration der DAE erfolgen.
+\item Integration mit "`inkonsistenten"' Anfangswerten, relaxierte Formulierung:
+\begin{align*}
+\dot y &= f(t,y,z,p) & (3.40) \\
+0 &= g(t,y,z,p) - \beta(t) g(t_0,y_0,z_0,p) \\
+y(t_0) &= y_0 \\
+z(t_0) &= z_0 \\
+\text{mit } \beta(t_0) &= 1 \\
+\text{z.\,B. } \beta(t) &\equiv 1 \\
+\text{oder } \beta(t) &= e^{-\alpha(t-t_0)} \\
+\end{align*}
 \end{itemize}
+
+Das modifizierte Problem (3.40) ist automatisch konsistent und kann numerisch integriert werden. Interpretation: Die Nebenbedingungen geben eine Mannigfaltigkeit vor, auf der die Lösung liegt. In der relaxierten Formulierung ist diese Mannigfaltigkeit verschoben. Die Konsistenzbedingung $g(t_0,y_0,z_0,p) = 0$ (3.41) löst man im übergeordneten Optimierungsproblem als Nebenbedingung mit.
+
+Bei Single-Shooting wird die Konsistenzbedingung im Anfangszeitpunkt erfüllt, dafür wird das Gleichungssystem gelöst.
+
+Bei Multiple-Shooting wird für jedes Mehrzielintervall eine relaxierte Konsistenzbedingung eingesetzt. In jedem Mehrzielknoten: $g(\tau_i, s_i^y, s_i^z, p)=0$ für $i=0,\cdots,m-1$.
+
+Bei Kollokation wird kein Integrator verwendet. Die algebraischen Nebenbedingungen werden zusätzlich in den Kollokationspunkten gefordert. (in RK-Basis-Darstellung):
+
+\begin{align*}
+y_j^\tau (t_{jl}; s_j) &= s_{jl}^y \\
+&= f(t_{jl}, y_j^\tau(t_{jl};s), s_{jl}^z,p) \\
+0 &= g(t_{jl}, y_j^\tau(t_{jl}; s_j), s_{jl}^z, p) \\
+\text{mit } s_{jl}^y & \cong \dot y(t_{jl}), \quad s_{jl}^z \cong z(t_{jl})
+\end{align*}
+
+Stetigkeitsbedingung nur für $s^y$:
+
+\[ y_{j-1}^\tau (\tau_j; s_{j-1})-s_{j_0}^y = 0 \]
+
+Die Bestimmung konsistenter Werte für die algebraischen Gleichungen wird von der Simulationsaufgabe in die Ebene des Optimierungsproblems verlagert.
+
+\chapter*{4. Verallgemeinerte Gauß-Newton-Verfahren}
+
+Problem:
+
+\begin{align*}
+\min \frac 12 \|F1(x)\|_2^2 &\text{ s.\,t. } F_2(x) = 0 \quad (4.1) \\
+\text{ mit } F_1: D \subset \R^n  &\to \R^{m_1}, \quad F_1 \in C^2(D) \\
+F_2: D \subset \R^n &\to R^{m_2}, \quad F_2 \in C^2(D) \\
+\text{Jacobi-Matrizen: } J_1 :&= \frac{\partial F_1}{\partial x}, \quad J_2 := \frac{\partial F_2}{\partial x}
+\end{align*}
+
+\begin{itemize}
+\item Unbeschränkter Fall: $\min \frac 12 \|F(X)\|_2^2$
+\item Spezialfall: nichtlineare Gleichung: $F(x) = 0$
+\end{itemize}
+
+\section*{Algorithmus 4.1 (Verallgemeinertes Gauß-Newton-Verfahren)}
+
+\begin{itemize}
+\item Startpunkt $x^0$, $k := 0$
+\item Solange ein Abbruchkriterium verletzt ist (z.\,B. $\|\Delta x\| > \eps$):
+\begin{itemize}
+\item Berechne
+\begin{align*}
+F_1^k :&= F_1(x^k) \\
+F_2^k :&= F_2(x^k) \\
+J_1^k :&= J_1(x^k) \\
+J_2^k :&= J_2(x^k) \\
+\end{align*}
+\item Löse das lineare Ausgleichsproblem
+\[ \min \frac 12 \|F_1^k + J_1^k \Delta x \|_2^2 \text{ s.\,t. } F_2^k + J_2^k \Delta x = 0 (4.2) \]
+Lösung: $\Delta x^k$
+\item Bestimme eine Schrittweite $\alpha^k \in (0,1]$
+\item Iteriere $x^{k+1} := x^k + \alpha^k \Delta x^k$
+\end{itemize}
+\end{itemize}
+
+"`Newton"': löse iterativ, linearisiere in jeder Iteration.
+
+"`Gauß"': linearisiere innerhalb der Norm, löse das lineare Ausgleichsproblem.
+
+\subsection*{Bemerkung 4.2}
+
+Zur Globalisierung der Konvergenz kann z.\,B. Linesearch verwendet werden. Es ergeben sich gedämpfte Schritte $\alpha^k < 1$. In der Nähe der lösung können Vollschritte $\alpha^k=1$ erwartet werden.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,256 @@
+\subsection*{Bemerkung 3.4}
+
+Wen wir keine Randbedingung $r(\cdots)=0$ haben und die Differentialgleichung eine ODE und keine DAE ist dann lösen wir in jeder Iteration des Gauß-Newton-Verfahrens ("`GN-Verfahren"') für die aktuellen Paramter das komplette Simulationsproblem. Das Ausgleichsproblem ist dann unbeschränkt: $\min_p \tfrac 12 \|F_1(p)\|_2^2$. Das linearisierte Ausgleichsproblem $\min_{\Delta p} \tfrac 12 \|F_1 + \partial_1 \Delta p\|_2^2$ hat die Lösung $\Delta p = -(J_1^T J_1)^{-1} J_1^T F_1$. Berechnung über QR-Zerlegung von $J_1$.
+
+\emph{Schwierigkeiten beim Single-Shooting:}
+
+\begin{itemize}
+\item In Satz 1.2 (Trompetenabschätzung) haben wir gesehen, dass kleine Störungen der Parameter sehr große Änderungen der Lösung $y$ des AWP und damit auch große Änderungen des Zielfunktions-Wertes und Nebenbedingungen des Parameter-Schätz-Problems zur Folge haben können. Wir sind dann "`weit weg"' von der Lösung und das GN-Verfahren konvergiert nicht, siehe auch Kapitel 4.
+\item Wenn die Ableitungen $\tfrac{\partial f}{\partial y}$ nicht auf ganz $[t_0,\tend]\times R^{n_y} \times \R^{n_p}$  beschränkt bleiben kann es sein, dass für Parameter-Werte weit weg von den wahren Parametern die Lösung des AWP nicht auf dem ganzen Intervall $[t_0,\tend]$ existiert. Dann  ist das PS-Problem nicht auswertbar.
+\item Die Vorinformation über die Trajektorien, die durch die Messwerte gegeben ist wird nicht genutzt.
+\end{itemize}
+
+\section*{3.2 Multiple Shooting, die Mehrzielmethode}
+
+Zerlege das Integrationsintervall in Teilintervalle $t_0 = \tau_0 < \tau_1 < \cdots < \tau_m = \tend$. Die $\tau_i$ nennt man Mehrzielknoten. Löse das AWP nur auf diesen Intervallen $i=0,\cdots,m-1$: $\dot y = f(t,y,p)$, $t \in [\tau_i, \tau_{i+1} ]$ (3.10) mit den Anfangsbedingungen $y(\tau_i) = s_i$ (3.11). Erhalte die Lösung $y(t; \tau_i, s_i,p)$, $t\in[\tau_i, \tau_{i+1}]$ (3.12). Setze diese $y$ in die Messfunktion und Randbedingungs-Funktion an den entsprechenden Zeitpunkten $t_i$ ein. Die $s_i$, $i=0,\cdots,m-1$ sind zusätzliche Variablen des Problems. An den Mehrzielknoten $\tau_i$ formulieren wir zusätzliche  Stetigkeitsbedingungen, sog. "`Anschlussbedingungen"':
+
+\[ s_{i+1} + y(\tau_{i+1}; \tau_i, s_i, p) = 0 \quad i=0,\cdots,m-2 \quad (3.13)\]
+
+Für DAEs ist $s_i = (s_i^y, s_i^z)$ und im Punkt $\tau_i$ müssen die Konsistenzbedingungen $g(\tau_i, s_i^y, s_i^z, p) = 0$, $i=0,\cdots,m-1$ erfüllt sein (3.14). Anschlussbedingungen braucht man dann nur für die $s_i^y$ Das ergibt insgesamt das beschränkte, nichtlineare Ausgleichsproblem
+
+\[ \min_x \frac  12 \|F_1(x)\|_2^2 \quad (3.15) \]
+
+so dass $F_2(x) = 0$
+
+\begin{itemize}
+\item mit den Variablen $x = (s_0,\cdots,s_{m-1}, p)$ (3.16)
+\item den Zielfunktionstermen
+\[ F_{1,j} (x) = \frac 1{\sigma_j} \l( \eta_j - h_j(t_j,y(t_j; \tau_{i_j}, s_{i_j}, p), p) \r)  \quad (3.17) \]
+mit $t_j \in [\tau_{i_j}, \tau_{i_j}]$, $j=1,\cdots,M$
+\item den Nebenbedingungen $F_2(x)$, die bestehen aus:
+\begin{itemize}
+\item den Randbedingungen: $r(y(t_0;\tau_0,s_0,p),\cdots,y(t_k;\tau_{i_k},s_{i_k},p), p) = 0 $ (3.18) mit $t_j \in [\tau_{i_j},\tau_{i_j + 1}]$, $i=1,\cdots,k$
+\item den Anschlussbedingungen $s_{i+1}+y(\tau_{i+1};\tau_i,s_i,p)=0$, $i=0,\cdots,m-2$ (3.19)
+\item und für DAEs den Konsistenzbedingungen  $g(\tau_i, s_i^y, s_i^z,p)=0$, $i=0,\cdots,m-1$ (3.20).
+\end{itemize}
+\end{itemize}
+
+Die Lösungen der Probleme (3.4) (Single-Shooting) und (3.15) (Multiple-Shooting) sind identisch. Das Problem (3.15) hat aber mehr Variablen.
+
+Nachteile von Multiple-Shooting:
+
+\begin{itemize}
+\item Wesentlich höherer Programmieraufwand.
+\item Mehraufwand bei der Bestimmung von Startwerten für die Variablen
+\item Höherdimensionales Optimierungsproblem
+\end{itemize}
+
+Vorteile von Multiple-Shooting:
+
+\begin{itemize}
+\item Die Existenz einer (unstetigen) "`Start-Trajektorie"' auf dem gesamten Intervall $[t_0,\tend]$ ist gesichert.
+\item Oft können die Multiple-Shooting-Variablen $s_i$ durch Messwerte initialisiert werden.
+\item Man kann viel näher an der Lösung ($s_0^*,s_1^*,\cdots,s_{m-1}^*, p$) des Problems starten. Der Einfluss schlechter Startwerte für die $p$ wird abgemildert. Die Chance auf Konvergenz des GN-Verfahrens ist höher.
+\item Die Nichtlinearität des Problems wird reduziert: Bei Single-Shooting $y(\tend; t_0,y_0,p)$ (3.21), bei Multiple-Shooting $y(t_{i+1};\tau_i,s_i,p)$ (3.22). Nach der Trompetenabschätzung ist die Nichtlinearität in (3.21) i.\,A. größer als in (3.22).
+\end{itemize}
+
+Zur Lösung von (3.15) verwenden wir wieder das verallgemeinerte GN-Verfahren und benötigen dazu die Ableitungen $J_1 = \partial_x F_1$ und $J_2 = \partial_x F_2$ (3.23). Diese haben die folgende Gestalt:
+
+\[ \begin{pmatrix} J_1 \\ J_2 \end{pmatrix} = ........ \quad (3.22a)\]
+
+mit
+
+\begin{align*}
+D_1^i &= \frac{\partial F_1}{\partial s_i} \quad i=0,\cdots,m-1 \\
+D_1^p &= \frac{\partial F_1}{\partial p} & \text{Ableitung der ZF-Terme} \\
+D_2^o &= \frac{\partial r}{\partial s_i} \quad i=0,\cdots,m-1 \\
+D_2^p &= \frac{\partial r}{\partial p} & \text{ Ableitung der Randbedingungen}
+\end{align*}
+
+Ableitung der Anschlussbedingungen:
+
+\begin{align*}
+-s_{i+1} + y(\tau_{i+1}; \tau_i, s_i, p) &= 0 \quad i=0,\cdots,m-2 \\
+\text{nach }s_i: \frac{\partial}{\partial s_i} y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i \\
+\text{nach }s_{i+1}: &-I \\
+\text{nach }p:  \frac{\partial}{\partial p}y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i^p & \text{ (sonst 0)}\\
+\end{align*}
+
+Ableitung der Konsistenzbedingungen:
+
+\begin{align*}
+H_i :&= \frac{\partial\{\partial s_i} g(\tau;i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1 \\
+H_i^p &= \frac{\partial}{\partial p} g(\tau_i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1
+\end{align*}
+
+Lösungsverfahren müssen diese spezielle Struktur ausnutzen ("`Kondensierung"', siehe Kapitel 4). Die D-Matrizen können mit der Kettenregel berechnet werden, z.\,B.
+
+\begin{align*}
+\frac{\partial F_1}{\partial p} &= \sum_{j=1}^M \frac{\partial F_1}{\partial y(t_j)} \frac{\partial y(t_j)}{\partial p} + \frac{\partial F_1}{\partial p} \\
+\frac{\partial F_1}{\partial s_i} &= \sum_{j=1}^M \frac{\partial F_1}{\partial y(t_j)} \frac{\partial y(t_j)}{\partial s_i}
+\end{align*}
+
+\subsection*{Bemerkung 3.5}
+
+Der Aufwand zur Integration und zur Berechnung der $G_i$ ist bei Single-Shooting und Multiple-Shooting im Wesentlichen gleich.
+
+\section*{3.3 Kollokation}
+
+Literatur: Ascher, Mettheij, Russel: Numerical Solution of Boundary Value Problems for Ordinary Differential Equations
+
+Biegler: Nonlinear Programming
+
+\subsection*{Kollokations-Diskretisierung}
+
+Approximiere die Lösung der ODE $\dot y = f(t,y,p)$ (3.24) durch stückweise Polynome vom Grad $k$ auf einem Gitter $t_0 = \tau_0 < \tau_1 < \cdots < \tau_{m-1} < \tau_m = \tend$ (3.25). Auf jedem dieser Teilintervalle wird die Lösung dargestellt durch
+
+\begin{align*}
+y_j^\tau (t; s_j) :&= \sum\limits_{l=0}^k s_j l \chi_l \l( \frac{t-\tau_j}{\tau_{j+1}-\tau_j} \r) & (3.26)\\
+t &\in [\tau_j, \tau_{j+1}], \quad j=0,\cdots,m-1 \\
+\text{Wobei } & \{ \chi_l \}_{l=k,\cdots,k} \text{ eine Basis des Polynomraums } P_k([0,1]) \text{ der Polynome vom Grad } \leq k \text{ ist}
+\end{align*}
+
+Die Koeffizienten $s_{jl} \in \R^{n_y}$, $j=0,\cdots,m-1$, $l=0,\cdots,k$, $s_j = (s_{j0},\cdots,s_{jk})$, $j=0,\cdots,m-$ (3.27) sind Variablen und bestimmt durch diese bedingungen:
+
+\begin{itemize}
+\item Die approximierte Lösung $y_j^\tau$ soll auf einer Unterteilung des Gitters die ODE erfüllen:
+\[ t_{jl} := \overline c_j + \rho_l h_j \quad l= 1,\cdots,k, \quad j=0,\cdots,m-1 (3.28) \]
+(Kollokationspunkte) $\rho_l \in [0,1]$, $h_j := \tau_{j+1}-\tau_j$. Also:
+\[ \dot y_j^\tau (t_{jl}; s_j) = f(t_{jl}, y^\tau (t_{jl},s_j),p), \quad j=0,\cdots,m-1 \quad (3.29) \]
+\item Die approximierte Lösung $y^\tau$ soll an den Gitterpunkten $\tau_j$ stetig sein:
+\[ y_j^\tau (\tau_{j+1};s_j) = y_{j+1}^\tau(\tau_{j+1},s_{j+1}) \quad j=0,\cdots,m-2 \quad (3.30) \]
+\item Anfangsbedingung:
+\[y^\tau(\tau_0;s_0) = y_0(p) \quad (3.31) \]
+\end{itemize}
+
+Das sind $mk$ Kollokationsbedingungen, $m-1$ Stetigkeitsbedingungen und eine Anfangsbedingung, also $m(k+1)$ Bedingungen für die $m(k+1)$ Variablen $s_{jl}$.
+
+\subsection*{Wahl der Polynombasis und der Kollokationspunkte}
+
+z.\,B. B-Splines, Hermite-Splines. Wir benutzen die Runge-Kutta-Basis:
+
+\begin{align*}
+y_j^\tau(t;s_j) &= s_{jl} + h_j \sum\limits_{l=1}^k s_{jl} \Psi_l \l( \frac{t-\tau_j}{\tau_{j+1}-\tau_j} \r) & (3.32) \\
+\text{mit } \Psi_l(0) &= 0 \\
+\text{und } \dot\Psi_l(\rho_i) &= \begin{cases} 1 & i=l \\ 0 & \text{ sonst } \end{cases} \\
+\Psi_l & \in \mathcal{P}_k([0,1])
+\end{align*}
+
+Dann lauten die Kollokationsbedingungen:
+
+\begin{align*}
+\dot y_j^\tau(t_{jl}; s_j) &= \dot y_j^\tau(\tau_j+\rho_l h_j; s_j) \\
+&= f(t_{jl} y^\tau(t_{jl}; s_j),p) \quad l=1,\cdots,k & (3.33) \\
+\end{align*}
+
+und die Stetigkeitsbedingunng:
+
+\begin{align*}
+y_{j-1}^\tau (\tau_j; s_{j-1} - s_{j0} &= 0 & (3.34) 
+\end{align*}
+
+Die Basis $\{1,\Psi_1,\cdots,\Psi_k\}$ heißt Runge-Kutta-Basis, weil die $s_{jl}$, $l=1,\cdots,k$ dabei die Stufen des Runge-Kutta-Schemas
+
+\begin{align*}
+& \begin{pmatrix} \rho_1 | & \Psi_1(\rho_1) & \cdots & \Psi_k(\rho_1) \\ \vdots | & \vdots & & \vdots \\ \rho_k | & \Psi_1(\rho_k) & \cdots & \Psi_k(\rho_k) \\ & \Psi_1(1) & \cdots & \Psi_k(1) \end{pmatrix}  & (3.35)\\ 
+\text{mit } \Psi_l(\rho) &= \int\limits_0^\rho L_l ( \overline \rho) \dd \overline \rho \\
+\Psi_l(1) &= \int\limits_0^1 L_l (\rho) \dd \rho \\
+\text{und } L_l(\rho) &= \prod\limits_{i \neq l} \frac{\rho-\rho_i}{\rho_l-\rho_i}
+\end{align*}
+
+sind
+
+Man kann also in jedem Intervall $[\tau_j,\tau_{j+1})$ $y_j^\tau(\tau_{j+1}, s_j)$ als Ergebnis eines Schrittes eines impliziten Runge-Kutta-Verfahrens, gestartet bei $y_j^\tau (\tau_j, s_j)$ auffassen: "`Kollokationsschema"'
+
+\subsection*{Konsistenzfehler:}
+
+\begin{align*}
+y(\tau_{j+1}) &= y(\tau_j) + h_j \sum\limits_{l=1}^k f(t_j + \rho_l h_j, y(\tau_j + \rho_l h_j), p) \int\limits_0^1 L_l(\rho) \dd \rho + h_j \mathcal O(h_j^q) & (3.36)
+\end{align*}
+
+Die Konsistenzordnung $q$ hängt ab von der Wahl der $\rho_l$, $l=1,\cdots,k$. Für Gauß-Punkte (Nullstellen der Legendre-Polynome) erhält man die maximal mögliche Ordnung $q=2(k-1)+2 = 2k$. Für die Lobatto-Punkte erhält man die Ordnung $q=2k-2$, "`Radau-Kollokations-Schema"'.
+
+\subsection*{Beispiel Impliziter Euler, k=1}
+
+\begin{align*}
+y_j^\tau (t;s_j) &= s_{j0} + h_j s_{j1} \\
+\end{align*}
+
+
+Kollokationsbedingung:
+
+\begin{align*}
+s_{j1} &= f(\tau_{j+1} + h_j, s_{j0} + h_j s_{j1}, p) \\
+\end{align*}
+
+Stetigkeitsbedingung:
+
+\begin{align*}
+s_{j-1\,0} + h_{j-1}s_{j-1} - s_{j0} &= 0 
+\end{align*}
+
+\subsection*{Kollokation für beschränkte Parameterschätzprobleme}
+
+Approximiere die Lösung der ODE durch eine Kollokationsdiskretisierung $y_j^\tau (t; s_j)$, $j=0,\cdots,m-1$ Setze diese an den Messzeitpunkten in die Least-Squares-Terme und an den Ranbedingungs-Punkten in die Randbedingung ein. Variablen sind:
+
+\begin{align*}
+x &= (s_0,s_1,\cdots,s_{m-1},p) \in \underbrace{ \R^{(k+1)n_y} \times \cdots \times \R^{(k+1)n_y}}_{m} \times \R^{n_p} \\
+\end{align*}
+
+$F_1$ besteht auf den Least-Squares-Termen, $F_2$ besteht au den Randbedingungen, den Kollokationsbedingungen (3.29), den Stetigkeitsbedingungen (3.30) und den Anfangsbedingungen (3.31). Es ergibt sich wieder ein beschränktes nichtlineares Ausgleichsproblem:
+
+\[ \min_x \frac 12 \| F_1(x) \|_2^2 \quad s.\,t. \text{ } F_2(x) = 0 \quad (3.37) \]
+
+Zur Lösung mit dem verallgemeinerten Gauß-Newton-Verfahren benötigen wir wieder
+
+\begin{align*}
+J_1 &= \frac{\partial F_1}{\partial x} \\
+J_2 &= \frac{\partial F_2}{\partial y}
+\end{align*}
+
+% Wir stecken das einfach in einen General Purpose Sparse Matrix Solver rein, der findet das Sparsity Pattern raus und löst das
+
+\subsubsection*{Bemerkung 3.6: Eigenschaften von $\begin{pmatrix} \partial_1 \\ \partial_2 \end{pmatrix}$}
+
+\begin{itemize}
+\item Es müssen keine Variations-DGL gelöst werden. Die Ableitungen nach $s$ und $p$ ergeben sich allein aus den Ableitungen der Kollokationspolynome und Ableitungen von $f$, Messfunktionen und Randbedingungen.
+\item Das System ist sehr groß, aber auch sehr dünn besetzt.
+\end{itemize}
+
+\subsubsection*{Vorteile von Kollokation}
+
+\begin{itemize}
+\item Es werden keine Integratoren und Variations-DGL-Löser benötigt.
+\item Es können Standard-Sparse-Löser eingesetzt werden
+\item Für lineare DGL, lineare Messfunktion und lineare Randbedingungen ist das Ausgleichs-Problem linear.
+\item Simulationsproblem und Optimierungsproblem werden in einer einzigen Schleife gelöst: All-At-Once
+\end{itemize}
+
+\subsubsection*{Nachteile von Kollokation}
+
+\begin{itemize}
+\item Die DGL wird nicht adaptiv diskretisiert
+\item Das Problem ist sehr hochdimensional
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

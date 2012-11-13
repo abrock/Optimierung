@@ -1,0 +1,136 @@
+\section*{Adjungierte Differentialgleichung}
+
+Will man Matrix-Matrix-Produkte von links an $\tfrac{\partial y}{\partial y_0}$ oder $\tfrac{\partial y}{\partial p}$ berechnen:
+
+\begin{align*}
+u^T \frac{\partial y}{\partial y_0} & & \text{ mit } u\in\R^{n_y} \text{ oder} \\
+U^T \frac{\partial y}{\partial y_0} & & \text{ mit } U \in \R^{n_y \times n}
+\end{align*}
+
+Berechnet man ebenfalls nicht zuerst $\frac{\partial y}{\partial y_0}$ und multipliziert dann, sondern löst die adjungierte Differentialgleichung.
+
+\subsection*{Satz 1.12}
+
+Gegeben sei das ODE-AWP
+
+\[ \dot y = f(t,y,p), \quad y(t_0) = y_0 \quad (1.28) \]
+
+Dann gilt: Integriert man die adjungierte Differentialgleichung (ADE)
+
+\[ \dot \Lambda (t)^T = -\Lambda(t)^T \frac{\partial f}{\partial y} (t,y,p) \quad (1.29) \]
+
+rückwärts, d.\,h. ausgehend von $T > t_0$ mit dem Anfangswert $\Lambda(T) = I$, dann gilt:
+
+\begin{align*}
+\frac{\partial y}{\partial y_0} (T) &= \Lambda (t_0)^T & (1.30) \\
+\frac{\partial y}{\partial p} (T) &= \int\limits_{t_0}^T \Lambda(t)^T \frac{\partial f}{\partial p} (t,y,p) \dd t & (1.31)
+\end{align*}
+
+\emph{Beweis:}
+
+Es gilt:
+
+\begin{align*}
+\dot y - f(t,y,p) &= 0 \\
+\RA \int\limits_{t_0}^T \Lambda T (\dot y - f(t,y,p)) \dd t &= 0 & (1.32)
+\end{align*}
+
+Leite (1.32) nach $y_0$ ab:
+
+\begin{align*}
+0 &= \frac{\partial}{\partial y_0} \int\limits_{t_0}^T \Lambda^T (\dot y -f(t,y,p)) \dd t \\
+&= \int\limits_{t_0}^T \Lambda^T \l( \frac{\partial \dot y}{\partial y_0} - \frac{\partial f}{\partial y} \frac{\partial y}{\partial y_0} \r) \dd t
+\end{align*}
+
+Partielle Integration:
+
+\[ \int\limits_{t_0}^T \Lambda^T \frac{\partial \dot y}{\partial y_0} \dd t = \l[ \Lambda^T \frac{\partial y}{\partial y_0} \r]_{t_0}^T - \int\limits_{t_0}^T \dot \Lambda^T \frac{\partial y}{\partial y_0} \dd t \]
+
+Daraus folgt:
+
+\begin{align*}
+0 &= \int\limits_{t_0}^T \Lambda^T \l( \frac{\partial \dot y}{\partial y_0} - \frac{\partial f}{\partial y_0} \frac{\partial y}{\partial y_0} \r) \dd t \\
+&= \int\limits_{t_0}^T \l( -\dot \Lambda - \Lambda^T \frac{\partial f}{\partial y} \frac{\partial y}{\partial y_0} \r) \dd t + \l[\Lambda^T \frac{\partial y}{\partial y_0} \r]_{t_0}^T \\
+&= \int\limits_{t_0}^T \underbrace{\l( -\dot \Lambda^T - \Lambda^T \frac{\partial f}{\partial y} \r)}_{= 0 \text{ adj. DGL}} \frac{\partial y}{\partial y_0} \dd t + \underbrace{\Lambda(T)^T}_{=I \text{ (AW)}} \frac{\partial y}{\partial y_0}(T) - \Lambda(t_0)^T \underbrace{\frac{\partial y}{\partial y_0}}_{=I} \\
+&= \frac{\partial y}{\partial y_0} (T) - \Lambda(t_0)^T \\
+\RA \Lambda^T(t_0) &= \frac{\partial y}{\partial y_0} (T) 
+\end{align*}
+
+Leite (1.32) nach $p$ ab mit analoger partieller Integration:
+
+\begin{align*}
+0 &= \int\limits_{t_0}^T \Lambda^T \l( \frac{\partial \dot y}{\partial p} - \frac{\partial f}{\partial y} \frac{\partial y}{\partial p} - \frac{\partial f}{\partial p} \r) \dd t \\
+&= \int\limits_{t_0}^T \underbrace{\l( -\dot \Lambda^T - \Lambda^T \frac{\partial f}{\partial y} \r)}_{= 0} \frac{\partial y}{\partial p} \dd t - \int\limits_{t_0}^T \Lambda^T \frac{\partial f}{\partial p} \dd t + \underbrace{\Lambda^T}_{=I} \frac{\partial y}{\partial p}(T) - \Lambda^T(t_0) \underbrace{\frac{\partial y}{\partial p}(t_0)}_{=0} \\
+&= -\int\limits_{t_0}^T \Lambda^T \frac{\partial f}{\partial p} \dd t + \frac{\partial y}{\partial p} (T) \\
+\RA \frac{\partial y}{\partial p} (T) &= \int\limits_{t_0}^T \Lambda^T \frac{\partial f}{\partial p} \dd t
+\end{align*}
+
+\subsection*{Bemerkung 1.13}
+
+Zur Berechnung von $\Lambda^T$ muss man erst vorwärts (1.28) lösen und $y$ berechnen, die Werte von $y$ dabei zwischenspeichern und dann rückwärts (1.29) lösen, um $\Lambda^T$ zu berechnen.
+
+\subsection*{Ableitung von Linearkombinationen von $\frac{\partial y}{\partial y_0}$}
+
+Gegeben: $u\in\R^{n_y}$ (adjungierte Richtung). Die Linearkombinations-ADE
+
+\[ \partial_t (u^T \Lambda(t)^T) = - (u^T \Lambda (t)^T) \frac{\partial f}{\partial y} (t,y,p) \quad (1.23) \]
+
+mit dem Anfangswert
+
+\[ (u^T \Lambda(T)^T) = u^T \quad (1.34) \]
+
+hat die Lösung
+
+\begin{align*}
+u^T \Lambda(t_0)^T &= u^T \frac{\partial y}{\partial y_0} (T) & (1.35) \\
+\text{und } \int\limits_{t_o}^T (u^T \Lambda(t)^T) \frac{\partial f}{\partial p} (t,y,p) \dd t &= u^T \frac{\partial y}{\partial p} (T) & (1.36)
+\end{align*}
+
+D.\,h. pro Linearkombination der Zeilen von $\tfrac{\partial y}{\partial y_0}$ und $\tfrac{\partial y}{\partial p}$ muss nur eine Rückwärts-AWP gelöst werden.
+
+\subsection*{Anwendung:}
+
+\begin{align*}
+& \Phi(y(T; t_0, y_0, p)) & & \text{ "`Zielfunktion"'} \\
+& \Phi: \R^{n_y}  \to \R
+\end{align*}
+
+Gradient:
+
+\[ \nabla_p \Phi(y(T; t_0, y_0,p)) = \frac{\partial \Phi}{\partial y} \frac{\partial y}{\partial p} (T; t_0,y_0,p) \]
+
+benötigt nur eine adjungierte Richtung $\tfrac{\partial \Phi}{\partial y} \in \R^{n_y}$
+
+\subsection*{Zusammenfassung:}
+
+\begin{itemize}
+\item Variationsdifferentialgleichung
+\begin{itemize}
+	\item Vorwärtsdifferentiation
+	\item Richtungsableitungen
+\end{itemize}
+\item Adjungierte Differentialgleichung
+\begin{itemize}
+	\item Rückwärtsdifferentiation
+	\item Linearkombinationen
+\end{itemize}
+\end{itemize}
+
+\section*{Simulation und Optimierungsprobleme bei Differentialgleichungen}
+
+% Bild siehe Seite 21 in Kapitel1.pdf
+
+\begin{itemize}
+\item \emph{Simulation:} Löse die Mathematischen Modellgleichungen, in dieser Vorlesung: Integration von ODE/DAE-AWPn
+\item \emph{Optimierungsprobleme:}
+\begin{itemize}
+	\item \emph{Parameterschätzung:} Bestimme die Modellparameter $p$ so, dass Modell und Realität möglichst gut übereinstimmen.
+	\item \emph{Modelldiskriminierung:} Bestimme durch Experimente, welche Modellvariante die Realität besser beschreibt.
+	\item \emph{Optimale Versuchsplanung:} Bestimme Experimente, aus denen die Parameter mögliuchst signifikant geschätzt werden können.
+	\item \emph{Optimales Design:} Berechne, wie ein System, Gerät etc. nach einem bestimmten Ziel optimal gebaut werden soll.
+	\item \emph{Optimale Steuerung:} Berechne, wie ein Prozess nach einem bestimmten Ziel optimal durchgeführt werden soll, typischerweise: Minimale Kosten oder maximale Ausbeute.
+	\item \emph{Optimale modellbasierte Regelung:} Wie ändert sich die optimale Steuerung bei Störungen des Systems?
+\end{itemize}
+\end{itemize}
+
+

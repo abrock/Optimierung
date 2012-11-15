@@ -1,3 +1,103 @@
+\chaptr{3. Shooting-Verfahren und Kollokation}
+
+\subsection*{3.1 Single-Shooting: Einfachschießverfahren}
+
+% Bild: Messdaten mit Fehlerbalken, Lösung des AWP für einen Parametersatz
+
+Vorgehensweise:
+\begin{itemize}
+\item Wähle Werte für die Parameter $p$ ("`Initial Guess"')
+\item Wir lösen das AWP $\dot y = f(t,y,p)$, $y(t_0) = y_0(p)$ $(3.1)$ mit einem numerischen Verfahren und erhalten eine Darstellung der Lösung $y(t; t_0 y_0, p)$
+\item Setze die Lösung an den Messzeitpunkten in die Modellantwortsfunktionen ein und berechne $F_{1,i}(p) = \sigma_i^{-1}(\eta_i - h_i(t_i, y(t_i; t_0, y_0, p), p)$, $i=1,\cdots,M$ (3.2). Setze die Lösung außerdem an den Randbedingungspunkten in die Randbedingung ein: $F_2(p) = r(y(t_0; t_0, y_0, p), \cdots, y(t_k; t_0, y_o, p), p)$ (3.3). Halte dazu den Integrator an den Punkten $t_i$ an oder benutze die fehlerkontrollierte kontinuierliche Ausgabe.
+\item Das ergibt ein endlichdimensionales nichtlineares Ausgleichsproblem, nämlich $\min \tfrac 12 \|F_1(p)\|_2^2$ so dass $F_2(p) = 0$ (3.4).
+\item Löse diese mit einer geeigneten Methode. Kriterien: (3.5)
+\begin{itemize}
+\item iterativ, da das Problem nichtlinear ist
+\item sollte unzulässige Iterierte erlauben, d.\,h. Zwischenwerte, bei denen $F_2(p) \neq 0$
+\item sollte für Least-Squares-Zielfunktion geeignet sein
+\end{itemize}
+\end{itemize}
+
+Wir benutzen daher das verallgemeinerte Gauß-Newton-Verfahren. Dieses benötigt folgende Ableitungen:
+
+\begin{align*}
+J_1(p) \colon&= \frac \partial{\partial p} F_1(p) \\
+J_2(p) \colon&= \frac \partial{\partial p} F_2(p)
+\end{align*}
+
+In jeder Iteration des Gauß-Newton-Verfahrens muss also das AWP gelöst und $F_1$ und $F_2$ ausgewertet werden.
+
+\emph{Bemerkung 3.1} berechnung von $J_1$ und $J_2$.
+
+\begin{align*}
+J_1(p) \colon&= \frac{\partial F_1}{\partial p} (p) \\
+&= \frac{\partial}{\partial p} \l( \frac{\eta_i - h_i(\cdots)}{\sigma_i} \r)_{i=1,\cdots,M} \\
+&= \l( -\frac 1 \sigma_i \l( \frac{\partial h_i}{\partial_y} (\cdots) \frac{\partial y}{\partial p}(t_i; t_0, y_0, p) + \frac{\partial h_i}{\partial p} (t_i; t_0, y_0, p) \r) \r)_{i=1,\cdots,M} \quad (3.6)\\
+J_2(p) &= \frac{\partial F_2}{\partial p} (p) \\
+&= \sum_{i=0^k} \frac{\partial r}{\partial y_i} \frac{\partial y}{\partial p} (t_i; t_0, y_0, p) + \frac{\partial r}{\partial p} \quad (3.7)
+\end{align*}
+
+Dazu berechnet man $\tfrac{\partial y}{\partial p} =\colon G_p$ als Lösung der VDE
+
+\[ \dot G_p = \frac{\partial f}{\partial y} G_p + \frac{\partial f}{\partial p} \quad (3.8)\]
+
+sowie die Ableitungen
+
+\[ \frac{\partial f}{\partial y}, \frac{partial f}{\partial p}, \frac{\partial h_i}{\partial y}, \frac{\partial h_i}{\partial p}, \frac{\partial r}{\partial y_i}, \frac{\partial r}{\partial p}\]
+
+der Modellfunktion per Hand, durch numerische Differentiation, oder durch automatische Differentiation.
+
+\section*{Algorithmus 3.2: Verallgemeinertes Gauß-Newton-Verfahren}
+
+Zur Lösung von $\min_p \tfrac 12 \|F_1(p)\|_2^2$ s.\,t. $F_2(p) = 0$
+
+\begin{itemize}
+\item Start mit einer Startschätzung $p^0$, $k=0$ ("`Initial Guess"')
+\item Solange ein Abbruchkriterium verletzt ist:
+\begin{itemize}
+\item Berechne $\delta p^k$ durch Lösung des linearisierten Ausgleichsproblems $\min \tfrac 12 \|F_1(p^k) + J_1(p^k) \delta p\|_2^2$ s.\,t. $F_2(p^k) + J_2(p^k) \delta p = 0$ (3.9)
+\item Bestimme eine Schrittweite $\alpha^k$, z.\,B. durch Linesearch 
+\item Iteriere $p^{k+1} = p^k + \alpha^k \delta p^k$ (3.10)
+\end{itemize} 
+\end{itemize}
+
+% Bei Newton wird die ganze Zielfunktion linearisiert, bei Gauß-Newton wird innerhalb der Norm linearisiert
+
+Mögliches Abbruchkriterium: $\|\delta p^k \| \leq \eps$. Mehr zu Gauß-Newton-Verfahren in Kapitel\,\,4.
+
+\section*{Algorithmus 3.3: Single-Shooting Gauß-Newton}
+
+\begin{itemize}
+\item Start mit einer Startschätzung $p^0$, $k=0$
+\item Solange ein Abbruchkriterium verletzt ist:
+\begin{itemize}
+\item Integriere das AWP (3.1) zusammen mit der VDE (3.8) für $p=p^k$
+\item Halte an den Punkten $t_i$ an und werte $F_1(p^k)$ und $F_2(p^k)$ gemäß (3.2) und (3.3) aus. Berechne $J_1(p^k)$ und $J_2(p^k)$ gemäß (3.6) und (3.7)
+\item Berechne $\delta p^k$ durch Lösen des linearen Ausgleichsproblems (3.9).
+\item Berechne eine Schrittweite $\delta p^k$ und iteriere gemäß (3.10)
+\end{itemize}
+\end{itemize}
+
+Implementierung: Praktische Aufgabe 1
+
+Benötigte Bestandteile für die Implementierung:
+
+\begin{itemize}
+\item Integrator für AWP/VDE: entweder durch Integrator mit Interner Numerischer Integration ("`IND"'), siehe Kapitel 5. Oder durch Integrieren des Systems
+\[\begin{pmatrix} \dot y \\ \dot G_p \end{pmatrix} = \begin{pmatrix} f \\ \frac{\partial f}{\partial y} G_p + \frac{\partial f}{\partial p}\end{pmatrix}, \quad y(t_0) = \begin{pmatrix} y_0(p) \\ \frac{\partial y_0}{\partial p}(p) \end{pmatrix} \]
+\item Löser für lineare Ausgleichsprobleme $\min \tfrac 12 \|F_1 + J_1 \delta x\|_2^2$ s.\,t. $F_2 + J_2 \delta x = 0$. KKT-Bedingung:
+\[ \exists \lambda\colon \begin{pmatrix} J_1^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix} \begin{pmatrix} \delta x \\ \lambda \end{pmatrix} = -\begin{pmatrix} J_1^T F_1 \\ F_2 \end{pmatrix} \]
+\item Globalisierungs-Strategie: BT-Linesearch oder $\alpha^j = 1$
+\end{itemize}
+
+
+
+
+
+
+
+
+
 \subsection*{Bemerkung 3.4}
 
 Wen wir keine Randbedingung $r(\cdots)=0$ haben und die Differentialgleichung eine ODE und keine DAE ist dann lösen wir in jeder Iteration des Gauß-Newton-Verfahrens ("`GN-Verfahren"') für die aktuellen Paramter das komplette Simulationsproblem. Das Ausgleichsproblem ist dann unbeschränkt: $\min_p \tfrac 12 \|F_1(p)\|_2^2$. Das linearisierte Ausgleichsproblem $\min_{\Delta p} \tfrac 12 \|F_1 + \partial_1 \Delta p\|_2^2$ hat die Lösung $\Delta p = -(J_1^T J_1)^{-1} J_1^T F_1$. Berechnung über QR-Zerlegung von $J_1$.
@@ -71,15 +171,15 @@ Ableitung der Anschlussbedingungen:
 
 \begin{align*}
 -s_{i+1} + y(\tau_{i+1}; \tau_i, s_i, p) &= 0 \quad i=0,\cdots,m-2 \\
-\text{nach }s_i: \frac{\partial}{\partial s_i} y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i \\
-\text{nach }s_{i+1}: &-I \\
-\text{nach }p:  \frac{\partial}{\partial p}y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i^p & \text{ (sonst 0)}\\
+\text{nach }s_i\colon \frac{\partial}{\partial s_i} y(\tau_{i+1}; \tau_i, s_i, p) &=\colon G_i \\
+\text{nach }s_{i+1}\colon &-I \\
+\text{nach }p\colon  \frac{\partial}{\partial p}y(\tau_{i+1}; \tau_i, s_i, p) &=\colon G_i^p & \text{ (sonst 0)}\\
 \end{align*}
 
 Ableitung der Konsistenzbedingungen:
 
 \begin{align*}
-H_i :&= \frac{\partial\{\partial s_i} g(\tau;i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1 \\
+H_i \colon&= \frac{\partial\{\partial s_i} g(\tau;i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1 \\
 H_i^p &= \frac{\partial}{\partial p} g(\tau_i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1
 \end{align*}
 
@@ -105,7 +205,7 @@ Biegler: Nonlinear Programming
 Approximiere die Lösung der ODE $\dot y = f(t,y,p)$ (3.24) durch stückweise Polynome vom Grad $k$ auf einem Gitter $t_0 = \tau_0 < \tau_1 < \cdots < \tau_{m-1} < \tau_m = \tend$ (3.25). Auf jedem dieser Teilintervalle wird die Lösung dargestellt durch
 
 \begin{align*}
-y_j^\tau (t; s_j) :&= \sum\limits_{l=0}^k s_j l \chi_l \l( \frac{t-\tau_j}{\tau_{j+1}-\tau_j} \r) & (3.26)\\
+y_j^\tau (t; s_j) \colon&= \sum\limits_{l=0}^k s_j l \chi_l \l( \frac{t-\tau_j}{\tau_{j+1}-\tau_j} \r) & (3.26)\\
 t &\in [\tau_j, \tau_{j+1}], \quad j=0,\cdots,m-1 \\
 \text{Wobei } & \{ \chi_l \}_{l=k,\cdots,k} \text{ eine Basis des Polynomraums } P_k([0,1]) \text{ der Polynome vom Grad } \leq k \text{ ist}
 \end{align*}
@@ -114,8 +214,8 @@ Die Koeffizienten $s_{jl} \in \R^{n_y}$, $j=0,\cdots,m-1$, $l=0,\cdots,k$, $s_j 
 
 \begin{itemize}
 \item Die approximierte Lösung $y_j^\tau$ soll auf einer Unterteilung des Gitters die ODE erfüllen:
-\[ t_{jl} := \overline c_j + \rho_l h_j \quad l= 1,\cdots,k, \quad j=0,\cdots,m-1 (3.28) \]
-(Kollokationspunkte) $\rho_l \in [0,1]$, $h_j := \tau_{j+1}-\tau_j$. Also:
+\[ t_{jl} \colon= \overline c_j + \rho_l h_j \quad l= 1,\cdots,k, \quad j=0,\cdots,m-1 (3.28) \]
+(Kollokationspunkte) $\rho_l \in [0,1]$, $h_j \colon= \tau_{j+1}-\tau_j$. Also:
 \[ \dot y_j^\tau (t_{jl}; s_j) = f(t_{jl}, y^\tau (t_{jl},s_j),p), \quad j=0,\cdots,m-1 \quad (3.29) \]
 \item Die approximierte Lösung $y^\tau$ soll an den Gitterpunkten $\tau_j$ stetig sein:
 \[ y_j^\tau (\tau_{j+1};s_j) = y_{j+1}^\tau(\tau_{j+1},s_{j+1}) \quad j=0,\cdots,m-2 \quad (3.30) \]

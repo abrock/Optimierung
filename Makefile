@@ -2,4 +2,4 @@ default:
 	pdflatex mitschrift.tex
 
 clean:
-	rm *.aux *.log
+	rm mitschrift.pdf mitschrift.toc mitschrift.log mitschrift.aux

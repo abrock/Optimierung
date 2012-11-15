@@ -4,11 +4,11 @@ Problem:
 
 \begin{align*}
 \min \frac 12 \|F_1(x)\|_2^2 &\text{ s.\,t. } F_2(x) = 0 \quad (4.1) \\
-\text{ mit } F_1: D \subset \R^n  &\to \R^{m_1}, \quad F_1 \in C^2(D) \\
-F_2: D \subset \R^n &\to R^{m_2}, \quad F_2 \in C^2(D) \\
+\text{ mit } F_1\colon D \subset \R^n  &\to \R^{m_1}, \quad F_1 \in C^2(D) \\
+F_2\colon D \subset \R^n &\to R^{m_2}, \quad F_2 \in C^2(D) \\
 n & \geq m_2 \\
 m_1 \geq n - m_2 \\
-\text{Jacobi-Matrizen: } J_1 :&= \frac{\partial F_1}{\partial x}, \quad J_2 := \frac{\partial F_2}{\partial x}
+\text{Jacobi-Matrizen: } J_1 \colon&= \frac{\partial F_1}{\partial x}, \quad J_2 \colon= \frac{\partial F_2}{\partial x}
 \end{align*}
 
 \begin{itemize}
@@ -16,24 +16,24 @@ m_1 \geq n - m_2 \\
 \item Spezialfall: nichtlineare Gleichung: $F(x) = 0$
 \end{itemize}
 
-\section*{Algorithmus 4.1 (Verallgemeinertes Gauß-Newton-Verfahren)}
+\msection{Algorithmus 4.1 (Verallgemeinertes Gauß-Newton-Verfahren)}
 
 \begin{itemize}
-\item Startpunkt $x^0$, $k := 0$
+\item Startpunkt $x^0$, $k \colon= 0$
 \item Solange ein Abbruchkriterium verletzt ist (z.\,B. $\|\Delta x\| > \eps$):
 \begin{itemize}
 \item Berechne
 \begin{align*}
-F_1^k :&= F_1(x^k) \\
-F_2^k :&= F_2(x^k) \\
-J_1^k :&= J_1(x^k) \\
-J_2^k :&= J_2(x^k) \\
+F_1^k \colon&= F_1(x^k) \\
+F_2^k \colon&= F_2(x^k) \\
+J_1^k \colon&= J_1(x^k) \\
+J_2^k \colon&= J_2(x^k) \\
 \end{align*}
 \item Löse das lineare Ausgleichsproblem
 \[ \min \frac 12 \|F_1^k + J_1^k \Delta x \|_2^2 \text{ s.\,t. } F_2^k + J_2^k \Delta x = 0 (4.2) \]
 Lösung: $\Delta x^k$
 \item Bestimme eine Schrittweite $\alpha^k \in (0,1]$
-\item Iteriere $x^{k+1} := x^k + \alpha^k \Delta x^k$
+\item Iteriere $x^{k+1} \colon= x^k + \alpha^k \Delta x^k$
 \end{itemize}
 \end{itemize}
 
@@ -54,7 +54,7 @@ Zur Globalisierung der Konvergenz kann z.\,B. Linesearch verwendet werden. Es er
 bedeutet: die nicht durch die Nebenbedingungen festgelegten Variablen können aus den experimentellen Daten eindeutig geschätzt werden.
 \end{itemize}
 
-\section*{Lemma 4.4}
+\msection{Lemma 4.4}
 
 Gelten (PD) und (CQ), dann gilt:
 
@@ -67,7 +67,7 @@ ist regulär.
 
 Beweis: Übungsaufgabe.
 
-\section*{Lösung der linearen Ausgleichsprobleme}
+\msection{Lösung der linearen Ausgleichsprobleme}
 
 \subsection*{1. Unbeschränkter Fall}
 
@@ -126,7 +126,7 @@ $\Delta x^* \in \R^n$ ist genau dann Lösung von $\min \frac 12 \| F_1 + F_1 \De
 Sei $\Delta x^*$ Minimum.
 
 \begin{align*}
-f(t) :&= \frac 12 \| F_1 + J_1 (\Delta x^* + t \Delta y) \|_2^2
+f(t) \colon&= \frac 12 \| F_1 + J_1 (\Delta x^* + t \Delta y) \|_2^2
 \end{align*}
 
 mit $\Delta y$ so dass 
@@ -141,7 +141,7 @@ F_2 + J_2(\Delta x^* + t \Delta y) &= 0 \\
 \RA \exists! \lambda \text{ mit } J_1^T J_1 \Delta x^* + J_1^T F_1 + J_2^T \lambda &= 0 \\
 \text{außerdem } J_2 \Delta x^* + F_2 &= 0 \quad \text{ (KKT-Bedinungen)} \\
 \RA \begin{pmatrix} J_1^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix} \begin{pmatrix} \Delta x^* \\ \lambda \end{pmatrix} &= - \begin{pmatrix} J_1^T & 0 \\ 0 & I \end{pmatrix} \begin{pmatrix} F_1 \\ F_2 \end{pmatrix} & (4.8) \\
-\RA \Delta x^* &= - \underbrace{\begin{pmatrix} I & 0 \end{pmatrix} \begin{pmatrix} J_1^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix}^{-1} \begin{pmatrix} J_1^T & 0 \\ 0 & I \end{pmatrix}}_{=: J^+ \quad (4.9)} \begin{pmatrix} F_1 \\ F_2 \end{pmatrix}  \\
+\RA \Delta x^* &= - \underbrace{\begin{pmatrix} I & 0 \end{pmatrix} \begin{pmatrix} J_1^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix}^{-1} \begin{pmatrix} J_1^T & 0 \\ 0 & I \end{pmatrix}}_{=\colon J^+ \quad (4.9)} \begin{pmatrix} F_1 \\ F_2 \end{pmatrix}  \\
 \Delta x^* &= - J^+ F \\
 \end{align*}
 
@@ -252,7 +252,7 @@ P_2 J_2 \Delta x &= L_2( R_2 \Delta y + D_2 \Delta z) = - P_2 F_2 \\
 \begin{align*}
 J_1 &= \begin{pmatrix}\underbrace{ J_{11}}_{m_1 \times m_2} & \underbrace{J_{12}}_{m_1 \times (n-m_2)} \end{pmatrix} \\
 \text{Einsetzen: } \frac 12 \| F_1 + J_1 \Delta x \|_2^2 &= \frac 12 \|F_1 + J_{11} \Delta y + J_{12} \Delta z \|_2^2 \\
-&= \frac 12 \|\underbrace{F_1 + J_{11} R_2^{-1} L_2^{-1} P_2 F_2}_{=: b} + (\underbrace{J_{12} - J_{11} R_2^{-1} D_2}_{=: B}) \Delta z \|_2^2\\
+&= \frac 12 \|\underbrace{F_1 + J_{11} R_2^{-1} L_2^{-1} P_2 F_2}_{=\colon b} + (\underbrace{J_{12} - J_{11} R_2^{-1} D_2}_{=\colon B}) \Delta z \|_2^2\\
 &= \frac 12 \|b + B \Delta z \|_2^2 \\
 \end{align*}
 QR-Zerlegung von $B$:

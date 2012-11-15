@@ -47,7 +47,7 @@ sowie die Ableitungen
 
 der Modellfunktion per Hand, durch numerische Differentiation, oder durch automatische Differentiation.
 
-\section*{Algorithmus 3.2: Verallgemeinertes Gauß-Newton-Verfahren}
+\msection{Algorithmus 3.2: Verallgemeinertes Gauß-Newton-Verfahren}
 
 Zur Lösung von $\min_p \tfrac 12 \|F_1(p)\|_2^2$ s.\,t. $F_2(p) = 0$
 
@@ -65,7 +65,7 @@ Zur Lösung von $\min_p \tfrac 12 \|F_1(p)\|_2^2$ s.\,t. $F_2(p) = 0$
 
 Mögliches Abbruchkriterium: $\|\delta p^k \| \leq \eps$. Mehr zu Gauß-Newton-Verfahren in Kapitel\,\,4.
 
-\section*{Algorithmus 3.3: Single-Shooting Gauß-Newton}
+\msection{Algorithmus 3.3: Single-Shooting Gauß-Newton}
 
 \begin{itemize}
 \item Start mit einer Startschätzung $p^0$, $k=0$
@@ -110,7 +110,7 @@ Wen wir keine Randbedingung $r(\cdots)=0$ haben und die Differentialgleichung ei
 \item Die Vorinformation über die Trajektorien, die durch die Messwerte gegeben ist wird nicht genutzt.
 \end{itemize}
 
-\section*{3.2 Multiple Shooting, die Mehrzielmethode}
+\msection{3.2 Multiple Shooting, die Mehrzielmethode}
 
 Zerlege das Integrationsintervall in Teilintervalle $t_0 = \tau_0 < \tau_1 < \cdots < \tau_m = \tend$. Die $\tau_i$ nennt man Mehrzielknoten. Löse das AWP nur auf diesen Intervallen $i=0,\cdots,m-1$: $\dot y = f(t,y,p)$, $t \in [\tau_i, \tau_{i+1} ]$ (3.10) mit den Anfangsbedingungen $y(\tau_i) = s_i$ (3.11). Erhalte die Lösung $y(t; \tau_i, s_i,p)$, $t\in[\tau_i, \tau_{i+1}]$ (3.12). Setze diese $y$ in die Messfunktion und Randbedingungs-Funktion an den entsprechenden Zeitpunkten $t_i$ ein. Die $s_i$, $i=0,\cdots,m-1$ sind zusätzliche Variablen des Problems. An den Mehrzielknoten $\tau_i$ formulieren wir zusätzliche  Stetigkeitsbedingungen, sog. "`Anschlussbedingungen"':
 
@@ -194,7 +194,7 @@ Lösungsverfahren müssen diese spezielle Struktur ausnutzen ("`Kondensierung"',
 
 Der Aufwand zur Integration und zur Berechnung der $G_i$ ist bei Single-Shooting und Multiple-Shooting im Wesentlichen gleich.
 
-\section*{3.3 Kollokation}
+\msection{3.3 Kollokation}
 
 Literatur: Ascher, Mettheij, Russel: Numerical Solution of Boundary Value Problems for Ordinary Differential Equations
 
@@ -335,7 +335,7 @@ J_2 &= \frac{\partial F_2}{\partial y}
 
 % Das ist jetzt mehr so ein Laberkapitel
 
-\section*{3.4 Ansätze zur Optimierung von DGL-Modellen}
+\msection{3.4 Ansätze zur Optimierung von DGL-Modellen}
 
 Wir haben bisher kennengelernt:
 
@@ -370,7 +370,7 @@ x_4^2 -  2  &= 0 \\
 
 siehe Albersmeyer, Diehl: The lifted Newton Method and its Apllication in Optimization
 
-\section*{3.5 Relaxierte Formulierung von DAEs}
+\msection{3.5 Relaxierte Formulierung von DAEs}
 
 DAE:
 

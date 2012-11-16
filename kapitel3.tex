@@ -1,6 +1,6 @@
 \chaptr{3. Shooting-Verfahren und Kollokation}
 
-\subsection*{3.1 Single-Shooting: Einfachschießverfahren}
+\msubsection{3.1 Single-Shooting: Einfachschießverfahren}
 
 % Bild: Messdaten mit Fehlerbalken, Lösung des AWP für einen Parametersatz
 
@@ -98,7 +98,7 @@ Benötigte Bestandteile für die Implementierung:
 
 
 
-\subsection*{Bemerkung 3.4}
+\msubsection{Bemerkung 3.4}
 
 Wen wir keine Randbedingung $r(\cdots)=0$ haben und die Differentialgleichung eine ODE und keine DAE ist dann lösen wir in jeder Iteration des Gauß-Newton-Verfahrens ("`GN-Verfahren"') für die aktuellen Paramter das komplette Simulationsproblem. Das Ausgleichsproblem ist dann unbeschränkt: $\min_p \tfrac 12 \|F_1(p)\|_2^2$. Das linearisierte Ausgleichsproblem $\min_{\Delta p} \tfrac 12 \|F_1 + \partial_1 \Delta p\|_2^2$ hat die Lösung $\Delta p = -(J_1^T J_1)^{-1} J_1^T F_1$. Berechnung über QR-Zerlegung von $J_1$.
 
@@ -190,7 +190,7 @@ Lösungsverfahren müssen diese spezielle Struktur ausnutzen ("`Kondensierung"',
 \frac{\partial F_1}{\partial s_i} &= \sum_{j=1}^M \frac{\partial F_1}{\partial y(t_j)} \frac{\partial y(t_j)}{\partial s_i}
 \end{align*}
 
-\subsection*{Bemerkung 3.5}
+\msubsection{Bemerkung 3.5}
 
 Der Aufwand zur Integration und zur Berechnung der $G_i$ ist bei Single-Shooting und Multiple-Shooting im Wesentlichen gleich.
 
@@ -200,7 +200,7 @@ Literatur: Ascher, Mettheij, Russel: Numerical Solution of Boundary Value Proble
 
 Biegler: Nonlinear Programming
 
-\subsection*{Kollokations-Diskretisierung}
+\msubsection{Kollokations-Diskretisierung}
 
 Approximiere die Lösung der ODE $\dot y = f(t,y,p)$ (3.24) durch stückweise Polynome vom Grad $k$ auf einem Gitter $t_0 = \tau_0 < \tau_1 < \cdots < \tau_{m-1} < \tau_m = \tend$ (3.25). Auf jedem dieser Teilintervalle wird die Lösung dargestellt durch
 
@@ -225,7 +225,7 @@ Die Koeffizienten $s_{jl} \in \R^{n_y}$, $j=0,\cdots,m-1$, $l=0,\cdots,k$, $s_j 
 
 Das sind $mk$ Kollokationsbedingungen, $m-1$ Stetigkeitsbedingungen und eine Anfangsbedingung, also $m(k+1)$ Bedingungen für die $m(k+1)$ Variablen $s_{jl}$.
 
-\subsection*{Wahl der Polynombasis und der Kollokationspunkte}
+\msubsection{Wahl der Polynombasis und der Kollokationspunkte}
 
 z.\,B. B-Splines, Hermite-Splines. Wir benutzen die Runge-Kutta-Basis:
 
@@ -262,7 +262,7 @@ sind
 
 Man kann also in jedem Intervall $[\tau_j,\tau_{j+1})$ $y_j^\tau(\tau_{j+1}, s_j)$ als Ergebnis eines Schrittes eines impliziten Runge-Kutta-Verfahrens, gestartet bei $y_j^\tau (\tau_j, s_j)$ auffassen: "`Kollokationsschema"'
 
-\subsection*{Konsistenzfehler:}
+\msubsection{Konsistenzfehler:}
 
 \begin{align*}
 y(\tau_{j+1}) &= y(\tau_j) + h_j \sum\limits_{l=1}^k f(t_j + \rho_l h_j, y(\tau_j + \rho_l h_j), p) \int\limits_0^1 L_l(\rho) \dd \rho + h_j \mathcal O(h_j^q) & (3.36)
@@ -270,7 +270,7 @@ y(\tau_{j+1}) &= y(\tau_j) + h_j \sum\limits_{l=1}^k f(t_j + \rho_l h_j, y(\tau_
 
 Die Konsistenzordnung $q$ hängt ab von der Wahl der $\rho_l$, $l=1,\cdots,k$. Für Gauß-Punkte (Nullstellen der Legendre-Polynome) erhält man die maximal mögliche Ordnung $q=2(k-1)+2 = 2k$. Für die Lobatto-Punkte erhält man die Ordnung $q=2k-2$, "`Radau-Kollokations-Schema"'.
 
-\subsection*{Beispiel Impliziter Euler, k=1}
+\msubsection{Beispiel Impliziter Euler, k=1}
 
 \begin{align*}
 y_j^\tau (t;s_j) &= s_{j0} + h_j s_{j1} \\
@@ -289,7 +289,7 @@ Stetigkeitsbedingung:
 s_{j-1\,0} + h_{j-1}s_{j-1} - s_{j0} &= 0 
 \end{align*}
 
-\subsection*{Kollokation für beschränkte Parameterschätzprobleme}
+\msubsection{Kollokation für beschränkte Parameterschätzprobleme}
 
 Approximiere die Lösung der ODE durch eine Kollokationsdiskretisierung $y_j^\tau (t; s_j)$, $j=0,\cdots,m-1$ Setze diese an den Messzeitpunkten in die Least-Squares-Terme und an den Ranbedingungs-Punkten in die Randbedingung ein. Variablen sind:
 
@@ -310,14 +310,14 @@ J_2 &= \frac{\partial F_2}{\partial y}
 
 % Wir stecken das einfach in einen General Purpose Sparse Matrix Solver rein, der findet das Sparsity Pattern raus und löst das
 
-\subsubsection*{Bemerkung 3.6: Eigenschaften von $\begin{pmatrix} \partial_1 \\ \partial_2 \end{pmatrix}$}
+\msubsubsection{Bemerkung 3.6: Eigenschaften von $\begin{pmatrix} \partial_1 \\ \partial_2 \end{pmatrix}$}
 
 \begin{itemize}
 \item Es müssen keine Variations-DGL gelöst werden. Die Ableitungen nach $s$ und $p$ ergeben sich allein aus den Ableitungen der Kollokationspolynome und Ableitungen von $f$, Messfunktionen und Randbedingungen.
 \item Das System ist sehr groß, aber auch sehr dünn besetzt.
 \end{itemize}
 
-\subsubsection*{Vorteile von Kollokation}
+\msubsubsection{Vorteile von Kollokation}
 
 \begin{itemize}
 \item Es werden keine Integratoren und Variations-DGL-Löser benötigt.
@@ -326,7 +326,7 @@ J_2 &= \frac{\partial F_2}{\partial y}
 \item Simulationsproblem und Optimierungsproblem werden in einer einzigen Schleife gelöst: All-At-Once
 \end{itemize}
 
-\subsubsection*{Nachteile von Kollokation}
+\msubsubsection{Nachteile von Kollokation}
 
 \begin{itemize}
 \item Die DGL wird nicht adaptiv diskretisiert

@@ -135,13 +135,13 @@ Integraldarstellung der Lösung:
 \item Ableitung nach Parametern: $G_p(t; t_0, y_0, p) \colon= \frac{\partial}{\partial p} y(t; t_0, y_0, p)$
 \end{itemize}
 
-\subsection*{Berechnung der Ableitungen:}
+\msubsection{Berechnung der Ableitungen:}
 
 Integralform des AWP:
 
 \[y(t) = y_0 + \int\limits_{t_0}^t f(\tau, y(\tau), p) \dd \tau \quad (1.12) \]
 
-\subsubsection*{a) Differenziere nach Anfangswerten:}
+\msubsubsection{a) Differenziere nach Anfangswerten:}
 
 \begin{align*}
 \frac{\partial}{\partial y_0} y(t) &= \frac{\partial y_0}{\partial y_0} + \int\limits_{t_0}^t \frac{\partial}{\partial y} f(\tau, y(\tau), p) \frac{\partial y}{\partial y_0} (\tau) \dd \tau \\
@@ -157,7 +157,7 @@ G(t_0) &= I
 
 zur sogenannten Variationsdifferentialgleichung (VDE) nach Anfangswerten.
 
-\subsubsection*{Differenziere nach dem Anfangszeitpunkt:}
+\msubsubsection{Differenziere nach dem Anfangszeitpunkt:}
 
 \begin{align*}
 \frac{\partial}{\partial t_0} y(t) &= \frac{\partial y_0}{\partial t_0} + \frac{\partial}{\partial t_0} \int\limits_{t_0}^t f(\tau, y(\tau),p) \dd \tau \\
@@ -173,7 +173,7 @@ G_{t_0} (t_0) &= -f(t_0 y(t_0), p)
 
 zur VDE nach dem Anfangszeitpunkt.
 
-\subsubsection*{c) Differenziere nach den Parametern:}
+\msubsubsection{c) Differenziere nach den Parametern:}
 
 \begin{align*}
 \frac \partial{\partial p} y(t) &= \frac{\partial y_0}{\partial p} + \int\limits_{t_0}^t \frac{\partial f}{\partial y} (\tau, y(\tau), p) \frac{\partial y}{\partial p} (\tau) + \frac{\partial f}{\partial p} (\tau, y(\tau), p) \dd \tau \\
@@ -210,7 +210,7 @@ Multipliziere $\dot G = \tfrac{\partial f}{\partial y} G$, $G(t_0) = I$ von rech
 
 Also erfüllt $y \colon= -G f(t_0, y_0, p)$ die Differentialgleichung $\dot y = \tfrac{\partial f}{\partial y} y$ und die Anfangsbedingung $y(t_0) = -f(t_0, y_0, p)$. Das ist die VDE für $G_{t_0}$, also ist $y = -G f(t_0, y_0, p) = G_{t_0}$
 
-\subsection*{Variationsdifferentialgleichungen für Richtungsableitungen}
+\msubsection{Variationsdifferentialgleichungen für Richtungsableitungen}
 
 Gegeben sei eine Richtung $\Delta y_0 \in \R^{n_y}$. Die Richtungsableitung von $y$ nach $y_0$ in der Richtung $\Delta y_0$ ist gegeben durch
 
@@ -243,7 +243,7 @@ Für Richtungsableitungen nach $p$ analog:
 G_p(t_0; t_0, y_0, p) \Delta p &= \frac{\partial y_0}{\partial p} \Delta p & (1.22) 
 \end{align*}
 
-\subsubsection*{Eigenschaften der Ableitungsmatrizen}
+\msubsubsection{Eigenschaften der Ableitungsmatrizen}
 
 Füge an der Stelle $t_0 < s < t_end$ einen "`Haltepunkt"' ein:
 
@@ -306,7 +306,7 @@ W(\tend,t_0) &= W(\tend, s) W(s,t_0) \\
 W_p(\tend,t_0) &= W(\tend, s) W_p(s,t_0) + W_p(\tend, s) 
 \end{align*}
 
-\subsection*{Ableitungsmatrizen bei abschnittsweise definierter rechter Seite}
+\msubsection{Ableitungsmatrizen bei abschnittsweise definierter rechter Seite}
 
 \begin{align*}
 \dot y(t) &= \begin{cases} f_1(t,y,p) & \text{ für } t < t_s \\ f_2(t,y,p) & \text{ für } t > t_s \end{cases} & (1.26)
@@ -361,7 +361,7 @@ U^T \frac{\partial y}{\partial y_0} & & \text{ mit } U \in \R^{n_y \times n}
 
 Berechnet man ebenfalls nicht zuerst $\frac{\partial y}{\partial y_0}$ und multipliziert dann, sondern löst die adjungierte Differentialgleichung.
 
-\subsection*{Satz 1.12}
+\msubsection{Satz 1.12}
 
 Gegeben sei das ODE-AWP
 
@@ -417,11 +417,11 @@ Leite (1.32) nach $p$ ab mit analoger partieller Integration:
 \RA \frac{\partial y}{\partial p} (T) &= \int\limits_{t_0}^T \Lambda^T \frac{\partial f}{\partial p} \dd t
 \end{align*}
 
-\subsection*{Bemerkung 1.13}
+\msubsection{Bemerkung 1.13}
 
 Zur Berechnung von $\Lambda^T$ muss man erst vorwärts (1.28) lösen und $y$ berechnen, die Werte von $y$ dabei zwischenspeichern und dann rückwärts (1.29) lösen, um $\Lambda^T$ zu berechnen.
 
-\subsection*{Ableitung von Linearkombinationen von $\frac{\partial y}{\partial y_0}$}
+\msubsection{Ableitung von Linearkombinationen von $\frac{\partial y}{\partial y_0}$}
 
 Gegeben: $u\in\R^{n_y}$ (adjungierte Richtung). Die Linearkombinations-ADE
 
@@ -440,7 +440,7 @@ u^T \Lambda(t_0)^T &= u^T \frac{\partial y}{\partial y_0} (T) & (1.35) \\
 
 D.\,h. pro Linearkombination der Zeilen von $\tfrac{\partial y}{\partial y_0}$ und $\tfrac{\partial y}{\partial p}$ muss nur eine Rückwärts-AWP gelöst werden.
 
-\subsection*{Anwendung:}
+\msubsection{Anwendung:}
 
 \begin{align*}
 & \Phi(y(T; t_0, y_0, p)) & & \text{ "`Zielfunktion"'} \\
@@ -453,7 +453,7 @@ Gradient:
 
 benötigt nur eine adjungierte Richtung $\tfrac{\partial \Phi}{\partial y} \in \R^{n_y}$
 
-\subsection*{Zusammenfassung:}
+\msubsection{Zusammenfassung:}
 
 \begin{itemize}
 \item Variationsdifferentialgleichung

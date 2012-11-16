@@ -41,11 +41,11 @@ Lösung: $\Delta x^k$
 
 "`Gauß"': linearisiere innerhalb der Norm, löse das lineare Ausgleichsproblem.
 
-\subsection*{Bemerkung 4.2}
+\msubsection{Bemerkung 4.2}
 
 Zur Globalisierung der Konvergenz kann z.\,B. Linesearch verwendet werden. Es ergeben sich gedämpfte Schritte $\alpha^k < 1$. In der Nähe der lösung können Vollschritte $\alpha^k=1$ erwartet werden.
 
-\subsection*{Annahmen 4.3: Regularitätsannahmen}
+\msubsection{Annahmen 4.3: Regularitätsannahmen}
 
 \begin{itemize}
 \item (CQ) "`Constraint Qualification"': $\Rg J_2 = m_2$ ($J_2$ hat vollen Rang, die Nebenbedingungen sind widerspruchsfrei und nicht redundant).
@@ -69,7 +69,7 @@ Beweis: Übungsaufgabe.
 
 \msection{Lösung der linearen Ausgleichsprobleme}
 
-\subsection*{1. Unbeschränkter Fall}
+\msubsection{1. Unbeschränkter Fall}
 
 \[ \min \frac 12 \| F_1 + J_1 \Delta x \|_2^2 \quad (4.5) \]
 
@@ -99,7 +99,7 @@ $J^\dagger$ heißt Moore-Penrose-Pseudoinverse und erfüllt die vier Moore-Penro
 
 Umgekehrt: $J^\dagger$ ist durch die vier Axiome eindeutig bestimmt. Die Lösung der Normalengleichung ist eindeutig, wenn (PD) erfüllt ist.
 
-\subsection*{Bemerkung 4.10}
+\msubsection{Bemerkung 4.10}
 
 Wenn $\Rg J_1 < n$, also (PD) nicht erfüllt ist, dann ist die Lösung von $\min \frac 12 \|F_1 + J_1 \Delta x \|_2^2$ nicht eindeutig. Dann ist
 
@@ -111,9 +111,9 @@ Die Lösung kleinster euklidischer Norm. $J^\dagger$ erfülle dabei die vier Moo
 
 Beweis: Übungsaufgabe % Ansatz: Nehme zwei verschiedene Lösung an, forme eine Lösung in die andere um.
 
-\subsection*{2. Beschränkter Fall}
+\msubsection{2. Beschränkter Fall}
 
-\subsubsection*{Lemma 4.5}
+\msubsubsection{Lemma 4.5}
 
 Gelten (CQ) und (PD) dann gilt
 
@@ -147,13 +147,13 @@ F_2 + J_2(\Delta x^* + t \Delta y) &= 0 \\
 
 Gelte umgekehrt (4.8) für $\Delta x^*$ und $\lambda$. Dann folgt $f'(0) = 0$ für alle $\Delta y \in \ker(J_2)$. Aus (PD) folgt, dass $\Delta x^*$ ein Minimum ist.
 
-\subsubsection*{Definition 4.6: Verallgemeinerte Inverse}
+\msubsubsection{Definition 4.6: Verallgemeinerte Inverse}
 
 Der Lösungsoperator $J^+$ von (4.8) heißt verallgemeinerte Inverse von
 
 \[ J = \begin{pmatrix} J_1 \\ J_2 \end{pmatrix} \]
 
-\subsection*{Lemma 4.7}
+\msubsection{Lemma 4.7}
 
 $J^+$ erfüllt das Moore-Penrose-Axiom $J^+ J J^+ = J^+$.
 
@@ -184,11 +184,11 @@ Zweite Lösung:
 
 Wegen der Eindeutigkeit der Lösung ist $\Delta x_1 = \Delta x_2$. $-J^+ J J^+ y = -J^+y$ für beliebige $y$, $J^+ J J^+ = J^+$.
 
-\subsubsection*{Lemma 4.8}
+\msubsubsection{Lemma 4.8}
 
 $J^+$ Erfüllt die Moore-Penrose-Axiome 1,2 und 4. Beweis: Übungsaufgabe.
 
-\subsubsection*{Bemerkung 4.9}
+\msubsubsection{Bemerkung 4.9}
 
 Die Moore-Penrose-Pseudoinverse für den beschränkten Fall würde das folgende Problem lösen:
 
@@ -203,11 +203,11 @@ Das ist nicht äquivalent zu
 \text{s.\,t. } F_2 + J_2 \Delta x = 0
 \end{align*}
 
-\subsection*{Numerische Lösung}
+\msubsection{Numerische Lösung}
 
 Man stellt nicht $J^+$ oder $J^\dagger$ auf, sondern zerlegt $J_1$ und $J_2$ geeignet.
 
-\subsubsection*{1. Unbeschränkter Fall}
+\msubsubsection{1. Unbeschränkter Fall}
 
 \begin{align*}
 J_1^T J_1 \Delta x &= -J_1^T F_1
@@ -232,7 +232,7 @@ J^\dagger &= V \begin{pmatrix} \sigma_1^{-1} \\ & \ddots & & 0 \\ & & \sigma_n^{
 \end{align*}
 \end{itemize}
 
-\subsubsection*{Beschränkter Fall}
+\msubsubsection{Beschränkter Fall}
 
 \begin{itemize}
 \item 1. Variante ("`Bildraumvariante"'): $\Delta x$ ist Lösung von 

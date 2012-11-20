@@ -241,28 +241,117 @@ Diese Matrix ist symmetrisch aber indefinit, also wende Gaußsche LR-Zerlegung a
 \item 2. Variante ("`Nullraumvariante"'): % "Man kann das Optimierungsproblem nicht oft genug hinschreiben"
 \[ \min_{\Delta x} \frac 12 \| F_1 + J_1 \Delta x\|_2^2 \text{ (4.10) s.\,t. } F_2 + J_2 \Delta x = 0 \text{ (4.11)} \]
 1. Bestimme Lösungsmenge von (4.11) durch LR-Zerlegung von $P_2 J_2$:
-\[ P_2 J_2 = L_2 \begin{pmatrix} R_2 & D_2 \end{pmatrix} = \begin{pmatrix} P_2 J_{21} & P_2 J_{22} \end{pmatrix} \]
+\[ P_2 J_2 = L_2 \begin{pmatrix} R_2 & D_2 \end{pmatrix} = \begin{pmatrix} P_2 J_{21} & P_2 J_{22} \end{pmatrix} \quad (4.12)\]
 Mit $R_2$ reguläre obere Dreiecksmatrix, $L_2$ normierte untere Dreiecksmatrix, $P_2$ Permutationsmatrix zur Zeilenpivotierung. Vorraussetzung ist (CQ). Spalte $\Delta x$ auf: 
 \begin{align*}
 \Delta x &= \begin{pmatrix}\underbrace{ \Delta y}_{m_2} & \underbrace{\Delta z}_{n-m_2} \end{pmatrix} \\
 P_2 J_2 \Delta x &= L_2( R_2 \Delta y + D_2 \Delta z) = - P_2 F_2 \\
-\RA \Delta y &= - R_2^{-1} ( D_2 \Delta z + L_2^{-1} P_2 F_2) \\
+\RA \Delta y &= - R_2^{-1} ( D_2 \Delta z + L_2^{-1} P_2 F_2) \quad (4.13) \\
 \end{align*}
 2. Minimiere (4.10) auf der Lösungsmenge von (4.11). Spalte $J_1$ analog auf.
 \begin{align*}
 J_1 &= \begin{pmatrix}\underbrace{ J_{11}}_{m_1 \times m_2} & \underbrace{J_{12}}_{m_1 \times (n-m_2)} \end{pmatrix} \\
 \text{Einsetzen: } \frac 12 \| F_1 + J_1 \Delta x \|_2^2 &= \frac 12 \|F_1 + J_{11} \Delta y + J_{12} \Delta z \|_2^2 \\
-&= \frac 12 \|\underbrace{F_1 + J_{11} R_2^{-1} L_2^{-1} P_2 F_2}_{=\colon b} + (\underbrace{J_{12} - J_{11} R_2^{-1} D_2}_{=\colon B}) \Delta z \|_2^2\\
+&= \frac 12 \|\underbrace{F_1 + J_{11} R_2^{-1} L_2^{-1} P_2 F_2}_{=: b} + (\underbrace{J_{12} - J_{11} R_2^{-1} D_2}_{=\colon B}) \Delta z \|_2^2\\
 &= \frac 12 \|b + B \Delta z \|_2^2 \\
 \end{align*}
 QR-Zerlegung von $B$:
 \begin{align*}
-B &= Q_1 R_1 = \begin{pmatrix} \overline Q_1 & \hat Q_1 \end{pmatrix} \begin{pmatrix} \overline R_1 \\ 0 \end{pmatrix} = \overline Q_1 \overline R_1 \\
+B &= Q_1 R_1 = \begin{pmatrix} \overline Q_1 & \hat Q_1 \end{pmatrix} \begin{pmatrix} \overline R_1 \\ 0 \end{pmatrix} = \overline Q_1 \overline R_1 \quad (4.15) \\
 B^T B \Delta z &= \overline R_1^T \overline Q_1^T \overline Q_1 \overline R_1 \Delta z = -B^T b = -\overline R_1^T \overline Q_1^T b \\
-\Delta z &= - \overline R_1^{-1} \overline Q_1^T b \\
+\Delta z &= - \overline R_1^{-1} \overline Q_1^T b \quad (4.16)\\
 \text{Einsetzen: } \Delta y &= -R_2^{-1} ( D_2 \Delta z + L_2^{-1} P_1 F_2 \\
 \end{align*}
+Formale Darstellung:
+\begin{align*}
+\bpm P_2 J_2 \\ \cdots \\ J_1 \epm &= \bpm P_1 J_{21} & \vdots & P_2 J_{22} \\ \cdots & & \cdots \\ J_11 & \vdots & J_{12} \epm \\
+&= \bpm L_2 & \vdots & 0 \\ \cdots & & \cdots \\ L_1 & \vdots & I \epm \bpm R_2 & \vdots & D_2 \\ \cdots & & \cdots \\ 0 & \vdots & B \epm \\
+&= \underbrace{ \bpm L_2 & \vdots & 0 \\ \cdots && \cdots \\ L_1 & \vdots & Q_1 \epm}_{=: T} \bpm R_2 & \vdots & D_2 \\ \cdots && \cdots \\ 0 & \vdots & R_1 \epm \quad (4.17) \\
+L_1 :&= J_{11} R_2^{-1} \\
+\RA J_{12} &= L_1 D_2 + B = L_1 D_2 + Q_1 R_1 \\
+\end{align*}
+Rechte Seite entsprechend:
+\begin{align*}
+- \bpm P_2 F_2 \\ F_1 \epm &= T \bpm -L_2^{-1} P_2 F_2 \\ - Q_1^T b \epm \quad (4.18) \\
+\end{align*}
+nachrechnen:
+\begin{align*}
+-L_2 L_2^{-1} P_2 F_2 &= - P_2 F_2 \\
+-L_1 L_2^{-1} P_2 F_2 - \underbrace{Q_1 Q_1^T}_{=I} (\underbrace{F_1 - \overbrace{J_{11} R_2^{-1}}^{= L_1} L_2^{-1} P_2 F_2  }_{b}) = - F_1
+\end{align*}
+Lösen:
+\begin{align*}
+R_2 \Delta y + D_2 \Delta z &= - L_2^{-1} P_2 F_2 \\
+\ov R_1 \Delta z &= -\ov Q_1^T b \\
+\bpm R_2 & D_2 \\ 0 & \hat R_1 \epm \bpm \Delta y \\ \Delta z \epm &= - T^{-1} \bpm P_2 F_2 \\ F_1 \epm \\
+&= - T^{-1} \bpm 0 & P_2 \\ I & 0 \epm \bpm F_1 \\ F_2 \epm \\
+\Delta x &= - \underbrace{ \l[ \bpm R_2 & D_2 \\ 0 & \ov R_1 \epm^{-1} \vdots 0 \r] T1^{-1} \bpm 0 & P_2 \\ I & 0 \epm}_{= J^+} \underbrace{\bpm F_1 \\ F_2 \epm}_{F} \quad (4.19) \\
+&= - J^+ F
+\end{align*}
 \end{itemize}
+
+\msubsection{Lemma 4.11 (Berechnung der adjungierten }
+
+\begin{align*}
+\lambda &= - P_2 L_2^{-T} R_2^{-T} J_{11}^T (J_1 \Delta x + F_1) \\
+&= - P_2 L_2^{-T} L_1^T (J_1 \Delta x + F_1) \quad (4.20) \\
+\end{align*}
+
+Beweis: $\lambda$ erfüllt eindeutig die Gleichungen
+
+\begin{align*}
+J_1^T J_1 \Delta x + J_2^T \lambda &= - J_1^T F_1 \quad (\lambda \in \R^{m_2} \\
+\text{bzw. } J_1^T (J_1 \Delta x + F_1) &= -J_2^T \lambda \\
+\end{align*}
+
+Es reicht, $m_2$ dieser Gleichungen zu betrachten:
+
+\begin{align*}
+J_{11}^T (J_1 \Delta x + F_1) &= - J_{21}^T \lambda = - R_2^T L_2^T P_2^{-1} \lambda \\
+\RA \lambda &= - P_2 L_2^{-T} \underbrace{R_2^{-T} J_{11}^T}_{=L_1} (J_1 \Delta x + F_1)
+\end{align*}
+
+\msubsection{3. Variante: Stoer 1979}
+
+QR-Zerlegung von $J_2^T$: $J_2 = L_2 Q_2$. Transformation von rechts:
+
+\begin{align*}
+Q_1 \bpm J_2 \\ \cdots \\ J_1 \epm Q_2^T &= TODO!!!!!
+\end{align*}
+
+Rechte Seite transformieren mit $Q_1$, $\Delta \tilde y$, $\Delta \tilde z$ ausrechnen:
+
+\[ \Delta x = Q_2^T \bpm \Delta \tilde y \\ \Delta \tilde z \epm \]
+
+\msubsection{Anwendung auf die Mehrzielmethode}
+
+TODO!!!!! Große Matrix
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

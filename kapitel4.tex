@@ -364,12 +364,45 @@ Für $i=m-1,\cdots,1$:
 
 Es entstehen folgende Matrix und Vektor:
 
+\begin{align*}
+\bpm E^0 & 0 & \cdots & \cdots & 0 & P^0 \\ G_0 & -I & && & G_0^p \\ & G_1 & -I & && G_1^p \\ & & \ddots & \ddots & & \vdots \\ & & & G_{m-2} & -I & G_{m-2}^p  \epm \bpm u^0 \\ d_0 \\ d_1 \\ \vdots \\ d_{m-2} \epm \quad (4.22)
+\end{align*}
 
+\begin{align*}
+E^0 &= \bpm E_1 \\ E_2 \epm \\
+P^0 &= \bpm P_1 \\ P_2 \epm \\
+u^0 &= \bpm u_1 \\ u_2 \epm \\
+\end{align*}
 
+\msubsection{Algorithmus 4.13: Lösen}
 
+\begin{itemize}
+\item Löse beschränktes Ausgleichsproblen nur in den Variablen $\Delta s_0$ und $\Delta p$: \[ \min_{\Delta s_0, \Delta p} \frac 12 \| E_1 \Delta s_0 + P_1 \Delta p + u_1 \|_2^2 \text{ s.\,t. } E_2 \Delta s_0 + P_2 \Delta p = 0 \]
+z.\,B. mit Variante $2$.
+\item Berechne $\Delta s_1,\cdots,\Delta s_{m-1}$ durch:
 
+Für $i=1,\cdots,m-1$:
+\[ \Delta s_i = G_{i-1} \Delta s_{i-1} + G_{i-1}^p \Delta p + d_{i-1} \quad (4.23) \]
+\end{itemize}
 
+\msubsubsection{Korollar:}
 
+Das Lösen der linearen beschränkten Probleme erfordert für Multiple Shooting im wesentlichen den selben Aufwand wie für Single Shooting.
+
+\msubsubsection{Bemerkung 4.14:}
+
+\begin{itemize}
+\item Es reicht, $u$, $P$ und $E$ abszuspeichern, da im Normalfall $u^i$, $P^i$ und $E^i$ nicht im Speicher gehalten werden müssen.
+\item Diese blockweise Gauß-Elimination kann als Dreieckszerlegung aufgefasst werden:
+\[ \bpm I & 0 & \cdots & 0 & E^{m-1} \\ & \ddots \\ & & \ddots \\ & & & \ddots \\ &&&&  I \epm \bpm D^0 & D^1 & \cdots & \cdots & D^{m-1} & D^p \\ G_0 & -I & && & G_0^p \\ & G_1 & -I & && G_1^p \\ & & \ddots & \ddots & & \vdots \\ & & & G_{m-2} & -I & G_{m-2}^p  \epm \]
+\[ = \bpm D^0 & D^1 & \cdots & E^{m-2} & 0 & P^{m-2} \\ G_0 & -I & && & G_0^p \\ & G_1 & -I & && G_1^p \\ & & \ddots & \ddots & & \vdots \\ & & & G_{m-2} & -I & G_{m-2}^p \epm \]
+Insgesamt:
+\[ \bpm I & E^1 & 0 & \cdots & 0 \\ & \ddots \\ & & \ddots \\ & & & \ddots \\ &&&&  I \epm \cdots \bpm I & 0 & \cdots & 0 & E^{m-1} \\ & \ddots \\ & & \ddots \\ & & & \ddots \\ &&&&  I \epm \bpm MZM \epm \]
+\[ = \bpm I & E^1 & \cdots & E^{m-1} \\ & \ddots \\ & & \ddots \\ &&&  I \epm \bpm MZM \epm \]
+\[ \bpm E^0 & 0 & \cdots & \cdots & 0 & P^0 \\ G_0 & -I & && & G_0^p \\ & G_1 & -I & && G_1^p \\ & & \ddots & \ddots & & \vdots \\ & & & G_{m-2} & -I & G_{m-2}^p  \epm \bpm u^0 \\ d_0 \\ d_1 \\ \vdots \\ d_{m-2} \epm \quad (4.24) \]
+\end{itemize}
+
+Variante: Man kann auch Blockspalten-Elimination durch Transformationen von rechts durchführen.
 
 
 

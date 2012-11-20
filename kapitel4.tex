@@ -327,12 +327,42 @@ Rechte Seite transformieren mit $Q_1$, $\Delta \tilde y$, $\Delta \tilde z$ ausr
 
 TODO!!!!! Große Matrix
 
+mit $\Delta x = (\Delta )$, $G, G_i^p D_1^{\dot c}, D_1^p, D_2^i, D_2^p$ wie in (3.23) und 
 
+\begin{align*}
+r_1 &= (\sigma_j^{-1} (\eta_j -h_j(t_j, y(t_j; \tau_{ij}, s_{ij}, p), p))), \quad j=1,\cdots,M, \quad t_j \in [\tau_{ij}, \tau_{ij+1}].
+r_2 &= r(y(t_o; \tau_0, s_0, p), \cdots, y(t_K, \tau_K, s_{iK}, p), p) \\
+\text{mit } t_{j} &\in [\tau_{ij}, \tau_{ij+1}], \quad j= 1,\cdots,K \\
+d_i &= - s_{i+1} + y(\tau_{i+1}; \tau_i, s_i, p) \quad i = 0,\cdots, m-2 \\
+\end{align*}
 
+Lösen:
 
+\begin{itemize}
+\item Wähle $-I$ unten rechts als Blockpivot-Element. Multiplizieren unterste Blockzeile mit $D_i^{m-1}$, $i=1,2$ und addiere auf die i-te Zeile $i=1,2$.
+\item Es entsteht \[ D_i^0 D_i^1, \cdots, (\underbrace{D_i^{m-2} + D_1^{m-1} \cdot G_{m-2}}_{(*)}) (\underbrace{ D_1^{m-1} + D_i^{m-1} \cdot (-I)}_{=0})(D_i^p + D_i^{m-1} \cdot G_{m-2}^p) \]
+\item Eliminiere $(*)$ ebenso mit der zweituntersten Blockzeile usw.
+\end{itemize}
 
+Die führt auf die kompakte Rekursion:
 
+\msubsection{Algorithmus 4.12 (Eliminationsalgorithmus)}
 
+\begin{align*}
+u^{m-1} :&= \bpm r_1 \\ r_2 \epm \\
+E^{m-1} :&= \bpm D_1^{m-1} \\ D_2^{m-1} \epm \\
+P^{m-1} :&= \bpm D_1^p \\ D_2^p \epm \\
+\end{align*}
+
+Für $i=m-1,\cdots,1$:
+
+\begin{itemize}
+\item $u^{i-1} := u^i + E^i d_{i-1}$
+\item $p^{i-1} := p^i + E^i G_{i-1}^p$
+\item $E^{i-1} := D^{i-1} + E^i G_{i-1}$
+\end{itemize}
+
+Es entstehen folgende Matrix und Vektor:
 
 
 

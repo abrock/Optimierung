@@ -33,6 +33,17 @@ Kann angewendet werden:
 \item Zur Bestimmung von Lösungen beschränkter nichtlinearer Ausgleichsprobleme $\min \frac 12 \|F_1(x)\| \text{ s.\,t. } F_2(x) = 0$, $m = m_1+m_2 \geq n$, $m_2 \leq n$ $\RA$ Verallgemeinertes Gauß-Newton-Verfahren.
 \eitm
 
+\[ \text{Sei } J := \frac{\partial F}{\partial x} \quad (5.3) \text{ Jacobimatrix} \]
+
+\msubsection{Bemerkung 5.2}
+
+\bitm
+\item Bei Newton-Verfahren ist $M(x) = J(x)^{-1}$ die Inverse von $J$.
+\item bei Quasi-Newton-Verfahren ist $M(x) \cong J(x)^{-1}$
+\item Bei SQP-Verfahren ist $M(x, \lambda) = \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$ oder 
+$M(x, \lambda) \cong \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$
+\item Bei Gauß-Newton-Verfahren ist $M(x) = (J(x)^T J(x))^{-1} J(x)^T$ die Moore-Penrose-Pseudoinverse.
+\eitm
 
 
 

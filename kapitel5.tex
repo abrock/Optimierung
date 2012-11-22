@@ -46,16 +46,81 @@ $M(x, \lambda) \cong \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$
 \item Bei Verallgemeinerten Gauß-Newton-Verfahren ist \[ M(x) = \bpm I & 0 \epm \bpm J_1(x)^T J_1(x) & J_2(x)^T \\ J_2(x) & 0 \epm^{-1} \bpm J_1(x)^T 0 \\ 0 & I \epm \] die verallgemeinerte Inverse von $J$.
 \eitm
 
+\msection{Satz 5.3: Lokaler Kontraktionssatz (Bock 1987)} % Enorm wichtig
+
+\[ \text{Sei } F\colon D \subset \R^n \to \R^m, \quad F \in \C^1(D,\R^m), \quad J := \frac{\partial F}{\partial x} \]
+
+Für alle $x,y \in D$ mit $y-x = -M(x) F(x)$ und $\theta \in [0,1]$ gelte:
+
+\bitm
+\item Es existiert ein $\omega < \infty$ so dass $\| M(y) (J(x+\theta(y-x)) - J(x)) (y-x) \| \leq \omega \theta \|x-y\|^2$ (5.4)
+\item Es existiert ein $\kappa(x) < \kappa < 1$, so dass $\| M(y) R(x) \| \leq \kappa(x) \|y-x\|$ (5.5) für das Residuum $R(x) := F(x) - J(x)M(x)F(x)$
+\item Sei $x_0 \in D$ gegeben mit $\Delta x^j := -M(x^j) F(x^j)$, $\delta_j := \kappa + \frac \omega 2 \| \Delta x^j \|$, $\delta_0 = \kappa + \frac \omega 2 \|\Delta x^0 \| < 1$ (5.6)
+\item \[ D^0 := \l\{ z : \|z-z_0\| \leq \frac{\|\Delta x^0\|}{1-\delta 0} \r\} \subset D \]
+\eitm
+
+Dann gilt:
+
+\bitm
+\item a) Die Iterierten $x^{j+1} = y^j + \Delta x^j$ sind wohldefiniert und bleiben in $D^0$.
+\item b) Es existiert ein $x^* \in D^0$ so dass $x^j \to x^*$ ($j \to \infty$)
+\item c) \[ \| x^{j+k} - x^*\| \leq \frac{\Delta x^0}{1-s_j} s_j^k \text{ "`hoch k"' (a-priori-Abschätzung)} \]
+\item d) \[ \| \Delta x^{j+1} \| \leq s_j \| \Delta x^j \| = \kappa \| \Delta x^j \| + \frac \omega 2 \| \Delta x^j\|^2 \text{ (5.7)} \]
+\eitm
+
+Beweis:
+
+\begin{align*}
+\| \Delta x^{j+1} \| &= \| M(x^{j+1}) F(x^{j+1}) \| =: \| M^{j+1} F^{j+1} \| \\
+&= \| M^{j+1} (F^{j+1} - F^j - J^j \Delta x^j) + M^{j+1} R^j \| \\
+& \leq \| M^{j+1} \l( \int\limits_0^1 J(x^j + t \Delta x^j) \Delta x^j \dd t - \int\limits_0^1 J^j \Delta x^0 \dd t \r)\| + \|M^{j+1} R^j \| \\
+&\leq \int\limits_0^1 \| M^{j+1} (J(x^j + t \Delta x^j) - J^j) \Delta x^j \| \dd t + \|M^{j+1} R^j \| + \kappa \| \Delta x^j \| \\
+&\leq \int\limits_0^1 \omega t \| \Delta x^j \|^2 \dd t + \kappa \|\Delta x^j \| \\
+&= \frac \omega 2 \|\Delta x^j\|^2 + \kappa \| \Delta x^j \| \\
+&= \delta_j \| \Delta x^j \| \RA d) \\
+\end{align*}
+
+Zeige: $(\delta_j)_{j \in \N}$, $(\|\Delta x^j\|)_{j \in \N}$ sind monoton fallend:
+
+Induktion: 
+
+\begin{align*}
+\delta_j - \delta_{j+1} &= \frac \omega 2(\|\Delta x^j\| - \|\Delta x^{j+1}\|) \\
+&\geq \frac \omega 2 (\|\Delta x^j\|-\delta_j \|\Delta x^j\|) \\
+&\geq \frac \omega 2 \|\Delta x^j\| (1-\delta_j) > 0\\
+\| \Delta x^{k+k} \| &\leq \delta_{j+k} \| \Delta x^{j+k-1} \| \\
+& \leq \delta_{j+k-1} \cdots \delta_j \|\Delta x_j\| \\
+& \leq \delta_j^k \|\Delta x^j\| \\
+\| x^{j+2} - x^0 \| & \leq \|\Delta x^j+1\| + \cdots + \|\Delta x^0\| \\
+&\leq ( \delta_0^{j+1} + \cdots + \delta s_0^1) \|\Delta x^0\| \\
+&\leq \frac{1}{1-\delta_0} \|\Delta x^0\| \RA a)
+\end{align*}
 
 
+$(x^j)_{j \in \N}$ ist Cauchy-Folge:
 
+\begin{align*}
+\| x^{i+j+1} - x^i \| & \leq \sum_{k=0}^j \| \Delta x^{i+k} \\
+&\leq \sum\limits_{k=0}^j \delta_j^k \| \Delta x^i\| \\
+&\leq \sum\limits_{k=0}^i \delta_0^{i+k} \|\Delta x^0\| \\
+&\leq \delta_0^i \l(\sum\limits_{k=0}^\infty \delta_0^k \r) \| \Delta x^0 \| \\
+&= \delta_0^i \frac{\|\Delta x^0\|}{1-\delta_0} \to 0 (i \to \infty \\
+& \RA x^j \to x^* \\
+D \text{ kompakt } & \RA x^* \in D^0 \RA b)
+\end{align*}
 
+Beweis:
 
+\begin{align*}
+\|x^j+k+i-x^{j+k}\| & \leq \frac{\|\Delta x^{j+k}\|}{1-\delta_{j+k}} \\
+&\leq \delta_j^k \frac{\|\Delta x^j\|}{1-\delta_j}
+\end{align*}
 
+$\forall i \geq 0$ also auch für $i \to \infty$:
 
-
-
-
+\begin{align*}
+\|x^* - x^{j+k} \| & \leq \delta_j^k \frac{\|\Delta x^j\|}{1-\delta_j} \RA c) 
+\end{align*}
 
 
 

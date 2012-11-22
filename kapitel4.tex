@@ -405,11 +405,37 @@ Insgesamt:
 Variante: Man kann auch Blockspalten-Elimination durch Transformationen von rechts durchführen.
 
 
+\[ \bpm E^0 & 0 & \cdots & \cdots & 0 & P^0 \\ G_0 & -I & && & G_0^p \\ & G_1 & -I & && G_1^p \\ & & \ddots & \ddots & & \vdots \\ & & & G_{m-2} & -I & G_{m-2}^p \epm \] \[ = \bpm (D^0 + D^1 G_0) & D^1 & \cdots & \cdots & D^{m-1} & (D^p + D^1 D_0^p \\ 0 & -I & 0 & \cdots & \cdots & 0 \\ (G_1 G_0) & G_1 & -I & 0 & \cdots & (G_1^p + G_1 G_0^p) \\ & & \ddots & \ddots && \vdots\\ &&& G_{m-2} & -I & G_{m-2}^p \epm \bpm I \\ -G_0 & I &&&& -G_0^p \\ && I \\ &&& \ddots \\ &&&& I \\ &&&&& I \epm \]
 
+Transformierte Variablen:
 
+\[ \bpm \Delta \tilde s \\ \Delta \tilde p \epm =  \bpm I \\ -G_0 & I &&&& -G_0^p \\ && I \\ &&& \ddots \\ &&&& I \\ &&&&& I \epm \bpm \Delta s \\ \Delta p \epm \]
 
+\[ \Delta \tilde s_1 := d_0 \text{ kann gesetzt werden}\]
 
+Streiche zweite Blockzeile und zweite Blockspalte und Variable $\Delta \tilde s_1$. Nach dem Streichen hat das Restsystem die gleiche Struktur wie das Ausgangssystem. Fahre mit nächster Blockspalte fort usw. Das führt auf ein kondensiertes System:
 
+\[ \bpm E^{m-1} & P^{m-1} \epm \]
+
+Aus diesem können $\Delta \tilde \tilde s$, $\Delta \tilde \tilde p$ berechnet werden durch Lösen des linearen Ausgleichsproblems $\min \frac 12 \| E_q^{m-1} \Delta \tilde \tilde s_0 + P^{m-1} \Delta \tilde \tilde p\|_2^2$, $ $
+
+Rücktransformation der Variablen liefert $\Delta s_0, \cdots, \Delta s_{m-1}, \Delta p$.
+
+Diese Elimination kann parallelisiert werden:
+
+\begin{itemize}
+\item Führe den Schritt für jede zweite Spalte aus.
+\item Streiche Zeilen, Spalten, Variablen; Matrix hat wieder Ausgangsstruktur.
+\item Algorithmus kann $\frac n2$ Prozessoren beschäftigen
+\item Die Berechnung der $G_i$-Matrizen durch Lösen des Systems ODE/VDE kann auch im Rahmen dieser Parallelisierung erfolgen.
+\item Dadurch wird die "`Wall-Time"'-Berechnungszeit für Multiple Shooting sogar kürzer als für Single Shooting.
+\item Literatur: Gallitendörfer: Parallele Algorithmen für Optimierungsprobleme, Dissertation 1997
+\item Es gibt eine dritte Variante: Sukzessive QR-Elimination von rechts, ebenfalls parallelisierbar.
+\end{itemize}
+
+\msubsubsection{Bemerkung 4.15}
+
+Die strukturausnutzenden Zerlegungen für die "`Mehrzielmatrizen"' nennen Kondensierung/Kondensing.
 
 
 

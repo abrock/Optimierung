@@ -43,6 +43,7 @@ Kann angewendet werden:
 \item Bei SQP-Verfahren ist $M(x, \lambda) = \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$ oder 
 $M(x, \lambda) \cong \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$
 \item Bei Gauß-Newton-Verfahren ist $M(x) = (J(x)^T J(x))^{-1} J(x)^T$ die Moore-Penrose-Pseudoinverse.
+\item Bei Verallgemeinerten Gauß-Newton-Verfahren ist \[ M(x) = \bpm I & 0 \epm \bpm J_1(x)^T J_1(x) & J_2(x)^T \\ J_2(x) & 0 \epm^{-1} \bpm J_1(x)^T 0 \\ 0 & I \epm \] die verallgemeinerte Inverse von $J$.
 \eitm
 
 

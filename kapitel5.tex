@@ -233,17 +233,47 @@ Außerdem ist $M(x) R(x) = (\underbrace{M(x) - M(x)J(x) M(x)}_{= 0 \text{ (4. Mo
 \kappa &= \rho L 
 \end{align*}
 
+$\kappa < 1$ falls 
 
+\bitm
+\item das Residuum $R$ klein ist.
+\item $M$ eine Lippschitz-Bedingung mit kleinem $L$ erfüllt, d.\,h. falls die erste Ableitung von $M$ klein ist.
+\eitm
 
+\msubsection{Bemerkung 5.9}
 
+Seien $\|M\|$ und $\|M^*\|$ beschränkt, dann ist $\omega$ ein Maß für die Nichtlinearität des Problems und $\kappa$ ein Maß für die Inkompatibilität zwischen Modell und Daten. Probleme mit $\kappa < 1$ heißen Kleine-Residuen-Probleme, Probleme mit $\kappa > 1$ heißen Große-Residuen-Probleme. Anwendung des Kontraktionssatzes:
 
+\msubsection{Korollar 5.10}
 
+Wenn der Startwert $x^0$ nahe der Lösung $x^*$ gewählt wird, d.\,h. wenn $\kappa + \frac \omega 2 \|\Delta x^0\| < 1$ dann konvergiert das (verallgemeinerte) Gauß-Newton-Verfahren  und die Konvergenz ist linear:
 
+\[ \|\Delta x^{k+1}\| \leq \kappa \|\Delta x^k\| + \frac \omega 2 \| \Delta x^k\|^2 \]
 
+Notwendig dafür ist $\kappa < 1$. Wenn $\kappa > 1$ ist konvergiert das Verallgemeinerte Gauß-Newton-Verfahren nicht.
 
+Warum sollte man nichtlineare Ausgleichsprobleme nicht mit den Newton-(SQP)-Verfahren lösen?
 
+Betrachte den unbeschränkten Fall: $\min \frac 12 \|F(x)\|_2^2 = \frac 12 F(x)^T F(x) =: f(x)$. Optimalitätsbedingung:
 
+\begin{align*}
+\nabla f(x) &= J^T(x) F(x) =: g(x) = 0 \\
+\text{Hessematrix: } H_{f}(x) &= \nabla^2 f(x) = \underbrace{J^T(x) J(x)}_{=: B(x)} + \underbrace{ \sum\limits_{i=1}^n F_i(x) \frac{\partial J_i}{\partial x} (x) }_{=: E(x)} =: H_f(x)
+\end{align*}
 
+Newton-Typ-Verfahren: $x^{k+1} = x^k + \alpha^k \Delta x^k$. Schreibweisen: $F := F(x^k)$, $J := J(x^k)$, $f := f(x^k)$, $g := g(x^k)$, $H := H(x^k)$, $B := B(x^k)$, $E := E(x^k)$
+
+\msection{Newton-Verfahren für die nichtlineare Gleichung $\nabla f(x) = 0$}
+
+$\Delta x^k$ löst $\nabla f + \nabla^2 f \Delta x = 0$
+
+\[ \RA \Delta x^k = - (\nabla^2 f)^{-1} \nabla f = -(B+E)^{-1} J^T F = -Mg \quad (M = (B+E)^{-1} \]
+
+Daraus folgt lokal quadratische Konvergenz.
+
+\msection{Gauß-Newton-Verfahren für $\min \frac 12 \|F(x)\|_2^2$}
+
+$\Delta x^k$ löst $\min \frac 12 \| F + J \Delta x\|_2^2 = \frac 12 F^T f + F^T J \Delta x + \frac 12 \Delta x^T J J^T \Delta x$ bzw. $J^T J \Delta x + J^T f = 0$, siehe auch (4.6). $\RA \Delta x^k = -(J^T J)^{-1} J^T F = -Mg$ mit $M = (J^T J)^{-1} = B^{-1}$
 
 
 

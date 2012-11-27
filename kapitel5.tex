@@ -173,13 +173,21 @@ Beweis: siehe Vorlesung Algorithmische Optimierung 1.
 \item Halte $M(x^j)$ fest
 \bitm
 	\item für alle Iterationen: $M(x^j) = J(x_0)^{-1}$
-	\item für einige Iterationen: $M(x^j) = J(x^{\ov j})^{-1}$ solange $\frac{\Delta x^{j+1}}{\|Delta x^j\|} \leq \delta$ z.\,B. $\delta = \frac 14$, danach neues $\overline j = j$ 
+	\item für einige Iterationen: $M(x^j) = J(x^{\ov j})^{-1}$ solange $\frac{\Delta x^{j+1}}{\|\Delta x^j\|} \leq \delta$ z.\,B. $\delta = \frac 14$, danach neues $\overline j = j$ 
 \eitm
 \item Nähere $J(x^j)$ bzw. $M(x^j)$ durch Update-Formeln aus $J(x^{j-1})$ bzw. $M(x^{j-1})$ an, siehe unten.
 \eitm
 
+\msubsection{Bemerkung 5.7 (Bedeutung von $\omega$)}
 
+\[ \| M(y) (J(x+t(y-x)) - J(x)) (x-y) \| \leq t \omega \|y-x\|^2 \]
 
+\bitm
+\item Wenn $M(y)$ in einer Umgebung von $x^*$ beschränkt ist: $\|M(y)\| \leq \gamma$, $\gamma < \infty$ und
+\item $J$ eine Lippschitz-Bedingung erfüllt: $\|(J(x+t(x-y))-J(x)) (y-x)\| \leq \beta t \|y-x\|^2$, $\beta < \infty$, dann ist $\omega = \gamma \beta < \infty$ in einer Umgebung von $x^*$
+\eitm
+
+$\omega$ kann sehr groß werden
 
 
 

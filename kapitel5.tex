@@ -187,18 +187,51 @@ Beweis: siehe Vorlesung Algorithmische Optimierung 1.
 \item $J$ eine Lippschitz-Bedingung erfüllt: $\|(J(x+t(x-y))-J(x)) (y-x)\| \leq \beta t \|y-x\|^2$, $\beta < \infty$, dann ist $\omega = \gamma \beta < \infty$ in einer Umgebung von $x^*$
 \eitm
 
-$\omega$ kann sehr groß werden
+$\omega$ kann sehr groß werden wenn
 
+\bitm
+\item $\|M\|$ sehr groß ist, d.\,h. $J$ ist fast singulär.
+\item die erste Ableitung von $J$ bzw. die zweite Ableitung von $F$ groß ist, d.\,h. das Problem ist sehr nichtlinear.
+\eitm
 
+\msubsection{Anwendung auf (verallgemeinerte) Gauß-Newton-Verfahren:}
 
+\[ M(x) = J^+(x) = \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} \bpm J_1^T & 0 \\ 0 & I \epm \]
 
+Es gelte (CQ) und (PD). $\|M\|$ ist groß, wenn
 
+\[ \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm \]
 
+fast singulär ist.
 
+Residuum:
 
+\begin{align*}
+R(x) &= F(x) - J(x) M(x) F(x) \\
+&= F(x) + J(x)\Delta x
+\end{align*}
 
+Im Lösungspunkt: $\Delta x^* = 0$: $R(x^*) = F(x^*)$,
 
+\begin{align*}
+\| R(x^*) \| &= \| F_1(x^*) \|, \quad \text{ da } F_2(x^*) = 0
+\end{align*}
 
+\msubsection{Bemerkung 5.8: Bedeutung von $\kappa$} 
+
+Wenn $M(x)$ stetig differenzierbar ist gilt in $D^0$:
+
+\begin{align*}
+\|M(y) - M(x)\| & \leq L \|y-x\| \text{ und } \\
+\|R(x)\| &= \|F(x) - J(x)M(x) F(x) \| \leq \rho \\
+\end{align*}
+
+Außerdem ist $M(x) R(x) = (\underbrace{M(x) - M(x)J(x) M(x)}_{= 0 \text{ (4. Moore-Penrose-Axiom)}} F(x) = 0$
+
+\begin{align*}
+\| M(y) R(x) \| &= \| (M(y)-M(x)) R(x) \| \leq \rho L \|y-x\| \\
+\kappa &= \rho L 
+\end{align*}
 
 
 

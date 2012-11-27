@@ -54,7 +54,7 @@ Für alle $x,y \in D$ mit $y-x = -M(x) F(x)$ und $\theta \in [0,1]$ gelte:
 
 \bitm
 \item Es existiert ein $\omega < \infty$ so dass $\| M(y) (J(x+\theta(y-x)) - J(x)) (y-x) \| \leq \omega \theta \|x-y\|^2$ (5.4)
-\item Es existiert ein $\kappa(x) < \kappa < 1$, so dass $\| M(y) R(x) \| \leq \kappa(x) \|y-x\|$ (5.5) für das Residuum $R(x) := F(x) - J(x)M(x)F(x)$
+\item Es existiert ein $\kappa(x) \leq \kappa < 1$, so dass $\| M(y) R(x) \| \leq \kappa(x) \|y-x\|$ (5.5) für das Residuum $R(x) := F(x) - J(x)M(x)F(x)$
 \item Sei $x_0 \in D$ gegeben mit $\Delta x^j := -M(x^j) F(x^j)$, $\delta_j := \kappa + \frac \omega 2 \| \Delta x^j \|$, $\delta_0 = \kappa + \frac \omega 2 \|\Delta x^0 \| < 1$ (5.6)
 \item \[ D^0 := \l\{ z : \|z-z_0\| \leq \frac{\|\Delta x^0\|}{1-\delta 0} \r\} \subset D \]
 \eitm
@@ -122,20 +122,61 @@ $\forall i \geq 0$ also auch für $i \to \infty$:
 \|x^* - x^{j+k} \| & \leq \delta_j^k \frac{\|\Delta x^j\|}{1-\delta_j} \RA c) 
 \end{align*}
 
+\msubsection{Korollar 5.4}
 
+Für $F(x)=0$, $F\colon \R^n \to \R^m$ konvergiert das Newton-Verfahren mit $M(x) = J(x)^{-1}$ lokal quadratisch.
 
+Beweis:
 
+\begin{align*}
+\| M^{j+1} R^j \| &= \| (J^{j+1})^{-1} (I - J^j (J^j)^{-1}) F^j\| = 0 \RA \kappa = 0 \\
+\|\Delta x^{j+1} \| & \leq \frac \omega 2 \| \Delta x^j \|^2 \\
+\|x^{j+1} - x^* \| &= \|x^j - x^* + \Delta x^j \| = \| M^j ( J^j(x^j-x^*) - (F^j - F^*)) \| \quad \text{ (*): Im Lösungspunkt}\\
+&= \l\| M^j \int\limits_0^1 (J^j-J(x^j + t(x^j-x^*))) (x^j-x^*) \dd t \r\| \quad \text{(HDI)} \\
+&\leq \underbrace{\|M^j J^*\|}_{\leq \Gamma} \int\limits_0^1 \| M^*(J^j-J(x^j+t(x^j-x^*)))(x^j-x^*) \| \dd t \\
+&\leq \Gamma \int\limits_0^1 \omega t \|x^j - x^*\|^2 \dd t \\
+&= \Gamma \frac \omega 2 \|x^j - x^*\|^2 \\
+\end{align*}
 
+% Tafel geht kaputt,... "Das ist mir jetzt eigentlich egal"
 
+\msubsection{Bemerkung 5.5: Quasi-Newton-Verfahren}
 
+Für näherungsweise Newton-Verfahren ("`Quasi-Newton-Verfahren"') ist $x^{j+1} = x^j - M(x^j) F(x^j)$ mit $M(x^j) \cong J(x^j)^{-1}$ $\kappa > 0$, zur Konvergenz muss $\kappa < 1$ sein:
 
+\begin{align*}
+\|M^{j+1} R^j\| &= \|M^{j+1} ((M^j)^{-1} - J^j) M^j F^j \| \\
+&= \| M^{j+1} ((M^j)^{-1} - J^j) (x^{j+1} - x^j) \| \\
+&\leq \kappa \|<x^{j+1} x^j\| \\
+\end{align*}
 
+Notwendig für Konvergenz ist also
 
+\begin{align*}
+\|M^j\| & \leq \gamma \text{ und } \|(M^j)^{-1}-J^j\| \text{ klein} 
+\end{align*}
 
+\msubsection{Satz 5.6 (Dennis-Mor\'e}
 
+Sei $F\colon \R^n \to \R^n$ stetig differenzierbar. Betrachte die Iteration $x^{j+1} = x^j + \Delta x^j$ und sei $\Delta x^j$ gegeben durch $\Delta x^j = -M(x^j) F(x^j)$. Wir nehmen an, dass die Folge der $x^j$ gegen einen Punkt $x^j$ mit $F(x^j) = 0$ konvergiert mit $J(x^*)$ regulär. Dann konvergiert $(x^j)_{j\in \N}$ Q-superlinear gegen $x^*$, d.\,h. $\lim_{j\to \infty} \frac{\|x^{j+1} - x^*\|}{\|x^j-x^*\|} = 0$ genau dann wenn
 
+\[ \lim_{j \to \infty} \frac{\| (M(x^j)^{-1} - J(x^*)) \Delta x^j \|}{\|\Delta x^j\|} = 0 \quad (5.8) \]
 
+Beweis: siehe Vorlesung Algorithmische Optimierung 1.
 
+\msubsection{Varianten von Quasi-Newton-Verfahren}
+
+\[ \Delta x^j = -M(x^j) F(x^j), \quad M(x^j) \cong J(x^j)^{-1} \]
+
+\bitm
+\item Berechne $J(x^j)$ durch Differenzenquotienten
+\item Halte $M(x^j)$ fest
+\bitm
+	\item für alle Iterationen: $M(x^j) = J(x_0)^{-1}$
+	\item für einige Iterationen: $M(x^j) = J(x^{\ov j})^{-1}$ solange $\frac{\Delta x^{j+1}}{\|Delta x^j\|} \leq \delta$ z.\,B. $\delta = \frac 14$, danach neues $\overline j = j$ 
+\eitm
+\item Nähere $J(x^j)$ bzw. $M(x^j)$ durch Update-Formeln aus $J(x^{j-1})$ bzw. $M(x^{j-1})$ an, siehe unten.
+\eitm
 
 
 

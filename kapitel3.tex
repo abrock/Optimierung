@@ -27,23 +27,23 @@ J_2(p) \colon&= \frac \partial{\partial p} F_2(p)
 
 In jeder Iteration des Gauß-Newton-Verfahrens muss also das AWP gelöst und $F_1$ und $F_2$ ausgewertet werden.
 
-\emph{Bemerkung 3.1} berechnung von $J_1$ und $J_2$.
+\emph{Bemerkung 3.1} Berechnung von $J_1$ und $J_2$.
 
 \begin{align*}
 J_1(p) \colon&= \frac{\partial F_1}{\partial p} (p) \\
 &= \frac{\partial}{\partial p} \l( \frac{\eta_i - h_i(\cdots)}{\sigma_i} \r)_{i=1,\cdots,M} \\
 &= \l( -\frac 1 \sigma_i \l( \frac{\partial h_i}{\partial_y} (\cdots) \frac{\partial y}{\partial p}(t_i; t_0, y_0, p) + \frac{\partial h_i}{\partial p} (t_i; t_0, y_0, p) \r) \r)_{i=1,\cdots,M} \quad (3.6)\\
 J_2(p) &= \frac{\partial F_2}{\partial p} (p) \\
-&= \sum_{i=0^k} \frac{\partial r}{\partial y_i} \frac{\partial y}{\partial p} (t_i; t_0, y_0, p) + \frac{\partial r}{\partial p} \quad (3.7)
+&= \sum_{i=0}^k \frac{\partial r}{\partial y_i} \frac{\partial y}{\partial p} (t_i; t_0, y_0, p) + \frac{\partial r}{\partial p} \quad (3.7)
 \end{align*}
 
-Dazu berechnet man $\tfrac{\partial y}{\partial p} =\colon G_p$ als Lösung der VDE
+Dazu berechnet man $\tfrac{\partial y}{\partial p} =: G_p$ als Lösung der VDE
 
 \[ \dot G_p = \frac{\partial f}{\partial y} G_p + \frac{\partial f}{\partial p} \quad (3.8)\]
 
 sowie die Ableitungen
 
-\[ \frac{\partial f}{\partial y}, \frac{partial f}{\partial p}, \frac{\partial h_i}{\partial y}, \frac{\partial h_i}{\partial p}, \frac{\partial r}{\partial y_i}, \frac{\partial r}{\partial p}\]
+\[ \frac{\partial f}{\partial y}, \frac{\partial f}{\partial p}, \frac{\partial h_i}{\partial y}, \frac{\partial h_i}{\partial p}, \frac{\partial r}{\partial y_i}, \frac{\partial r}{\partial p}\]
 
 der Modellfunktion per Hand, durch numerische Differentiation, oder durch automatische Differentiation.
 
@@ -171,15 +171,15 @@ Ableitung der Anschlussbedingungen:
 
 \begin{align*}
 -s_{i+1} + y(\tau_{i+1}; \tau_i, s_i, p) &= 0 \quad i=0,\cdots,m-2 \\
-\text{nach }s_i\colon \frac{\partial}{\partial s_i} y(\tau_{i+1}; \tau_i, s_i, p) &=\colon G_i \\
+\text{nach }s_i: \frac{\partial}{\partial s_i} y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i \\
 \text{nach }s_{i+1}\colon &-I \\
-\text{nach }p\colon  \frac{\partial}{\partial p}y(\tau_{i+1}; \tau_i, s_i, p) &=\colon G_i^p & \text{ (sonst 0)}\\
+\text{nach }p:  \frac{\partial}{\partial p}y(\tau_{i+1}; \tau_i, s_i, p) &=: G_i^p & \text{ (sonst 0)}\\
 \end{align*}
 
 Ableitung der Konsistenzbedingungen:
 
 \begin{align*}
-H_i \colon&= \frac{\partial\{\partial s_i} g(\tau;i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1 \\
+H_i :&= \frac{\partial}{\partial s_i} g(\tau;i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1 \\
 H_i^p &= \frac{\partial}{\partial p} g(\tau_i, s_i^y, s_i^z, p) \quad i=0,\cdots,m-1
 \end{align*}
 
@@ -207,10 +207,10 @@ Approximiere die Lösung der ODE $\dot y = f(t,y,p)$ (3.24) durch stückweise Po
 \begin{align*}
 y_j^\tau (t; s_j) \colon&= \sum\limits_{l=0}^k s_j l \chi_l \l( \frac{t-\tau_j}{\tau_{j+1}-\tau_j} \r) & (3.26)\\
 t &\in [\tau_j, \tau_{j+1}], \quad j=0,\cdots,m-1 \\
-\text{Wobei } & \{ \chi_l \}_{l=k,\cdots,k} \text{ eine Basis des Polynomraums } P_k([0,1]) \text{ der Polynome vom Grad } \leq k \text{ ist}
+\text{Wobei } & \{ \chi_l \}_{l=0,\cdots,k} \text{ eine Basis des Polynomraums } P_k([0,1]) \text{ der Polynome vom Grad } \leq k \text{ ist}
 \end{align*}
 
-Die Koeffizienten $s_{jl} \in \R^{n_y}$, $j=0,\cdots,m-1$, $l=0,\cdots,k$, $s_j = (s_{j0},\cdots,s_{jk})$, $j=0,\cdots,m-$ (3.27) sind Variablen und bestimmt durch diese bedingungen:
+Die Koeffizienten $s_{jl} \in \R^{n_y}$, $j=0,\cdots,m-1$, $l=0,\cdots,k$, $s_j = (s_{j0},\cdots,s_{jk})$, $j=0,\cdots,m-$ (3.27) sind Variablen und bestimmt durch diese Bedingungen:
 
 \begin{itemize}
 \item Die approximierte Lösung $y_j^\tau$ soll auf einer Unterteilung des Gitters die ODE erfüllen:

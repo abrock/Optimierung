@@ -273,7 +273,226 @@ Daraus folgt lokal quadratische Konvergenz.
 
 \msection{Gauß-Newton-Verfahren für $\min \frac 12 \|F(x)\|_2^2$}
 
-$\Delta x^k$ löst $\min \frac 12 \| F + J \Delta x\|_2^2 = \frac 12 F^T f + F^T J \Delta x + \frac 12 \Delta x^T J J^T \Delta x$ bzw. $J^T J \Delta x + J^T f = 0$, siehe auch (4.6). $\RA \Delta x^k = -(J^T J)^{-1} J^T F = -Mg$ mit $M = (J^T J)^{-1} = B^{-1}$
+$\Delta x^k$ löst $\min \frac 12 \| F + J \Delta x\|_2^2 = \frac 12 F^T f + F^T J \Delta x + \frac 12 \Delta x^T J J^T \Delta x$ bzw. $J^T J \Delta x + J^T f = 0$, siehe auch (4.6). $\RA \Delta x^k = -(J^T J)^{-1} J^T F = -Mg$ (5.10) mit $M = (J^T J)^{-1} = B^{-1}$ (5.11)
+
+\msection{Newton-Verfahren für $\min \frac 12 \|F(x)\|_2^2$}
+
+\begin{align*}
+\nabla f + \nabla^2 f \Delta x &= 0 \\
+\Delta x^k &= -(\nabla^2 f)^{-1} \nabla f \\
+&= -(B+E)^{-1} J^T F \\
+M &= (B+E)^{-1} & (5.13)
+\end{align*}
+
+\msubsection{Bemerkung 5.11}
+
+Die Hessematrix
+
+\begin{align*}
+H(x) &= \nabla^2 f(x) \\
+&= J^T(x) J(x) + \sum\limits_{i=1}^n F_j \frac{\partial J_i}{\partial x} (x) & (5.9)
+\end{align*}
+
+ist die Summe aus
+
+\bitm
+\item dem Gauß-Newton-Anteil $B(x) = J^T(x) J(x)$ (deterministischer Anteil) und
+\item dem Anteil $E(x) = \sum_{i=1}^n F_j \frac{\partial J_i}{\partial x} (x)$, der von den zweiten Ableitungen $\frac{\partial J_i}{\partial x} (x)$ und vom Residuum $F_i(x)$, $i=1,\cdots,M$ d.\,h. von den zufallsbehafteten Messfehlern abhängt. $E(x)$ ist der Zufallsanteil der Hessematrix.
+\eitm
+
+\msection{Satz 5.12: Kleine-Residuen-Probleme}
+
+Äquivalent zu $\kappa < 1$ ist $\rho (B(x^*)1{-1} E(x^*)) < 1$ (5.14), $\rho: $ Spektralradius.
+
+Beweis:
+
+\begin{align*}
+M &= J^\dagger \\
+&= (J^T j)^{-1} J \\
+R &= F - J J^\dagger F \\
+y-x &= - J^\dagger(x) F(x) \\
+J^\dagger(y) R(x) &= \underbrace{J^\dagger(x) R(x)}_{=0} + \l( \l. \frac{\partial J^\dagger}{\partial y} (y)\r|_{y=x} (y-x) \r) R(x) + \mathcal O(\|y-x\|^2) \\
+&= ((J(x)^T J(x))^{-1} \l( \l. \frac{\partial J(y)^T}{\partial y} y\r|_{y=x} (y-x) \r) R(x) + \l( \l. \frac{\partial J(y)^T J(y)}{\partial y} y\r|_{y=x} (y-x) \r) \underbrace{J^T(x) R(x)}_{=0} \\ &+ \mathcal O(\|y-x\|^2) \\
+&= B(x)^{-1} \l( \l. \frac{\partial J(y)^T}{\partial y} \r|_{y=x} (y-x) \r) F(x) - B(x)^{-1} \l( \l. \frac{\partial J(y)^T}{\partial y} \r|_{y=x} (y-x) \r)J(x) \underbrace{J^\dagger(x) F(x)}_{=-(y-x)} \\ &+ \mathcal O(\|y-x\|^2) \\
+&= B(x)^{-1} E(x) (y-x) + \mathcal O(\|y-x\|^2) \\
+\end{align*}
+
+Sei $\rho(B(x^*)1{-1} E(x^*)) =: \kappa_1 < 1$. Wähle eine Umgebung von $x^*$ und eine Norm, so dass $\| B(x)^{-1} E(x) \| \leq \kappa_2 < 1$ für alle $x$ aus dieser Umgebung. Verkleinere die Umgebung evtl., so dass 
+
+\[ \mathcal O(\|y-x\|^2) \leq \frac{1-\kappa_2}{2} \|y-x\| \]
+
+für alle $x,y$ aus dieser Umgebung. Dann ist
+
+\begin{align*}
+\| J^\dagger(y) R(x)\| &= \| B(x)^{-1} E(x) (y-x) + \mathcal O(\|y-x\|^2) \| \\
+& \leq \kappa_2 \|y-x\| + \frac{1-\kappa_2}{2} \|y-x\| \\
+&= \frac{1+\kappa_2}{2} \|y-x\| \\
+&=: \kappa\|y-x\| \\
+\kappa :&= \frac{1+\kappa}{2} < 1
+\end{align*}
+
+Sei umgekehrt die $\kappa$-Bedingung (5.5) erfüllt, d.\,h. $\exists \kappa < 1$ so dass
+
+\[ \| J^\dagger(y) R(x) \| = \| B(x)^{-1} E(x) (y-x) + \mathcal O(\|y-x\|^2) \leq \kappa \|y-x\| \]
+
+Dann ist
+
+\[ \| B(x)^{-1} E(x) (y-x)\| - \mathcal O(\|y-x\|^2) \leq \kappa \|y-x\| \]
+
+Mache die Umgebung so klein, dass
+
+\[ \mathcal O(\|y-x\|^2) \leq \frac{1+\kappa}{2} \|y-x\| \]
+
+Dann ist
+
+\begin{align*}
+\| B(x)^{-1} E(x) (y-x) \| & \leq \frac{1+\kappa}{2} \|y-x\| \\
+&=: \kappa_1 \|y-x\| \\
+\kappa_1 :&= \frac{1+\kappa}{2} < 1 \\
+\end{align*}
+
+Daher ist
+
+\[ \| B(x)^{-1} E(x) \| \leq \kappa_1 < 1 \]
+
+nach Definition der Norm für Matrizen. Dann ist auch
+
+\[ \rho( B(x)^{-1} E(x)) < 1 \]
+
+Anders ausgedrückt: Bei Kleine-Residuen-Problemen wird der Zufallsanteil $E$ der Hesse-Matrix $H$ relativ beschränkt durch den deterministischen Anteil $B(x)$.
+
+\msection{Satz 5.13}
+
+Sei $x^*$ ein statischer Punkt des Gauß-Newton-Verfahrens, d.\,h. $J(x^*)^T F(x^*) = 0$ und $\rho (B(x^*)^{-1} E(x^*)) < 1$. Dann ist $H(x^*)$ positiv definit.
+
+Beweis: $J(x^*)$ hat vollen Rang $\RA$ $B(x^*) = J(x^*)^T J(x^*)$ ist positiv definit. Dann existiert $B(x^*)^{\frac 12}$. Es gilt:
+
+\begin{align*}
+ H(x^*) &= B(x^*) + E(x^*) \\
+&= B^{\frac 12} (x^*) \l(I + B(x^*)^{-\frac 12} E(x^*)  B(x^*)^{-\frac 12} \r) B(x^*)^{\frac 12} \text{ positiv definit} \\
+&\LRA I + B(x^*)^{-\frac 12} E(x^*) B(x^*)^{\frac 12} \text{ positiv definit} \\
+ \end{align*}
+
+Die Umformung
+
+\[B(x^*)^{-1} E(x^*) = B(x^*)^{-\frac 12} \l(B(x^*)^{-\frac 12} E(x^*) B(x^*)^{-\frac 12} \r) B(x^*)^{\frac 12} \]
+
+ist eine Ähnlichkeitstransformation, daher hat $B(x^*)^{-1} E(x^*)$ die selben Eigenwerte wie
+
+\[ B(x^*)^{-\frac 12} E(x^*) B(x^*)^{-\frac 12} \]
+
+Also ist
+
+\[ \rho (B(x^*)^{-\frac 12} E(x^*) B(x^*)^{-\frac 12} ) < 1 \]
+
+und die Eigenwerte von
+
+\[ I + B(x^*)^{-\frac 12} E(x^*) B(x^*)^{-\frac 12} \]
+
+liegen in $(0,2)$, also ist $H(x^*)$ positiv definit.
+
+\msubsection{Korollar 5.14}
+
+In Satz $5.14$ ist $x^*$ nicht nur stationärer Punkt sondern striktes lokales Minimum und stabil gegen Störungen.
+
+Beweis: hinreichende Bedinung zweiter ordnung für lokale Minima für unbeschränkte Optimierungsprobleme, siehe unten.
+
+\msubsection{Fazit}
+
+Für Kleine-Residuen-Probleme
+
+\bitm
+\item konvergiert das Newton-Verfahren mit $M = (B+E)^{-1}$ gegen ein stabiles lokales Minimum 
+\item konvergiert das Gauß-Newton-Verfahren
+\eitm
+
+Für Große-Residuen-Problem ($\kappa>1$ bzw. $\rho (B(x^*)^{-1} E(x^*)) > 1$) konvergiert das Gauß-Newton-Verfahren nicht. Das Newton-Verfahren konvergiert lokal gegen ein Minimum $x^*$. Was passiert in diesem Punkt?
+
+\msection{Statistische Störung des Problems}
+
+Sei $F(x) = ( \eta_i - h_i(x))_{i=1,\cdots,M}$, (o.\,B.\,d.\,A. $\sigma_i \equiv 1$), $\eta:$ Messdaten
+
+wobei mit den wahren werten $\ov x: \eta_j - h_i(\ov x) \sim \mathcal N(0,1)$ und unabhängig
+
+\[ F(x^*) = \eta - h(x^*), \quad \eta = h(x^*) + F(x^*) \]
+
+Spiegel die Messfehler an den geschätzten Modellantworten.
+
+\begin{align*}
+\hat \eta :&= h(x^*) - F(x^*) \\
+F(x^*) &= h(x^*) - \hat \eta
+\end{align*}
+
+$\hat \eta$: gestörte Messdaten.
+
+Dann gilt:
+
+\[ \| \hat \eta - h(x^*) \| = \|F(x^*)\| = \|\eta + h(x^*) \| \]
+
+Betrachte eine Homotopie:
+
+\[ \tilde F(x,\tau) := F(x) + (\tau-1) F(x^*), \quad \tau \in [-1,1] \]
+
+zwischen Originalproblem und gespiegeltem Problem:
+
+\begin{align*}
+\tau &= +1: \quad \tilde F(x,+1) = F(x) = \eta - h(x) \\
+\tau &= -1: \quad \tilde F(x,-1) = F(x) - 2 F(x^*) = \eta - h(x) - \eta + h(x^*) - h(x^*) + \hat \eta \\
+&= \hat \eta - h(x)
+\end{align*}
+
+Betrachte die Probleme:
+
+\[ \min_x \frac 12 \|\tilde F(x,\tau)\|_2^2, \quad \tau \in [-1,1] \quad (5.13) \]
+
+\msection{Satz 5.15}
+
+Sei $x^*$ ein Minimum von
+
+\[ \min \frac 12 \| F(x)\|_2^2 \]
+
+mit $\tilde \kappa := \rho( B(x^*)^{-1} E(x^*) ) > 1$. Dann gilt:
+
+\bitm
+\item a) Für alle $\tau$ ist $x^*$ ein stationärer Punkt von $\min \frac 12 \|\tilde F(x,\tau)\|_2^2$
+\item b) Die Hessematrix in $x^*$ ist $\tilde H(x^*,\tau) = B(x^*) + \tau E(x^*)$
+\item c) $\tilde H(x^*, \tau)$ ist für alle $\tau < - \frac 1\kappa \geq -1 $ nicht positiv definit 
+\eitm
+
+Beweis: Es gilt 
+
+\begin{align*}
+J(x^*)^T F(x^*) &= 0 \\
+\tilde J(x,\tau) &= J(x) \\
+\tilde J(x^*), \tau)^T \tilde F(x^*, \tau) &= J(x^*)^T ( F(x^*) + (\tau-1) F(x^*)) = 0 \RA \text{ a)} \\
+\tilde H(x,\tau) &= \tilde J(x,\tau)^T \tilde J(x,\tau)  + \tilde F(x,\tau) \frac{\partial \tilde J}{\partial x} (x,\tau) \\
+&= B(x) + (F(x) + (\tau-1) F(x^*)) \frac{\partial J}{\partial x}(x) \\
+\tilde H(x^*,\tau) &= B(x^*) + \tau F(x^*) \frac{\partial J}{\partial x}(x^*) \\
+&= B(x^*) + \tau E(x^*) \RA \text{ b)} \\
+& \tilde H(x^*, \tau) \text{ positiv definit} \\
+\LRA & \underbrace{I + B(x^*)^{-\frac 12} \tau E(x^*) B(x^*)^{-\frac 12}}_{=: I + \tau \hat E(x^*)} \text{ positiv definit} \\
+\rho\l( B(x^*)^{-1} E(x^*)\r) &= \rho\l( B(x^*)^{-\frac 12} E(x^*) B(x^*)^{-\frac 12} \r) \\
+&= \rho \l( \hat E(x^*) \r) \\
+&= \tilde \kappa > 1 \\
+\end{align*}
+
+$I+\tau \hat E(x^*)$ hat einen Eigenwert $1+\tau \tilde \kappa$, dieser ist $<0$ falls $\tau < - \frac{1}{\tilde \kappa} \geq -1$, dann ist $\tilde H(x^*,\tau)$ nicht positiv definit $\RA$ c)
+
+\msubsection{Fazit}
+
+Für Große-Residuen-Probleme ist das Minimum von $\min \frac 12 \|F(x)\|_2^2$ nicht stabil gegen Störungen. $x^*$ kann ein Sattelpunkt oder ein Maximum werden. Das Minimum springt von $x^*$ weg. Große-Residuen-Minima sind nicht statistisch stabil. Sie sind Minima, aber keine Parameterschätzer. Das Gauß-Newton-Verfahren konvergiert nicht gegen sie.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

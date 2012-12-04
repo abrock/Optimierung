@@ -1,0 +1,165 @@
+\chaptr{6 Optimalitätsbedingungen für nichtlineare Optimierungsprobleme}
+
+\msection{6.1 Allgemeine Problembeschreibung}
+
+\[ \min_{x \in \R^n} f(x) \quad f \in C^2(\R^n, \R), \text{ "`Zielfunktion"' } (6.1) \]
+\[ g(x) = 0 \quad g \in C^2(\R^n, \R^{m_1}), \text{ "`Gleichungsbedingungen"'} \]
+\[ h(x) \leq 0 \quad h \in C^2(\R^n, \R^{m_2}), \text{ "`Ungleichungsbedingung"'} \]
+
+Wir betrachten endlichdimensionale, kontinuierliche, glatte Probleme.
+
+Wir unterscheiden
+
+\bitm
+\item unbeschränkte 
+\item gleichungsbeschränkte
+\item Gleichungs- und Ungleichungs-beschränkte Probleme
+\eitm
+
+\msubsection{Definition 6.1}
+
+Ein Punkt $c \in \R^n$ heißt zulässiger Punkt des Problems (6.1), wenn er alle Nebenbedingungen erfüllt: $g(x) = 0$, $h(x \leq 0)$.
+
+\msubsection{Definition 6.2}
+
+Ein Punkt $x^* \in \R^n$ heißt lokales Minimum von (6.1) wenn er zulässig ist und wenn ein Zielfunktionswert kleiner oder gleich den Zielfunktionswerten aller zulässigen Punkte in einer Umgebung von $x^*$ ist.
+
+\[ x^* \text{ lokales Minimum } \LRA g(x^*) = 0 \wedge h(x^*) \leq 0 \wedge \exists \text{ Umgebung } U \text{ von } x^*: \forall x \in U \text{ mit } g(x) = 0, h(x) \leq 0 \text{ ist } f(x^*) \leq f(x) (6.2) \]
+
+\msubsection{Definition 6.3}
+
+Ein Punkt heißt globales Minimum, wenn er zulässig ist und sein Zielfunktionswert kleiner gleich den Zielfunktionswerten aller anderen zulässigen Punkte.
+
+\[ x^* \text{ globales Minimum } \LRA g(x^*) = 0 \wedge h(x^*) \leq 0: \forall x \text{ mit } g(x) = 0, h(x) \leq 0 \text{ ist } f(x^*) \leq f(x) (6.3) \]
+
+Die Bestimmung von globalen Optima heißt globale Optimierung. Wir beschränken uns in dieser Vorlesung auf die Berechnung lokaler Optima.
+
+\msection{Definition 6.4}
+
+Ein Minimum $x^*$ heißt strikt, wenn
+
+\[ f(x^*) < f(x) \forall x \in U, x \neq x^*, x \text{ zulässig } (\text{lokal}) \]
+\[ f(x^*) < f(x) \forall x \text{ zulässig } (\text{global}) \]
+
+\msection{6.2 Optimalitätsbedingung im eindimensionalen Fall}
+
+Lemma 6.5: Sei $f: (a,b) \subset \R \to \R$, $f \in C^2$. Dann gilt:
+
+\bitm
+\item Wenn $x^* \in (a,b)$ ein lokales Minimum von $f$ ist, ist $f'(x) = 0$ (notwendige Bedingung erster Ordnung) und $f''(x^*) \geq 0$ (notwendige Bedingung 2ter Ordnung)
+\item Wenn $f'(x^*) = 0$ und $f''(x^*) > 0$, dann ist $x^*$ ein striktes lokales Minimum von $f$ (hinreichende Bedingung 2ter Ordnung).
+\eitm
+
+Beweis: Analysis 1
+
+\msection{6.3 Unbeschränkter Fall}
+
+Satz 6.6 (Notwendige Bedingungen erster und zweiter Ordnung)
+
+Sei $f : \R^n \to \R$, $f \in C^2$. $x^*$ sei ein lokales Minimum von $f$.
+
+\bitm
+\item a) $\nabla f(x^*) = 0$ (6.4)
+\item b) $\nabla^2 f(x^*) = 0$ (6.5)
+\eitm
+
+Beweis: Zurückführung auf den eindimensionalen Fall entlang beliebiger Kurven von Konkurrenten.
+
+Sei $p \in \R^n$ beliebig. Die Funktion $\tilde f(t) := f(x^*+tp)$, $t\in \R$ hat in $x^*$ bzw. $t=0$ ein lokales Minimum. Also gilt nach Lemma 6.5 (eindimensionaler Fall):
+
+\bitm
+\item a) $0 = \tilde f'(0) = \frac{\partial}{\partial t} f(x^* + tp)|_{t=0} = f'(x^*) p = \nabla f(x^*)^T p \RA \nabla f(x^*) = 0$, da $p$ beliebig.
+\item b) $0 \leq \tilde f''(0) = \frac{\partial^2}{\partial t^2} f(x^* + tp)|_{t=0} = p^T \nabla^2 f(x^*) p \RA \nabla^2 f(x^*)$ ist positiv semidefinit.
+\eitm
+
+\msubsection{Satz 6.7 (Heinreichende Bedingung)}
+
+% ... Terme höherer Ordnung irgendwie wegdiskutieren
+Sei $f: \R^n \to \R$, $f \in C^2$. Sei $x^* \in \R^n$ mit $\nabla f(x^*) = 0$ und $\nabla^2 f(x^*)$ positiv definit (6.6). Dann gilt: $x^*$ ist ein striktes lokales Minimum von $f$.
+
+Beweis: Es existiert eine Umgebung $U$ von $x^*$ so dass die Hesse-Matrix $\nabla^2 f$ positiv definit für alle $x$ in der Umgebung $U$, da die Eigenwerte stetig von den Einträgen abhängen und die Einträge stetig von $x$ abhängen.
+Entwicklung in eine Taylorreihe um $x^*$:
+
+\begin{align*}
+f(x) &= f(x^*) + \nabla f(x^*)^T (x-x^*) + \underbrace{\frac 12 (x-x^*)^T \nabla^2 f(\tilde x) (x-x^*)}_{>0} \text{ mit } \tilde x \in U \\
+i\RA f(x) &> f(x^*) \\
+\end{align*}
+
+\msubsection{6.4 Gleichungsbeschränkter Fall}
+
+Notation: $f: \R^n \to \R$, Ableitung $\frac{\partial f}{\partial x}f(x) = f'(x) = f_x(x) \in \R^n$ Zeilenvektor. Gradient: $\nabla f(x) = f_x(x)^T \in \R^n$ Spaltenvektor. Hessematrix $\nabla^2 f(x) = f_{xx}(x) = \frac{\partial}{\partial x} \nabla f(x) = \nabla \frac{\partial}{\partial x} f(x) \in \R^{n\times n}$ (symmetrische Matrix nach Satz von Schwarz).
+
+$g: \R^n \to \R^m$, $n \leq m$, $\frac{\partial g}{\partial x} (x) = g_x(x) \in \R^{m\times n}$, $\nabla g(x) = g_x(x)^T \in \R^{n\times m}$. Menge aller zulässigen Punkte: $S := \{x : g(x) = 0\}$
+
+\msubsection{Definition 6.8}
+
+Ein Punkt $x^*$ heißt regulär, wenn er die Constraint Qualification (CQ) erfüllt: $\Rg(g_x(x^*)) = m$ (6.7).
+
+\msubsection{Definition 6.9: Tangentialebene}
+
+Die Menge $T(x^*) = \{ p : g_x(x^*) p = 0 \}$ (6.8) heißt Tangentialebene an $S$ in $x^* \in S$.
+
+Laufe entlang der zulässigen Menge $S=\{x:g(x)=0\}$. Entweder wir schneiden die Höhenlinien von $f$, z.\,B. in $\hat x$. Dann erhöht oder erniedrigt ein kleiner Schritt den Zielfunktionswert, $\hat x$ ist also kein Optimum. Oder wir berühren eine Höhenlinie von $f$ tangential, hier in $x^*$. Dann kann $x^*$ ein Optimum sein.
+
+Im lokalen Minimum gilt: Die Tangentialebene von $S$ und die Höhenlinien von $f$ sind parallel, also sind die Normalenvektoren parallel:
+
+\[ -\nabla f(x^*) = \lambda \nabla g(x^*), \quad \lambda \in \R \]
+
+Verallgemeinerung für $m$ Nebenbedingungen:
+
+\begin{align*}
+&-\nabla f(x^*) \text{ ist eine Linearbkombination der Gradienten der Nebenbedingungen:} \\
+\exists \lambda \in \R^m : &-\nabla f(x^*) = \sum\limits_{i=1}^m \lambda_i \nabla g_i(x^*) = \nabla g(x^*) \lambda \quad (6.9) \\
+\end{align*}
+
+\msubsection{Definition 6.10}
+
+Die Funktion $L: \R^n \times \R^m: (x,\lambda) \mapsto L(x,\lambda) := f(x) + \lambda^T g(x)$ (6.10) heißt Lagrangefunktion (Lagrangian) des beschränkten Optimierungsproblems $\min f(x) $ s.\,t. $g(x)=0$.
+
+\msubsubsection{Bemerkung 6.11}
+
+Gradient der Lagrangsfunktion:
+
+\begin{align*}
+\nabla_x L(x,\lambda) &= \nabla f(x) + \nabla g(x) \lambda \quad (6.11) \\
+\nabla_\lambda L(x,\lambda) &= g(x) \\
+\end{align*}
+
+Hessematrix der Lagrangefunktion:
+
+\[ \nabla^2 L(x,\lambda) = \bpm \nabla_{xx}^2 L(x,\lambda) & \nabla g(x) \\ \nabla g(x)^T & 0 \epm \quad (6.12) \]
+\[ \text{mit } \nabla{xx}^2 L(x,\lambda) = \nabla_{xx}^2 f(x) + \underbrace{\nabla_{xx}^2 g(x) \lambda}_{\in \R^{n\times n}} \]
+
+\msubsection{Satz 6.12 (Notwendige Bedingung erster Ordnung}
+
+Betrachte das Problem $\min f(x)$ s.\,t. $g(x)=0$ mit $f\in C^2(\R^n,\R)$, $g \in C^2(\R^m, \R^n)$, $m \leq n$. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann existiert $\lambda \in \R^m$, so dass $\nabla_x L(x^*,\lambda) = \nabla f(x^*) + \nabla g(x^*) \lambda = 0$ und $\nabla_\lambda L(x^*, \lambda) = g(x^*) ) 9$ (6.13) bzw. $\nabla L(x.\lambda)=0$.
+
+Beweis:
+
+$x^*$ regulär $\RA g_x(x^*) = 0 \RA $ man kann $x$ zerlegen in $x = (y,z)$ so dass $g_y(x^*) \in \R^{m\times m}$ invertierbar. Führe die Fragestellung zurück auf den eindimensionalen Fall entlang Kurven von zulässigen Konkurrenzpunkten.
+
+\begin{align*}
+x &= \phi(t) \text{ mit } \phi(0) = x^*, \phi(1) = \ov x \neq x^* \text{ zulässiger Punkt} \\
+\text{und } g(\phi(t)) &\equiv 0 \\
+\phi(t) &= \bpm y(t) \\ z(t) \epm = \bpm y(t) \\ z^* + t(\ov z - z^*) \epm \\
+0 &= \l. \frac{\partial}{\partial t} g(\phi(t))\r|_{t=0} = g_y(x^*) y'(0) + g_z(x^*) z'(x^*) \\
+\RA \phi'(0) &= \bpm y'(o) \\ z'(0) \epm = \bpm -g_y(x^*)^{-1} g_z(x^*) \\ I \epm h \\
+\end{align*}
+
+$f(\phi(t))$ ist minimal in $t=0$. Daher ist $0 = \frac{\partial}{\partial t} f(\phi(t))|_{t=0} = f_x(x^*) \phi'(0) = (-f_y(x^*) g(x^*)^{-1} g_z(x^*) + f_z(x^*))h$.
+
+Definiere $\lambda^T := -f_y(x^*)g_y(x^*)^{-1}$. Dann ist $f_y(x^*) + \lambda^T g_y(x^*) = 0$. $f_z(x^*) + \lambda^T g_z(x^*) = 0$ also ist $f_x(x^*) + \lambda^T g_x(x^*) = 0$ d.\,h. $\nabla L(x,\lambda)=0$.
+
+$\nabla_\lambda L(x^*,\lambda) = g(x^*) = 0$, da $x^*$ zulässig.
+
+
+
+
+
+
+
+
+
+
+
+

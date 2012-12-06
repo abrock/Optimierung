@@ -152,11 +152,161 @@ Definiere $\lambda^T := -f_y(x^*)g_y(x^*)^{-1}$. Dann ist $f_y(x^*) + \lambda^T 
 
 $\nabla_\lambda L(x^*,\lambda) = g(x^*) = 0$, da $x^*$ zulässig.
 
+\msubsection{Bemerkung 6.13}
 
+Die Vektoren aus der Tangentialebene $T(x^*) = \ker g_x(x^*)$ haben die Gestalt:
 
+\begin{align*}
+p &= \bpm p_y \\ p_z \epm = \bpm -g_y(x^*)^{-1} g_z(x^*) \\ I \epm p_z \text{ denn } \\
+0 &= g_x(x^*)p = g_y(x^*)p_y + g_z(x^*) p_z \\
+\end{align*}
 
+Alle zulässigen Kurven laufen also in der Tangentialebene in $x^*$ ein:
 
+\begin{align*}
+\phi(o) &= x^* \\
+\phi'(0) &\in T(x^*)
+\end{align*}
 
+Die Spalten von
+
+\[ \bpm -g_y(x^*)^{-1} g_z(x^*) \\ I \epm \]
+
+bilden eine Basis von $T(x^*)$.
+
+\msection{Satz 6.12}
+
+$x^*$ optimal $\RA \nabla L(x^*,\lambda) = 0$ für ein $\lambda \in \R^m$.
+
+\begin{align*}
+0 &= \nabla_x L(x^*,\lambda) = \nabla f(x^*) + \nabla g(x^*) \lambda \\
+0 &= \nabla_\lambda L(x^*, \lambda) = g(x^*) \\
+\end{align*}
+
+\msection{Definition 6.14}
+
+Die notwendigen Bedingungen (6.13) heißen KKT-Bedingungen. Reguläre Punkte $x^* \in \R^n$, für die es $\lambda \in \R^n$ gibt, so dass $\nabla_{x,\lambda} L(x^*, \lambda) = 0$ heißen KKT-Punkte bzw. stationäre Punkte.
+
+\msection{Bemerkung 6.15}
+
+Stationäre Punkte können Minima aber auch Maxima oder Sattelpunkte sein.
+
+\msection{Satz 6.16 (Notwendige Bedingungen zweiter Ordnung}
+
+Seien die Voraussetzungen wie in Satz 6.12. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann ist die Hessematrix von $L$ nach $x$ und $x$ positid semidefinit auf $T(x^*) = \ker g_x(x^*)$, d.\,h.
+
+\[ p^T \nabla_{xx}^2 L(x^*, \lambda) p \geq 0 \quad \forall p \in T(x^*) \]
+
+Beweis: Weiter im Beweis von 6.12:
+
+Es gilt:
+
+\begin{align*}
+0 &\leq \l. \frac{\partial^2}{\partial t^2} f(\phi(t)) \r|_{t=0} = \l. \frac{\partial}{\partial t} f_x(\phi(t)) \phi'(t) \r|_{t=0} \\
+&= \l. \underbrace{ \phi'(t)^T f_xx(\phi(t)) \phi'(t)}_{\text{Krümmung von } f} \r|_{t=0} + \l. \underbrace{f_x(\phi(t)) \phi'(t)}_{\text{Krümmung von } \phi} \r|_{t=0} \\
+\end{align*}
+
+Außerdem gilt:
+
+\begin{align*}
+\frac{\partial^2}{\partial t^2} \lambda^T g(\phi(t)) &= 0 \text{ da } g(\phi(t)) \equiv 0 \\
+\frac{\partial^2}{\partial t^2} \lambda^T g(\phi(t)) &= \phi'(t)^T (\lambda^T g_{xx} (\phi(t))) \phi'(t) + \lambda^T g_x(\phi(t)) \phi''(t) \\
+\text{Also } 0 & \leq \phi'(0)^T (f_{xx} (x^*)^T + \lambda^T g_{xx}(x^*)) \phi'(0) + \underbrace{(f_{xx}(x^*) + \lambda^T g_x(x^*))}_{L_{x} (x^*, \lambda) = 0} \phi''(t) \\
+&= \phi'(0)^T \nabla_{xx}^2 L(x^*, \lambda) \phi'(0) \\
+\end{align*}
+
+$\phi'(0)$ ist irgendein Vektor aus $T(x^*) \RA \nabla_{xx}^2 L(x^*, \lambda)$ ist positiv semidefinit auf $T(x^*)$.
+
+\msection{Satz 6.17 (Hinreichende Bedingung)}
+
+Seien die Voraussetzungen wie in Satz 6.12, aber $f,g\in C^3$. Wenn gilt: $\exists \lambda \in \R^n$, so dass $\nabla \lambda L(x^*, \lambda) = 0$ und $p^T \nabla_{xx}^2 L(x^*, \lambda) p > 0 \forall p \in T(x^*), p \neq 0$. Für einen regulären Punkt $x^*$, dann ist $x^*$ striktes lokales Minimum.
+
+Beweis: Erfülle $x^*$ die hinreichende bedingung. Sei $\hat x \neq x^*$ zulässig und hinreichend nahe bei $x^*$. Betrachte die Kurve $\phi(t)$ mit $\phi(0) = x^*$, $\phi(1) = \hat x$,
+
+\[ \phi(t) := \bpm \gamma(z(t)) \\ x^* + t(\hat z - z^*) \epm \]
+
+so dass $g(\phi(t)) = 0$ in einer kleinen Umgebung von $x^*$
+
+\begin{align*}
+h :&= \hat z - z^*, \quad \|h\| \leq \eps_z \text{ Dann gilt } \\
+\phi'(t) &= \bpm \gamma_z(z(t)) \\ I \epm h\\
+\|\phi'(t)\| & \leq c_1 \|h\| \\
+\phi'(0) &= \bpm \gamma_z (z^*) h \\ h \epm \in T(x^*) \leq c_1 \eps_z \\
+\phi''(t) &= \bpm (\gamma_{zz} h)h \\ 0 \epm \\
+\|\phi''(t)\| & \leq c_2 \|h\|^2 \leq c_2 \eps_z^2 \\
+\phi'''(t) &= \bpm ((\gamma_{zzz} h)h)h \\ 0 \epm\\
+\|\phi''(t)\| &\leq c_3 \|h\|^2 \leq c_3 \eps_3^3 \\
+\end{align*}
+
+Taylorentwicklung von $L(\phi(t),\lambda)$ um $t=0$:
+
+% Da ist jetzt ein transponiert, pfffffft
+% Ich weiß nicht, ob sich das wie ein Tensor transfomiert, halt 'ne dritte Ableitung
+
+\begin{align*}
+f(\hat x) - f(x^*) &= L(\hat x, \lambda) - L(x^*, \lambda) = L(\phi(t),\lambda) - L(\phi(0), \lambda) \\
+&= \underbrace{\nabla_x L(\phi(0), \lambda)^T}_{=0} + \frac 12 \underbrace{ \phi'(0)^T \nabla_{xx}^2 L(\phi(0),\lambda) \phi'(0)}_{= (*) } + \frac 12 \underbrace{\nabla_x L(\phi(0), \lambda)^T}_{=0} \phi''(0) \\
+&+ \frac 16 \l[ \underbrace{\phi'(\tilde t)^T ( \nabla_{xxx}^3 L(\phi(\tilde t),\lambda)^T \phi'(\tilde t)) \phi'(\tilde t)}_{\|\cdot\| \leq b \|h\|^2} + 3 \underbrace{\phi'(\tilde t)^T \nabla_{xx}^2 L(\phi(\tilde t), \lambda) \phi''(\tilde t)}_{\|\cdot\| \leq b \|h\|^3} + \underbrace{\nabla_x L(\phi(\tilde t), \lambda)^T \phi'''(\tilde t)}_{\|\cdot\| \leq b \|h\|^3} \r] \\
+(*) &= h^T \bpm \gamma_z(z^*) \\ I \epm^T \nabla_{xx}^2 L(x^*, \lambda) \bpm \gamma_z(z^*) \\ I \epm h = h^T H h > 0 \\
+\end{align*}
+
+$H$ ist positiv definit und hat kleinsten Eigenwert $\lambda_{min} > 0$. Also ist $(*) \leq \lambda_{\min} \|h\|^2$,
+
+\begin{align*}
+f(\hat x) - f(x^*) & \geq \frac 12 \lambda_{min} \|h\|^2 - \frac 56 b \|h\|^3
+\end{align*}
+
+Für $\|h\| > 0$ genügend klein ist dies $>0$, also $f(\hat x) > f(x^*)$. Damit haben wir gezeigt, dass $x^*$ ein striktes lokales Minimum ist.
+
+\msection{Satz 6.18: Stabilität}
+
+Betrachte das gestörte Problem
+
+\begin{align*}
+&\min_x f(x, \tau) \quad (6.16) \\
+&\text{s.\,t.} g(x,\tau) = 0 \\
+\end{align*}
+
+Gelten in $x^*$, $\tau = 0$ (ungestörter Lösungspunkt): Regularität, notwendige Bedingung erster Ordnung, hinreichende Bedingung zweiter Ordnung. Dann hängt die Lösung von (6.16) in einer Umgebung von $x^*$, $\tau=0$ stetig differenzierbar von $\tau$ ab. Die $x(\tau)$ sind alle strikte lokale Minima.
+
+Beweis: Wende den Satz für implizite Funktionen auf das System $\nabla_{x,\lambda} L(x,\lambda,\tau) =: F(x,\lambda,\tau)=0$ an:
+
+\begin{align*}
+\l. \frac{\partial}{\partial (x,\lambda)} F(x,\lambda,\tau) \r|_{t=0} &= \bpm \nabla_{xx}^2 L(x^*,\lambda,0) & \nabla_x g(x^*, 0) \\ \nabla_x g(x^*, 0)^T & 0 \epm
+\end{align*}
+
+ist regulär weil $\nabla_x g(x^*, 0)$ vollen Rang hat und $\nabla_{xx}^2 L(x,\lambda,0)$ positiv definit auf $\ker \nabla_x g(x^*,0)^T$. Also hängen $x(\tau), \lambda(\tau)$ stetig differenzierbar von $\tau$ ab und sind stationäre Punkte in einer Umgebung von $\tau=0$. Die hinreichende Bedingung zweiter Ordnung gilt in einer Umgebung von $\tau=0$, also sind die $x(\tau)$ strikte lokale Minima. Die Lösung ist also stabil gegenüber kleiner Störungen der Zielfunktion und der Nebenbedingungen.
+
+\msection{6.5 Probleme mit Ungleichungsbeschränkungen}
+
+\msubsection{Definition 6.19}
+
+Betrachte
+
+\begin{align*}
+\min f(x) & f \in C^2(\R^n, \R) \quad (6.18)\\
+g(x)=0 & g \in C^2(\R^n, \R^{m_1}) \\
+h(x) \leq 0 & h \in C^2(\R^n, \R^{m_2}) \\
+\end{align*}
+
+Die zulässige Menge von (6.18) ist $S := \{x: g(x)=0, h(x) \leq 0 \}$. Sei $J := \{1,\cdots,m_2\}$ die Indexmenge der Ungleichungen. Sei $x \in S$. Die Indexmenge der aktiven Ungleichungen ist $I(x) = \{i\in J : h_i(x) = 0\}$. Die Indexmenge der inaktiven Ungleichungen ist $I^\perp (x) = \{ i \in J: h_i(x) < 0$. $x^*$ ist regulär, wenn er die MFCQ oder die LICQ erfüllt.
+
+\msubsection{Definition 6.20: MFCQ:}
+
+Sei $x \in S$ zulässig und $I(x)$ die Indexmenge der in $x$ aktiven Ungleichungen. $x$ erfüllt die Mangasarian-Fromowitz-Constraint-Qualifications (MFCQ), wenn:
+
+\bitm
+\item die Gradienten $\nabla g_i(x=)$, $i=1,\cdots, m_1$ linear unabhängig sind.
+\item ein Vektor $p \in \R^n$ existiert mit $\nabla g_i(x)^T p = 0$, $i=1,\cdots,m_1$ und $\nabla h_i(x)^T < 0$, $i \in I(x)$.
+\eitm
+
+\msubsection{Definition 6.21 (LICQ)}
+
+Sei $x\in S$ Indexmenge der in $x$ aktiven Ungleichungen. $x$ erfüllt die Linear Independence Constraint Qualifications, wenn die Gradienten $\nabla g_i(x)$, $i=1,\cdots,m_1$ und $\nabla h_i$, $i \in I(x)$ linear unabhängig sind.
+
+\msubsection{Satz 6.22}
+
+LICQ $\RA$ MFCQ. Die Umkehrung gilt nicht. Beweis: Übungsaufgabe
 
 
 

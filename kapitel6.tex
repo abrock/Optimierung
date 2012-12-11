@@ -308,6 +308,136 @@ Sei $x\in S$ Indexmenge der in $x$ aktiven Ungleichungen. $x$ erfüllt die Linea
 
 LICQ $\RA$ MFCQ. Die Umkehrung gilt nicht. Beweis: Übungsaufgabe
 
+Im Minimum gilt: $-\nabla f$ ist Linearkombination mit positiven Koeffizienten (konische Kombination) der $\nabla h_i$:
+
+\[ \nabla f + \nabla h \mu = 0 \quad \mu \geq 0 \]
+
+\msection{Satz 6.23 Notwendige Bedingungen}
+
+\bitm
+\item Notwendige Bedingung erster Ordnung: Sei $x^*$ ein lokales Minimum von (6.18), $x^*$ regulär. Dann existiert $\lambda \in \R^{m_1}$, $\mu \in \R^{m_2}$, $\mu_i \geq 0$ so dass $\nabla f(x^*) + \nabla g(x^*) \lambda + \nabla h(x^*) \mu = 0$, d.\,h. $\nabla_x L(x^*, \lambda, \mu) = 0$ für die Lagrangefunktion $L(x,\lambda, \mu) = f(x) + \lambda^T g(x) + \lambda^T h(x)$.
+
+Außerdem gilt Komplementarität:
+\[ \sum\limits_{i=1}^{m_2} \mu_i h_i(x^*) = \mu^T h(x^*) = 0 \]
+gleichbedeutend:
+\[ h_i(x^*) < 0 \RA \mu_i = 0, \quad \mu_i > 0 \RA h_i(x^*) = 0 \]
+Für Punkte $x$, die die Komplementaritäts-Bedingung erfüllen ist 
+\[ I^+(x) = \{ i \in I(x), \mu_i > 0 \} \]
+die Indexmenge der strikt aktiven Ungleichungen.
+\item Notwendige Bedingung zweiter Ordnung.
+Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Seien $\tilde h$ die Komponenten von $h$, die in $x^*$ aktiv  sind und $T(x^*) := \{ p : \nabla g(x^*)^T p = 0$, $\nabla \tilde h(x^*)^T p = 0 \}$ die Tangentialebene an $S$ in $x^*$. Dann gilt:
+\[ p^T \nabla_{xx}^2 L(x^*, \lambda, p)p \geq 0 \quad \forall p \in T(x^*) (6.21) \]
+Beweis: Schränke ein auf Umgebung $U$ von $x^*$, so dass $h_i(x) < 0 \forall x \in U \cap S \forall i \in I^\perp (x^*)$. Betrachte zulässige Konkurrenten $x \in U\cap S$, lasse nur solche zu, die auch $h_i(x) = 0$ erfüllen $\forall i \in I(x^*)$. Wegen Regularität: $|I(x^*)| + m_1 \leq n$
+\[ \tilde S := \{ x: \tilde h(x) = 0 \} x \in U \cap S \cap \tilde S \]
+$x^*$ ist ein lokales Minimum des gleichungsbeschränkten Problems bzgl. $S \cap \tilde S$.
+Setze $\mu_i = 0$, $i \in I^\perp (x^*)$.
+Aus dem Gleichungsbeschränkten Fall folgt dann (6.19).
+$T(x^*)$ ist Tangentialebene des gleichungbeschränkten Problems. Es folgt aus dem gleischungsbeschränkten Fall die notwendige Bedingung zweiter Ordnung.
+Komplementarität ist durch die Wahl von $\mu$ erfüllt: $\mu^T h(x^*) = 0$.
+Zu zeigen bleibt: $\mu_i \geq 0$, $i \in I(x^*)$. Siehe folgendes Lemma:
+\eitm
+
+\msection{Lemma 6.24}
+
+Sei $(x^*, \lambda, \mu)$ KKT-Punkt, $x^*$ regulär. Sei $\mu_i < 0$ für ein $i \in I(x^*)$. Dann existiert $\eps > 0$ und eine Kurve $\phi: [0,\eps] \to S$, so dass $\phi(0) = x^*$ und $f(\phi(t)) < f(\phi(0))$ für alle $t\in[0,\eps]$.
+
+Beweis: betrachte Kurve $\phi$ mit $\dot \phi(0) = p$ mit
+
+\begin{align*}
+\bpm \nabla g^T \\ \nabla \tilde h_1^T \\ \vdots \\ \nabla \tilde h_{i-1}^T \\ \nabla \tilde h_i^T \\ \nabla \tilde h_{i+1} \\ \vdots \\ \nabla \tilde h^T \epm (x^*) p = \bpm 0 \\ 0 \\ \vdots \\ 0 \\ -\eps \\ 0 \\ \vdots \\ 0 \epm
+\end{align*}
+
+$p$ ist tengential zu allen Gleichungsbedingungen und aktiven Ungleichungsbedingungen außer $i$.
+
+\begin{align*}
+\tilde h_i(\phi(t)) &= \underbrace{\tilde h_i(x^*)}_{=0 \text{ aktiv}} + \underbrace{\nabla \tilde h_i (x^*)^T p}_{=-\eps \text{ nach Konstr.}} \cdot t + \underbrace{\mathcal O(\|p\|^2) t^2}_{\mathcal O(\eps^2)} \\
+\leq 0 \text{ für } \eps &> 0 \text{ klein genug}
+\end{align*}
+
+Aus Regularität und Satz für implizite Funktionen folgt: Es gibt eine Kurve $\phi$ mit $\dot \phi(0) = p$ und 
+
+\begin{align*}
+\phi(t) &\in \{ x : g(x)=0, \tilde h_j(x) = 0, j\neq i \} \\
+\l. \frac{\partial d}{\partial t} f(\phi(t))\r|_{t=0} &= \nabla f(x^*)^T p\\
+&= - ( \lambda^T \nabla g(x^*)^T + \mu^T \nabla h(x^*)^T)p \\
+&= - (-\mu_i \eps) \\
+&= \mu_i\eps < 0
+\end{align*}
+
+\msection{Satz 6.25 (Hinreichende Bedingung)}
+
+$(x^*, \lambda, \mu)$ erfülle die notwendige Bedingung erster Ordnung, $x^*$ sei regulär. Sei $p^T \nabla_{xx}^2 L(x^*, \lambda, \mu) p > 0 \forall p \in T^+(x^*), p\neq 0$ (6.22) mit $t^+(x^*) = \{ p: \nabla g(x^*) p = 0, \nabla h_i(x^*)^T p = 0 \forall i \in I^+(x^*) \}$, $I^+(x^*) = \{ i \in I(x^*), \mu_i > 0 \}$ (strikt aktive Ungleichung). Dann ist $x^*$ striktes lokales Minimum von (6.18). Es ist sogar auch striktes lokales Minimum von
+
+\[ \min f(x) \text{ s.\,t. } g(x)=0, h_i(x) = 0, i \in I^+(x^*) \]
+
+d.\,h. $h_i(x) = 0$ mit $\mu_i = 0$ und $h_i(x) < 0$ weggelassen.
+
+Beweis:
+
+Aus hinreichender Bedingung im gleichungsbeschränkten Fall folgt:
+
+\bitm
+\item $x^*$ ist striktes lokales Minimum von (6.23).
+\item $x^*$ bleibt striktes lokales Minimum von (6.23) wenn man weitere Bedingungen, für die $x^*$ zulässig ist, hinzufügt; $h_i(x) \leq 0$, $i \in I^+(x^*)$. Für die weiteren zulässigen Punkte $x$ (in einer Umgebung von $x^*$ mit $h_i(x) < 0$, $i \in I^+(x^*)$ kann man eine Kurve $\phi(t)$ konstruieren, so dass $\l. \frac{\partial}{\partial t} f(\phi(t))\r|_{t=0}$, sofern alle $\mu_i > 0$ sind (analog zu oben). Dazu muss man den Satz für implizite Funktionen anwenden, dafür muss $\Rg \bpm \nabla g & \nabla \tilde h \epm^T = m_1 + |I(x^*)|$ in $x^*$ gelten (Regularität).
+\eitm
+
+\msection{Definition 6.26: Strikte Komplementarität}
+
+In einem KKT-Punkt $(x^*, \lambda, \mu)$, $\mu \geq 0$ gilt strike Komplementarität, wenn:
+
+\bitm
+\item $h_i(x^*) = 0 \RA \mu_i > 0$
+\item bzw. $\mu_i = 0 \RA h_i(x^*) < 0$
+\item bzw. $I^+(x^*) = I(x^*)$
+\item bzw. $h_i(x^*) = 0$ und $\mu_i = 0$ nicht gleichzeitig.
+\eitm
+
+Bemerkung: Wenn strikte Komplementarität gilt ist $T^+(x^*) = T(x^*)$. In der hinreichenden Bedingung ist dann diese Lücke zu notwendigen Bedingung geschlossen.
+
+\msection{Satz 6.27: Stabilität}
+
+ 
+Sei $(x^*, \lambda^*, \mu^*)$ ein KKT-Punkt, gelte strikte komplementarität, sei $x^*$ regulär und die hinreichende Bedingung zweiter Ordnung sei erfüllt. Dann ist das Minimierungsproblem
+
+\[ \min f(x,\tau) \text{ s.\,t. } g(x,\tau)=0, h(x,\tau) \leq 0 \]
+
+stabil gegen Störungen von $\tau$ um $0$ ($\tau=0$ ist das ursprüngliche Problem). D.\,h. es existieren Umgebungen $U$ von $(x^*, \lambda^*, \mu^*)$ und $V$ von $\tau = 0$ und eine stetig differenzierbare Abbildung $(x,\lambda, \mu)\colon V \to U$, $\tau \mapsto (x(\tau), \lambda(\tau), \mu(\tau))$ mit $x(0) = x^*$, $\lambda(0) = \lambda^*$, $\mu(0) = \mu^*$ und $x(\tau)$ ist striktes lokales Minimum .
+
+Beweis:
+Betrachte
+
+\begin{align*}
+\nabla f(x,\tau) + \nabla g(x,\tau) \lambda + \nabla \tilde h(x,\tau) \mu &= 0 \\
+g(x,\tau) &= 0 \\
+\tilde h(x,\tau) &= 0 \\
+\end{align*}
+
+Jacobi-Matrix bezüglich $(x,\lambda, \mu)$ in $\tau = 0$:
+
+% so, bischen weihnachtlich, kommt noch 'ne andere Farbe
+
+\[ \bpm \nabla_{xx}^2 L(x^*, \lambda^*, \mu^*) & \nabla g(x^*) & \nabla \tilde h(x^*) \\ \nabla g(x^*)^T & 0 & 0 \\ \nabla \tilde h(x^*)^T & 0 & 0 \epm \]
+
+ist regulär.
+
+Mache $V$ möglicherweise kleiner, so dass
+
+\bitm
+\item $\mu_i(\tau) > 0$ ($\mu_i(0) > 0$ wegen strikter Komplementarität)
+\item $h_i(x(\tau)) < 0$ für $i \notin I(x^*)$. Setze deren $\mu_i(\tau)=0$
+\item $\bpm \nabla g^T \\ \nabla \tilde h^T \epm (x(\tau))$ vollranging
+\item $\nabla_{xx}^2 L(x(\tau), \lambda(\tau), \mu(\tau))$ positiv definit auf $T(x(\tau)) \RA$ hinreichende Bedingung für $x(\tau), \lambda(\tau), \mu(\tau)$, $\tau \in V$
+\eitm
+
+% Ich darf ja nicht eine Farbe ganz abnutzen, nachher kommt die Mathematik für Biologen Übung und dann können die nicht mehr ihre bunten Bildchen an die Tafel malen, wenn es kein Rot mehr gibt.
+
+Bemerkung: Wir haben in den Beweisen LICQ als Regularitätsbedingung benutzt. MFCQ kann auch verwendet werden, Beweise siehe z.\,B. Geiger Kanzov: Nichtlineare Optimierung, Springer.
+
+
+
+
+
+
 
 
 

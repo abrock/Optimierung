@@ -1,0 +1,186 @@
+\chaptr{SQP-Verfahren}
+
+Zunächst: gleichungsbeschränkter Fall
+
+\[ \min f(x) \text{ s.\,t. } g(x) = 0 \quad (7.1) \]
+
+Die notwendigen Optimalitätsbedinungen erster Ordnung lauten:
+
+\begin{align*}
+\nabla_x L(x,\lambda) &= \nabla f(x) + \nabla g(x) \lambda = 0 \quad (7.2) \\
+\lambda_\lambda L(x,\lambda) &= g(x) = 0 \\
+\text{bzw. } \nabla L(x,\lambda) = 0 \\
+\end{align*}
+
+Das ist ein nichtlineares Gleichungssystem in $(x,\lambda)$. Dieses wollen wir mit dem Newton-Verfahren lösen. Ein Schritt $(\Delta x, \Delta \lambda)$ erfüllt dabei das LGS
+
+\[ \nabla L(x,\lambda) + \nabla^2 L(x,\lambda) \bpm \Delta x \\ \Delta \lambda \epm = 0 \]
+
+(Iterationsindex $k$ weggelassen) bzw.
+
+\[ \bpm \nabla f(x) + \nabla g(x) \lambda \\ g(x) \epm      +     \bpm \nabla_{xx}^2 L(x,\lambda) & \nabla g(x) \\ \nabla g(x)^T & 0 \epm      \bpm \Delta x \\ \Delta \lambda \epm     =    \bpm 0 \\ 0 \epm \]
+
+\msection{Lemma 7.1}
+
+Sei $\Delta x$ die Lösung des QP
+
+\[ \min \frac 12 \Delta x^T H(x) \Delta x + \nabla f(x)^T \Delta x \text{ s.\,t. } 0 = A(x) \Delta x + g(x) \quad (7.5) \]
+
+mit Matrixfunktionen $A$, $H$.
+
+Dann existiert ein $\Delta \lambda$, so dass für beliebige $\lambda$
+
+\[ \bpm \nabla f(x) + A(x)^T \lambda \\ g(x) \epm   +   \bpm H(x) & A(x)^T \\ A(x) & 0 \epm   \bpm \Delta x \\ \Delta \lambda \epm   = 0 \quad (7.6) \]
+
+Beweis: Lagrangefunktion des QP mit Multiplikator $u$
+
+\begin{align*}
+L(\Delta x, u) &= \frac 12 \Delta x^T H \Delta x + \nabla f^T \Delta x + u^T(A\Delta x + g) \\
+\nabla_{\Delta x} L(\Delta x, u) &= H\Delta x + \nabla f + A^T u - A^T \lambda + A^T \lambda &= 0 \\
+\nabla_u L(\Delta x, u) &= A \Delta x + g \\
+\bpm \nabla f + A^T \lambda \\ g \epm   +   \bpm H & A^T \\ A & 0 \epm   \bpm \Delta x \\ u-\lambda \epm   &= 0 \\
+\end{align*}
+
+mit $\Delta \lambda = u-\lambda$.
+
+Umgekehrt:
+
+\msection{Lemma 7.2}
+
+Falls $\Delta \lambda$ existiert, so dass $\bpm \Delta x & \Delta \Lambda \epm^T$ die Gleichung (7.6) erfüllt und wenn $H(x)$ positiv definit auf $\ker A(x)$, dann ist $\Delta x$ Minimum von (7.5).
+
+\msection{Algorithmus 7.3: SQP-Verfahren für gleichungsbeschränkte Probleme}
+
+\bitm
+\item Startwert $x^0$, ggf. $\lambda^0$, $j:=0$
+\item Solange ein Abbruchkriterium verletzt ist:
+\bitm
+\item Berechne $\Delta x^j$ als Lösung des folgenden QPs und ggf. die Lagrangemultiplikatoren $u^j$:
+\[ \min_{\Delta x} \frac 12 \Delta x^T H^j \Delta x + \nabla f(x^j)^T \Delta x \text{ s.\,t. }0 = A^j \Delta x + g(x^j) \]
+mit
+\[H^j \cong \nabla_{xx}^2 L(x^j, \lambda^j), A^j \cong \nabla g(x^j)^T \]
+\item Iteriere:
+\begin{align*}
+x^{j+1} :&= x^+ + \alpha^j \Delta x^j \\
+\lambda^{j+1} :&= \lambda^k + \alpha^j (\underbrace{u^j-\lambda^j}_{\Delta \lambda^j}) \\
+\end{align*}
+mit $\alpha^j \in (0,1]$ aus einer Globalisierungsstrategie (z.\,B. Linesearch).
+\eitm
+\eitm
+
+Bemerkung: $\lambda^j$ wird benötigt zur Berechnung von $H^j$ (siehe unten) und zur Ungleichungsbehandlung. Wenn $\alpha^j=1$ hängt $\lambda^{j+1}$ nicht von $\lambda^j$ ab.
+
+\msection{Korollar 7.4}
+
+Für die Wahl $H^j = \nabla_{xx}^2 L(x^j, \lambda^j)$ und $A^j = \nabla g(x^j)^T$ ist das SQP-Verfahren ein Newton-Verfahren für die KKT-Bedingung des gleichungsbeschränkten NLP. Nach Korollar 5.4 konvergiert es lokal quadratisch, wenn $\alpha^j \equiv 1 \forall j \geq \ov j$.
+
+\msection{Bemerkung 7.5}
+
+Für $H^j \cong \nabla_{xx}^2 L(x^j, \lambda^j)$ und $A^j = \nabla g(x^j)^T$ ist das SQP-Verfahren ein Quasi-Newton-Verfahren, genannt Partial-Quasi-Newton-SQP-Verfahren. Wenn außerdem $A^j \cong \nabla g(x^j)^T$ nennt man das Verfahren Total-Quasi-Newton-SQP-Verfahren.
+
+Die Konvergenzrate hängt von der Wahl der Approximationen ab.
+
+\msection{Lösung von QPs mit Gleichungsbeschränkungen}
+
+\[ \min_p \frac 12 p^T H p + g^T p \text{ s.\,t. } Ap+b= 0 \quad (7.7) \]
+
+mit $p\in\R^n$, $A\in \R^{m\times n}$, $m\leq n$, $\Rg a = m$, $H \in \R^{n\times n}$ symmetrisch und positiv definit auf $\ker A$, $g\in \R^n$, $b\in \R^m$.
+
+\bitm
+\item zulässige Menge ist konvex
+\item Zielfunktion ist konvex auf der zulässigen Menge
+\eitm
+
+$\RA$ es existiert genau ein Minimum.
+
+Äquivalent:
+
+\[ \exists u: \bpm H & A^T \\ A & 0 \epm    \bpm p \\ u \epm    =    - \bpm g \\ b \epm \]
+
+Variante 1: Bildraummethode: Numerisch instabil, im Allgemeinen teurer als Variante 2, nur geeignet wenn $H$ insgesamt positiv definit.
+
+\bitm
+\item Multipliziere die erste Blockzeile mit $H^{-1}$ und $A$ und ziehe von der zweiten Blockzeile ab:
+\[ \bpm H & A^T \\ 0 & - A H^{-1} A^T \epm   \bpm p \\ u \epm   =   -\bpm g \\ b - AH^{-1} g \epm \]
+erfordert eine Cholesky-Zerlegung von $H$ und eine Matrixmultiplikation.
+\item Zerlege $-AH^{-1}A^T$ (sog. Schur-Komplement), berechne $u$
+\item Aus erster Blockzeile:
+\[ p = H^{-1}( -g + A^T u) \]
+\eitm
+
+Variante 2: Nullraummethode: stabil, deutlich schneller als Variante 1, wenn $m > \frac n2$.
+
+\bitm
+\item QR-Zerlegung von $A^T$: 
+\begin{align*}
+A^T &= Q^T \tilde L^T = \bpm \underbrace{Q_1^T}_{n\times m} & \underbrace{Q_2^T}_{n\times (m-n)} \epm   \bpm L^T \\ 0 \epm = Q_1^T L^T  \\
+y :&= Qp = \bpm Q_1 p \\ Q_2 p \epm = \bpm y_1 \\ y_2 \epm \\
+Ap &= \bpm L & 0 \epm   \bpm Q_1 \\ Q_2 \epm p = L Q_1 p \\
+&= L y_1 = -b \\
+y_1 &= - L^{-1} b
+\end{align*}
+$y_2$ zunächst frei.
+\[AQ_2^T = LQ_1 Q_2^T = 0 \]
+Spalten von $Q_2^T$ bilden eine Basis von $\ker A$.
+\[ p = Q^T y = Q_1 y_2 + Q_2^T y_2 \]
+\item Einsetzen in die erste Blockzeile und Multiplikation mit $Q$:
+\begin{align*}
+QHQ^T y + QA^T u &= -Qg \\
+\end{align*}
+hat zwei Teile:
+\bitm
+\item $A_2 H (Q_1^T y_1 + Q_2^T y_2) + \underbrace{Q_2 A^T}_{=0} u = -Q_2 g $ bzw. $\underbrace{Q_2 H Q_2^T}_{(*)} y_2 = -Q_2(y-H Q_1^T L^{-1} b)$ (*): auf $\ker A$ projeziertes $H$, positiv definit, zerlege mit Cholesky $\RA$ $y_2$ und $p=Q^T y$
+\item $Q_1 (Hp + g) + Q_1 A^T u = 0$, $Q_1 A^T = L^T$ $\RA$ $u = -L^{-T} Q_1 (Hp + g)$.
+\eitm
+\eitm
+
+\msection{7.3: Quasi-Newton-SQP mit Update}
+
+Ziel: berechne $H^k \cong \nabla_{xx}^2 L(x^k, \lambda^k)$ "`gut und billig"'.
+
+Niedrigrang-Aufdatierungen:
+
+\[H^{k+1} = H^k + \overbrace{\underbrace{ab^T}_{\text{hat Rang } 1} + cd^T}^{\text{hat Rang 2}} \]
+
+mit $a,b,c,d\in \R^n \setminus\{0\}$
+
+\msection{Wichtigstes Beispiel: BFGS (Broyden, Fletcher, Goldfarb, Shanno)}
+
+\[ H^{k+1} = H^k + \frac{y^k {y^k}^T}{{y^k}^T y^k} - \frac{(H^k s^k)(H^k s^k)^T}{{s^k}^T H^k s^k} (7.9) \]
+
+mit
+
+\begin{align*}
+y^k &= \nabla_x L(x^{k+1}, \lambda^{k+1}) - \nabla_x L(x^k, \lambda^{k+1}) \\
+s^k &= x^{k+1} - x^k = \alpha^k \Delta x^k \\
+\end{align*}
+
+\msection{Definition 7.5: Sekantenbedingung}
+
+$H^{k+1}$ erfüllt die Sekantenbedingung, wenn
+
+\begin{align*}
+H^{k+1} s^k &= y^k \quad (7.10)
+\end{align*}
+
+Das bedeutet, dass $H^{k+1}$ in erster Ordnung korrekt ist. Taylorentwicklung um $x^{k+1}$ angewendet bei $x^k$
+
+\begin{align*}
+\nabla_{xx}^2 L(x^{k+1}, \lambda^{k+1}) (x^{k+1} - x^k) &= \nabla_x L(x^{k+1}, \lambda^{k+1}) - \nabla_x L(x^k, \lambda^{k+1}) + \mathcal O(\|x^{k+1} - x^k\|^2) \\
+\nabla_{xx}^2 L(x^{k+1}, \lambda^{k+1}) s^k &= y^k + \mathcal O(\|x^{k+1}-x^k\|^2) \\
+\end{align*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

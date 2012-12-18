@@ -171,6 +171,146 @@ Das bedeutet, dass $H^{k+1}$ in erster Ordnung korrekt ist. Taylorentwicklung um
 \end{align*}
 
 
+\msection{DFP (Davidon, Fletcher, Powell)}
+
+\begin{align*}
+H^{k+1} &= H^k + U_{DFP} (H^k, y^k, s^k) \\
+w^k :&= y^k - H^k s^k \\
+&= H^k + \frac{w^k (y^k)^T + y^k (w^k)^T}{(y^k)^T s^k} - \frac{(s^k)^T w^k}{(y^k)^T s^k} \frac{y^k (y^k)^T}{(y^k)^T s^k} \quad (7.11) \\
+\end{align*}
+
+\msection{Eigenschaften von BFGS und DFP}
+
+\bitm
+\item BFGS und DFP-Updates erfüllen die Sekantenbedingung.
+\item Ist $H^k$ symmetrisch, dann ist auch die BFGS- bzw. DFP-Approximation $H^{k+1}$ symmetrisch.
+\item Ist $(y^k)^T s^k > 0$ (7.12) und $H^k$ positiv definit, dann ist auch die BFGS- bzw. DFP-Approximation $H^{k+1}$ positiv definit. Wenn $(y^k)^T s^k \geq 0$ kann man das Update dämpfen: $\tilde H^{k+1} = (1-\alpha) H^k + \alpha H^{k+1}$ mit $\alpha < 1$ geeignet. $\tilde H^{k+1}$ erfüllt dann nicht mehr die Sekantenbedingung!.
+\eitm
+
+\msection{Satz 7.7}
+
+Die Inverse des BFGS-Updates ist der DFP-Updates mit $y^k$ und $s^k$ vertauscht:
+
+\begin{align*}
+H^{k+1} &= H^k + U_{BFGS} (H^k, y^k, s^k) \text{ und } \\
+B^{k+1} &= B^k + U_{DFP}  (B^k, s^k, y^k) \text{ Dann gilt: } \\
+\text{Ist } H^k B^k &= I \text{ dann ist auch } \\
+H^{k+1} B^{k+1} &= I \\
+\end{align*}
+
+In der Praxis kann man die Updates auch direkt auf die Zerlegungen anwenden.
+
+\msection{Resultate zur lokalen Konvergenz von BFGS-Quasi-Newton-SQP-Verfahren}
+
+\msection{Satz 7.8: Dennis-Mor\'e im beschränkten Fall}
+
+Sei $x^*$ ein lokales Minimum, $x^*$ regulär, gelte die hinreichende bedingung zweiter Ordnung. Seien $f,g \in C^2$ mit Lipschitz-stetigen zweiten Ableitungen. Im SQP-Verfahren werde die Hessematrix $\nabla_{xx}^2 L$ durch eine Quasi-Approximation $H^k$ angenähert. Die Folge $\{x_k\}$ konvergiere gegen $x^*$. Die Konvergenz ist genau dann superlinear, wenn
+
+\[ \lim_{k \to \infty} \frac{\|P^k (H^k - \nabla_{xx}^2 L(x^*)) (x^{k+1} - x^k)\|}{\|x^{k+1} - x^k\|} = 0 \]
+
+Dabei ist $P^k$ eine Matrix, die auf dem Nullraum von $\nabla {g^k}^T$ projeziert.
+
+\msection{Bemerkung 7.9}
+
+\[ P^k = I - \nabla g^k (\nabla {g^k}^T \nabla g^k)^{-1} \nabla {g^k}^T \]
+
+bzw. $P^k = Z^k {Z^k}^T$, wenn die Spalten von $Z^k$ den Nullraum von ${\nabla g^k}^T$ aufspannen, z.\,B. $\nabla g^k = \bpm Q_1^T & Q_2^T \epm \bpm L \\ = \epm$, $Z^k = Q_2^T$.
+
+Nebenrechnung:
+
+\begin{align*}
+p &= p_1 + p_2 \\
+p_1 &= \nabla g q \\
+p_2 &= Q_2^T r \\
+p^k p &= Q_2^T Q_2  \\
+&= Q_2^T \underbrace{Q_2 \nabla g}_{=0} q + \underbrace{Q_2^T Q}_{=I} Q_2^T r \\
+&= Q_2^T r = p_2 \\
+\end{align*}
+
+
+\msection{Satz 7.10 (Superlineare Konvergenz von BFGS-SQP-Verfahren}
+
+Gelten die Annahmen wie in Satz 7.8. Seien $\nabla_{xx} L(x^*)$ und $H^0$ symmetrisch und positiv definit. Wenn $\|x^0 - x^*\|$ genügend klein und $\|\nabla_{xx}^2 L(x^*) - H^0\|$ genügend kleine sind erfüllen die BFGS-Approximationen $H^k$ die Formel (7.12). Die Iterierten konvergieren superlinear gegen $x^*$. Dieses Resultat gilt auch für Ungleichungsbeschränkungen.
+
+\msection{7.4 SQP-Verfahren für NLPs mit Ungleichungsbeschränkungen}
+
+\[ \min f(x) \text{ s.\,t. } g(x) = 0 \text{ und } h(x) \leq 0 \quad (7.13) \]
+
+SQP-Verfahren: wie Algorithmus 7.3 aber löse ungleichungsbeschränkte QPs:
+
+\begin{align*}
+\min &\frac 12 \Delta x^T H^k \Delta x + \nabla f(x^k)^T \Delta x  \quad (7.14) \\
+0 &= g(x^k) + \nabla g(x^k)^T \Delta x \\
+0 & \geq h(x^k) + \nabla h(x^k)^T \nabla x \\
+\end{align*}
+
+mit Lösung $\Delta x^k$ und Lagrange-Multiplikatoren $\mu^k$ und $v^k \geq 0$. Iteriere $x^{k+1}$, $\lambda^{k+1}$ und $\mu^{k+1} := \mu^k + \alpha^k (v^k - \mu^k)$. Wenn $\mu^0 \geq 0$ und $\alpha \in (0,1]$ ist $\mu^k \geq 0$.
+
+
+\msection{Lemma 7.11}
+
+Sei $x^*$ Lösung von 7.13. Dann gilt:
+
+\begin{align*}
+\min &\frac 12 \Delta x^T H \Delta x + \nabla f(x^*)^T \Delta x \quad (7.15)\\
+0 &= g(x^*) + \nabla g(x^*)^T \Delta x \\
+0 & \geq h(x^*) + \nabla h(x^*)^T \Delta x
+\end{align*}
+
+mit $H$ positiv definit auf $T(x^*) = \{ p: \nabla g(x^*)^T pi = 0, \nabla h_i (x^*)^T p = 0, i \in I(x^*) \}$ hat die Lösung $\Delta x = 0$ und die Lagrangemultiplikatoren $u = \lambda^*$, $v = \mu^*$. Die aktiven Ungleichungen des QP sind $I(x^*)$. Beweis:
+
+\begin{align*}
+L_{QP} &= \frac 12 \Delta x^T H \Delta x + \nabla {f^*}^T \Delta x + u^T (g^* + \nabla {g^*}^T \Delta x) + v^T (h^* + \nabla {h^*}^T \Delta x) \\
+\nabla_{\Delta x} L_{QP} &= H \Delta x + \nabla f^* + \nabla g^* u + \nabla h^* v = 0 \\
+\end{align*}
+
+für $\Delta x = 0$, $u = \lambda^*$, $v = \mu^*$ wegen Minimalität von $x^*$. Gleichungs- und Ungleichungsbeschränkungen sind erfüllt, $v \geq 0$.
+
+\msection{Lemma 7.12}
+
+Sei $\hat x \in U_\eps (x^*)$ für geeignetes $\eps>0$. Sei $H$ positiv definit auf $T(x^*)$. Betrachte das QP (7.15) mit $\hat x$ statt $x^*$. Für dessen Lösung gilt $\hat x \cong 0$, $\hat \mu \cong \lambda^*$, $\hat v \cong \mu^*$ und die aktiven Ungleichungen sind $I(x^*)$. Beweis: Störungssatz 6.27.
+
+\msection{Folgerung 7.13}
+
+\bitm
+\item Für festes $H$ werden die aktiven Indizes bestimmt, wenn $\hat x \to x^*$.
+\item Wenn das SQP-Verfahren konvergiert: $x^k \to x^*$ und die Folge der $H^k$ beschränkt bleibt, dann existiert $k_0$, so dass $\forall k \geq k_0$ das QP (7.14) die aktiven Indizes $I(x^*)$ liefert.
+\eitm
+% Wenn man so ein SQP-Verfahren beim Arbeiten beobachtet...
+
+\msection{Lösung von Ungleichungsbeschränkten QP mit einer Active-Set-Methode}
+
+QP: Schreibe $x$ statt $\Delta x$, eigentlich Unterproblem des SQP-Verfahrens. Annahme: $H$ positiv definit.
+
+\begin{align*}
+\min &\frac 12 x^T H x + g^T x \text{ (quadratische Zielfunktion)} \\
+\text{ s.\,t. } b_i &= a_i^T x, i \in E \text{ (Gleichungsbeschränkungen)} \\
+b_i &\geq a_i^T x, i \in I \text{ (Ungleichungsbeschränkungen)} \\
+\end{align*}
+
+$A(x) := \{ i \in E \cup I : a_i^T x = b \}$ Indexmenge alle mit Gleichheit erfüllten Beschränkungen. Wenn man $A(x^*)$ kennt kann man die lösung $x^*$ durch lösen des Gleichungsbeschränkten QPs
+
+\[ \min \frac 12 x^T H x + g^T x \text{ s.\,t. } b_i = a_i^T x, i \in A(x^*) \]
+
+bestimmen.
+
+\msection{Active-Set-Strategie}
+
+hier: primale Variante.
+
+Starte mit einer Schätzung $W^0$ des active Set, ändere $W^k$ ("`Working Set"') sukzessive. $W^k$ besteht aus allen Gleichungsbeschränkungen und einigen Ungleichungsbeschränkungen, so dass immer die $a_i^T$, $i \in W^k$ linear unabhängig sind.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

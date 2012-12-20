@@ -300,11 +300,61 @@ hier: primale Variante.
 
 Starte mit einer Schätzung $W^0$ des active Set, ändere $W^k$ ("`Working Set"') sukzessive. $W^k$ besteht aus allen Gleichungsbeschränkungen und einigen Ungleichungsbeschränkungen, so dass immer die $a_i^T$, $i \in W^k$ linear unabhängig sind.
 
+\msection{Algorithmus 7.14: Active-Set-Methode für konvexe QP}
 
+\bitm
+\item Starte mit einem zulässigen Startpunkt $x^0$. Sei $W^0$ eine Teilmenge von $A(x^*)$ mit linear unabhängigen $a_i^T$ und sei $k:=0$.
 
+Iteriere $k=0,1,2,\cdots$
+\item Bestimme Schritt $p^k$ durch Lösung von  $\min \frac 12 p^T H p + {c^k}^T p$ so dass $0 = a_i^T p$, $i \in W^k$ mit $c^k = H x^k + g$. $p^k$ erfüllt $a_i^T (x^k + \alpha p^k) = a_i^T x^k = b_i \forall i \in W^k$, d.\,h. Schritte in Richtung $p^k$ bleiben zulässig $\forall i \in W^k \forall \alpha \in \R$.
+\item Wen $p^k = 0$: Berechne Lagrangemultiplikatoren $\lambda^k$ für (7.17). Diese erfüllen
+\begin{align*}
+0 &= H p^k + x^k + \sum\limits_{i\in W^k} \lambda_i^k a_i \\
+\RA - \sum\limits_{i\in W^k} \lambda_i^k a_i &= c^k = H x^k + g \\
+\end{align*}
+\item  Wenn $\lambda_i^k \geq 0 \forall i\in W^k \cap I$ und $\lambda_i^k := 0$ für $i \notin W^k$, dann sind alle Optimalitätsbedingungen des QP (7.16) erfüllt:
+\begin{align*}
+H x^k + g + \sum\limits_{i \in E \cup I} \lambda_i^k a_i &= 0 \\
+a_i^Tx^k &= b_i \quad i \in E \\
+\lambda_i^k & \geq 0 \quad \forall i \in I \\
+a_i^T x^k &= b_i \quad i \in I \\
+\end{align*}
+$x^* := x^k$ ist Lösung, Stop.
+\item Wenn $\lambda_i^k < 0$ für ein $j \in W^k$, dann kann man durch Weglassen dieser Nebenbedingung den Wert der Zielfunktion verkleinern. Ändere den Working set $W^{k+1} := W^k \setminus \{j_0 \}$ mit $j_0\colon$ ein Index des kleinsten $\lambda_i^k < 0$. Dann gilt: Im nächsten Schritt bleibt die Nebenbedingung $j_0$ zulässig: $x^{k+1} = x^k$, $p^{k+1}$, $\lambda^{k+1}$ erfüllt
+\begin{align*}
+-\sum\limits_{i\in W^{k+1}} \lambda_i^{k+1} a_i &= H p^{k+1} + c^{k+1} \\
+&= H p^{k+1} + H x^k + g \\
+\text{und } a_i^T p^{k+1} &= 0 \quad \forall i \in W^{k+1} \\
+\text{Ergibt: } -\sum\limits_{i\in W^{k1+}} (\lambda_i^{k+1} - \lambda_i^k) a_i + \lambda_{j_0}^k a_{j_0} &= H p^{k+1} \\
+\lambda_{j_0}^k {p^{k+1}}^T a_{j_0} &= {p^{k+1}}^T H p^{k+1} \geq 0 \\
+\text{und somit } a_{j_0}^T (x^{k+1} + \alpha p^{k+1}) &= a_{j_0}^T x^k + \alpha a_{j_0}^T p^{k+1} \leq b_{j_0} \quad \forall \alpha \geq 0 \\
+\end{align*}
+\item Wenn $p^k \neq 0$: Bestimme Schrittweite $\alpha^k \in [0,1]$, so dass für $x^{k+1} = x^k + \alpha^k p^k$ alle Nebenbedingungen, auch $i \notin W^k$ erfüllt sind.
+Falls $a_i^T p^k \leq$ für $i \notin W^k$ dann ist $a_i^T (x^k + \alpha p^k) = a_i^T x^k + \alpha a_i^T p^k \leq b_i \, \forall \alpha \geq 0$.
+Wenn $a_i^T p^k > 0$ muss $\alpha \leq \frac{b_i - a_i^T x^k}{a_i^T p^k}$ erfüllt sein. Wähle $\alpha^k := \min \l\{1,\underbrace{\min_{i\notin W^k,\,a_i^T p^k > 0} \frac{b_i-a_i^T x^k}{a_i^T p^k}}_{(*)} \r\}$ (*): Nebenbedingungen, die das erfüllen heißen blockierende Nebenbedingungen. $\alpha^k$ kann auch $0$ sein. Wenn es blockierende Nebenbedingungen gibt, bilde $W^{k+1} := W^k \cup \{i_0\}$ mit einer blockierenden NB $i_0$. Ansonsten setze $W^{k+1} = W^k$. Iteriere $X^{k+1} := x^k + \alpha^k p^k$. Dabe gilt: Die Zielfunktion nimmt in Richtung $p^k$ strikt ab: Weil $p^k$ minimal ist für (7.17) gilt:
+\[ \frac 12 {p^k}^T H p^k + {c^k}^T p^k < \frac 12 0^T H 0 + {c^k}^T 0 = 0 \]
+also
+\begin{align*}
+\frac 12 (x^k + \alpha p^k)^T H (x^k + \alpha p^k) + g^T (x^k + \alpha p^k) \\
+&= \frac 12 {x^k}^T H x^k + g^T x^k + \alpha \underbrace{ {x^k}^T p^k}_{<0} + \frac 12 \alpha^2 \underbrace{{p^k}^T H p^k}_{>0} \\
+& < \frac 12 {x^k}^T H x^k + g^T x^k
+\end{align*}
+für $\alpha$ klein genug. ggf. verkleinere $\alpha$ durch Linesearch
+\eitm
 
+\msection{Bemerkung 7.15}
 
+In jeder Iteration bleiben alle Nebenbedingungen erfüllt: Die, die in $W^k$ bleiben, siehe Schritt 1. Die, die nicht in $W^k$ waren siehe Schritt 5. Die, die aus $W^k$ entfernt wurden siehe Schritt 4.
 
+\msection{Satz 7.16}
+
+Unter bestimmten Vorraussetzungen terminiert Algorithmus 7.14 in endlich vielen Iterationen.
+
+Alternative:
+
+\msection{Innere-Punkt-Methode}
+
+Phase 1: Löse ein Hilfs-QP (LP) zur Bestimmung eines zulässigen $x^0$.
 
 
 

@@ -1,0 +1,191 @@
+
+\chaptr{8. Optimale Steuerung}
+
+\msection{Problemformulierung}
+
+\msubsection{Beispiel: Fahrdynamik}
+
+Bringe Fahrzeug (Bahn, Auto) von A nach B. Fahrzeug soll am Anfang und Ende in Ruhe sein. Minimiere dabei die Zeit oder den Energieverbrauch oder maximiere die Reichweite etc.
+
+Modell: Gewöhnliche Differentialgleichung:
+
+\begin{align*}
+\ddot s &= \frac{\partial^2}{\partial t^2} s = \frac 1M f(s,\dot s, u) \\
+s \colon & [0,T] \to \R^n \quad \text{ "`Ort"'} \\
+v = \dot s \colon &[0,T] \to \R^n \quad \text{ "`Geschwindigkeit"'} \\
+\ddot s \colon &[0,T] \to \R^n \quad \text{ "`Beschleunigung"'} \\
+M: & \text{ Masse} \\
+f: & \text{ Kräfte, hängen ab von }\\
+- & \text{ Ort $s$, z.\,B. Gefälle} \\
+- & \text{ Gewschwindigkeit (z.\,B. Reibung)} \\ 
+- & \text{ Steuerung $u$, z.\,B. Gaspedal, Bremse, Lenkrad} \\
+\end{align*}
+
+Steuerungen sind in Grenzen frei wählbar.
+
+Spezialfall: Raketenwagen
+
+\begin{align*}
+\ddot s &= u \\
+\underline u & \leq u(t) \leq \ov u \quad \text{ Steuerungsbeschränkung} \\
+\end{align*}
+
+Randbedingungen:
+
+\begin{align*}
+s(0) &= A \\
+s(T) &= B \\
+\dot s(0) &= v(0) = 0 \\
+\dot s(T) &= v(T) = 0 \\
+\end{align*}
+
+Transformation auf System erster Ordnung:
+
+\begin{align*}
+\dot v &= u \\
+\dot s &= v
+\end{align*}
+
+Zeitintervall $[0,T]$. Die Endzeit $T$ kann fest oder frei sein.
+
+Zustandsbeschränkung: $v_{min} \leq v(t) \leq v_{max}$. Erste Frage: Gibt es zulässige Lösungen, also Steuerungen $u$ und Zustände $(s,v)$ so dass die Differentialgleichungen, Randbedingungen, Randbedingungen, Steuerungsbeschränkungen und Zustandsbeschränkungen erfüllt sind? Sinnvolles Setting im Beispiel: $\underline u < 0 < \ov u$. $T$ muss ausreichend groß sein. $v_{min} \leq 0$, zumindest lokal im Ort, $v_{max} > 0$. Wenn $T$ genügend groß ist gibt es im Allgemeinen mehrere Lösungen.
+
+Wenn $T$ so klein wie möglich gewählt wird, gibt es in der Regel nur eine zulässige Lösung.
+
+Zweite Frage: Es gebe zulässige Lösungen, suche optimale Lösung.
+
+Mögliche Kriterien:
+
+\bitm
+\item zeitoptimal: $\min T = \int_0^T 1 \dt$
+\item energieoptimal: $\min \frac 12 \int_0^T u(t)^2 \dd t$ 
+\item reichweitenoptimal: $\max s(T)$, lasse Randbedingungen $s(t)=B$, $v(T) = 0$ weg, zusätzliche Nebenbedingung: $\frac 12 \int_0^T u(t)^2 \dd t \leq E_{max}$.
+\item Kombinationen dieser Kriterien: $\min w_1 T + w_2 \frac 12 \int_0^T u(t)^2 \dd t$.
+\eitm
+
+\msection{Allgemeine Problemformulierung}
+
+\msubsection{Modellgleichung}
+
+\begin{align*}
+\dot y(t) &= f(t,y(t),q,u(t)) \quad (8.1) \\
+y\colon [t_0, \tend] &\to \R^{n_y}: \quad \text{Zustände} \\
+q & \in \R^{n_q}: \quad \text{Steuergrößen}
+u\colon [t_0, \tend] &\to \R^{n_u} \quad \text{Steuerfunktionen, Steuerungen} \\ 
+\end{align*}
+
+Bemerkung: Steuerungen und Steuergrößen können vom Experimentator gewählt werden. $t_0$ und $\tend$ können fest oder frei sein.
+
+\msubsection{Randbedingungen}
+
+\begin{align*}
+y(t_0) &= y_0 \quad \text{Anfangsbedingung} \\
+r(t_0, y(t_0), t_1, y(t_1), \cdots, \tend, y(\tend), q) &= 0 \quad \text{ oder } \geq 0 \\
+\end{align*}
+
+
+\msubsection{Steuerungsbeschränkungen}
+
+\begin{align*}
+u(t) & \in \Omega(t) \subset \R^{n_u} \\
+\Omega(t): & \quad \text{Steuerungsbereich} \\
+\end{align*}
+
+$u$ ist messbar.
+
+Beispiele:
+
+\bitm
+\item keine Beschränkungen
+\item $\Omega$ Polyeder, $\Omega = \{ u : a_j^T u \leq b_j, j=1,\cdots,m \}$
+\item $\Omega$ Quader, $\Omega = \prod_{i=1}^{n_u} [\underline u_i, \ov u_i ]$
+\item $\Omega$ diskret, $\Omega = \{ 1,2,3,4,R\}$ (Gangschaltung o.\,ä.).
+\item Kombinationen davon
+\eitm
+
+
+\msubsection{Zustandsbeschränkungen}
+
+\begin{align*}
+b(t,y(t), q, u(t)) &= 0 \quad \text{ oder } \geq 0 \quad \forall t \in [t_0, \tend] 
+\end{align*}
+
+\msubsection{Zielfunktional}
+
+\bitm
+\item Mayersche Form: \[ \min_{u,q,y,\tend} \Phi(y(\tend), \tend, q) \]
+\item Lagrange Form: \[ \min_{u,q,y,\tend} \int\limits_{t_0}^\tend L(t,y(t),q,u(t)) \dd t \]
+\item Bolza-Form: \[ \min_{u,q,y,\tend} \Phi(y(\tend), \tend, q) + \int\limits_{t_0}^\tend L(t,y(t),q,u(t)) \dd t \]
+\eitm
+
+\msubsection{Bemerkung 8.1}
+
+Statt einer ODE kann auch eine DAE betrachtet werden. Dann sind die Konsistenzbedingungen zu berücksichtigen, siehe oben.
+
+\msubsection{Bemerkung 8.2}
+
+Da die Steuerfunktion im Allgemeinen beliebige messbare Funktionen sein können, ergeben Punktauswertungen von $u$ keinen Sinn. $u(t)$ geht deshalb nicht in die Randbedingung und nicht in den Meyer-ZF-Term ein.
+
+\msubsection{Bemerkung 8.3}
+
+Die drei Standardformen des Zielfunktionals sind äquivalent und können ineinander übergeführt werden, siehe Übungsaufgabe.
+
+\msubsection{Bemerkung 8.4}
+
+Probleme mit freier Endzeit können in Probleme mit fester Endzeit transformiert werden:
+
+Definiere normierte Zeit 
+
+\begin{align*}
+\tau &\in [0,1] \\
+t &= t_0 + \tau (\tend-t_0) = \phi(\tau) \\
+\dd t &= (\tend -t_0) \dd \tau =: \hat t \dd \tau \\
+\text{also } \frac{\partial y}{\partial \tau} &= \tend - t_0 = \hat t \\
+\text{Dann ist } y(t) &= y(\phi(\tau)) =: \ov y(\tau)  \\
+u(t) &= u(\phi(\tau)) =: \ov u(\tau) \\
+\frac{\partial \ov y}{\partial \tau} &= \frac{\partial y}{\partial t}{\partial \phi}{\partial \tau} = f(\phi(\tau), y(\phi(\tau)), q, u(\phi(\tau)))- \hat t \\
+&=: \ov f(\tau, \hat y(\tau), \hat q, \hat u(\tau)) \\
+\text{mit } \ov q &= (q, \hat t) \\
+\end{align*}
+
+Die Intervalllänge $\hat t$ ist zu einer zusätzlichen Steuergröße geworden. Das so transformierte DGL-System hat das feste Zeitintervall $\tau \in [0,1]$. $\hat x$, $\hat u$ setzt man in Zielfunktion, Randbedingungen, Steuerungebeschränkungen und Zustandsbeschränkungen ein.
+
+\msection{8.3 Ansätze zur Lösung von Optimalsteuerungsproblemen}
+
+\msubsection{First Optimize then Discretize}
+
+Formuliere die Optimalitätsbedinungen des Optimalsteuerungsproblems im Funktionenraum. Hier: Pontryaginsches Maximumsprinzip. Erhalte Randwertproblem. "`Rate"' Struktur der optimalen Lösung. Verifiziere Optimalität. Vorteile:
+
+\bitm
+\item Rigorose mathematische Untersuchung der optimalen Lösung.
+\eitm
+
+Nachteile:
+
+\bitm
+\item Für komplexe Probleme schwierig zu formulieren.
+\item Struktur der Lösung mus erraten werden.
+\eitm
+
+Siehe Kapitel 10: Indirekter Ansatz.
+
+
+\msubsection{First Discretize then Optimize}
+
+Parametrisiere die Steuerfunktion in einem endlichdimensionalen Unterraum. Erhalte endlichdimensionales, ggf. hochdimensionales aber strukturiertes Optimierungsproblem. Löse diese mit maßgeschneiderten NLP-Methoden.
+
+Nachteile:
+
+\bitm
+\item Es werden nur suboptimale Lösungen berechnet.
+\item Strukturelle Aussagen sind schwer möglich.
+\eitm
+
+Vorteile:
+
+\bitm
+\item In der Praxis werden Steuerungen oft genau so realisiert, wie sie hier parametrisiert werden.
+\item Die Methode kann sehr flexibel und robust 
+\item Zur Simulation der Modellgleichungen, Auswertung der Ableitungen und zur nichtlinearen Optimierung können maßgeschneiderte numerische State-of-the-art-Methoden eingesetzt werden, siehe Kapitel 9: Direkter Ansatz.
+\eitm
+

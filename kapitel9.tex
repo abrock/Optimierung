@@ -1,0 +1,27 @@
+
+\chaptr{9. Direkter Ansatz der optimalen Steuerung}
+
+Betrachte \obda Probleme mit fester Anfangs- und Endzeit und Lagrange-Zielfunktional.
+
+Schwierigkeit: $u\colon [t_0,\tend] \to \R^{n_u}$ ist Element eines unendlichdimensionales Funktionenraumes. Idee: Drücke $u$ durch endlich viele Variablen $q_i$ aus, zum Beispiel durch lokale Ansatzfunktionen:
+Wähle Gitter: $t_0 = \tau_0 < \tau_1 < \cdots < \tau_m = \tend$. Ersetze $u(t)$ auf $t \in [\tau_i, \tau_{i+1})$ durch eine lokale Ansatzfunktion $u(t) = \phi_i(t,q_i)$, $t \in [\tau_i, \tau_{i+1})$, $i = 0, \cdots, m-1$ mit endlich vielen Parametrisierungsvariablen $q_i \in \R^{n_{q_i}}$.
+
+Typische Beispiele: Stückweise Polynome, stückweise linear, stückweise linear und stetig.
+
+Stetigkeitsbedinung: $\phi_i (t_{i+1}, q_i) = \phi_{i+1} (t_{i+1}, q_{i+1})$
+
+\msubsection{Bemerkung 9.1}
+
+Stückweise lineare stetige Steuerfunktionen können auch durch Integration von stückweise konstanten Steuerfunktionen gebildet werden. Zusätzliche DGL: $\dot y_{n+1} = u$ hat als Lösung eine stückweise lineare Funktion.
+
+
+
+
+
+
+
+
+
+
+
+

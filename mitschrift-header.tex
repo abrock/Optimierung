@@ -3,18 +3,27 @@
 \usepackage[ngerman]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amssymb, amsmath, microtype}
-\usepackage{dsfont}
+\usepackage{dsfont, xspace}
 
 
 %\title{Numerische Mathematik 2}
 %\author{Stephan Körkel}
 %\date{\today}
 
-%\newcommand\obda{o.\,B.\,d.\,A.\xspace}
+\newcommand\obda{o.\,B.\,d.\,A.\xspace}
 
 \newcommand\mathstuff{\mathds}
 \newcommand\bitm{\begin{itemize}}
 \newcommand\eitm{\end{itemize}}
+
+\newcommand{\BIGOP}[1]{\mathop{\mathchoice%
+{\raise-0.22em\hbox{\huge $#1$}}%
+{\raise-0.05em\hbox{\Large $#1$}}{\hbox{\large $#1$}}{#1}}}
+\newcommand{\bigtimes}{\BIGOP{\times}}
+% nur fuer Bigboxplus andere Korrekturen
+\newcommand{\BIGboxplus}{\mathop{\mathchoice%
+{\raise-0.35em\hbox{\huge $\boxplus$}}%
+{\raise-0.15em\hbox{\Large $\boxplus$}}{\hbox{\large $\boxplus$}}{\boxplus}}}
 
 \renewcommand\phi{\varphi}
 %\newcommand\ellipsen{\circledast}
@@ -30,7 +39,7 @@
 \newcommand\trace{\mathrm{Sp}}
 \newcommand\Image{\mathrm{Bild}}
 \newcommand\Rg{\mathrm{Rg}}
-\newcommand \tend{t_{end}}
+\newcommand \tend{{t_{end}}}
 \newcommand\Log{\mathrm{Log}}
 \newcommand\R{\mathstuff{R}}
 \newcommand\C{\mathstuff{C}}

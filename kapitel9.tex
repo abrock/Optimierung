@@ -14,12 +14,111 @@ Stetigkeitsbedinung: $\phi_i (t_{i+1}, q_i) = \phi_{i+1} (t_{i+1}, q_{i+1})$
 
 Stückweise lineare stetige Steuerfunktionen können auch durch Integration von stückweise konstanten Steuerfunktionen gebildet werden. Zusätzliche DGL: $\dot y_{n+1} = u$ hat als Lösung eine stückweise lineare Funktion.
 
+\msubsection{Bemerkung 9.2}
 
+\bitm
+\item Verschiedene Komponenten von u können verschieden behandelt werden.
+\item Wenn man Ansatzfunktionen mit lokalem Träger (insbesondere keine Spline-Funktionen) verwendet, dann werden die Größen $q_i$ nur auf dem intervall $[\tau_i, \tau_{i+1})$ vorkommen $\RA$ Entkopplung $\RA$ Blockstruktur der Hessematrix, siehe unten.
+\item Prinzipiell können im direkten Ansatz aber beliebige Parametrisierungen mit endlich vielen Freiheitsgraden verwendet werden.
+\eitm
 
+Damit haben wir endlich viele Variablen erhalten:
 
+\bitm
+\item $q$: Zeitunabhängige Steuerungen
+\item $q_0, \cdots, q_{m-1}$ Parametrisierungsvariablen auf $[\tau_i, \tau_{i+1})$
+\eitm
 
+Fasse zusammen: $\ov q := (q, q_0, \cdots, q_{m-1}) \in \R^{n_q}$.
 
+\msubsection{Umformulierung der Steuerungsbeschränkungen}
 
+Beschränkungen an $u(t)$ gehen über in Beschränkungen an $q_i$, \zB $u_l \leq u(t) \leq u_u$ geht über in $q_l \leq q_i \leq u_u$, $i=0,\cdots,m-1$ bei stückweise konstanter Parametrisierung. Bei stückweise linearer Parametrisierung: am Anfang und Ende der Intervalle: $u_l\leq q_{i0} \leq u_u$, $u_l \leq q_{i0} + (\tau_{i+1} - \tau_i) q_{i1} \leq u_u$.
+
+Auch die Zustandsbeschränkungen $b(t,y(t),q,u(t)) \geq 0$ sind unendlichdimensional. Behandlung: Punktweise Auswertung auf einem Gitter $t_0 \leq t_1 < \cdots < t_k \leq \tend$, $b(t_j, y(t_j), q, \phi_{i(j)} (t_j, q_{i(j)})) \geq 0$, $j=1,\cdots,k$, $i(j)$ so, dass $t_j \in [\tau_{i(j)}, \tau_{i(j)+1})$. Alternative: Penalty-Term in der Zielfunktion, kontinuierliche Behandlung.
+
+Insgesamt erhalten wir:
+
+\begin{align*}
+\min_{q,\ov q} &\sum\limits_{i=0}^{m-1} \int\limits_{\tau_i}^{\tau_{i+1}} L(t, y(t), q, \phi_i(t, q_i)) \dd t = \sum\limits_{i=0}^{m-1} \int\limits_{\tau_i}^{\tau_{i+1}} \ov L(t, y(t), \ov q) \dd t \quad (9.3) \\
+\text{\st } \quad \dot y &= f(t,y(t), q, \phi_i(t,q_i) \quad t \in [\tau_i, \tau_{i+1}), \quad i = 0, \cdots, m-1 \\
+&= \ov f(t,y(t),\ov q) \\
+\text{und Randbedingungen: } y(t_0) &= y_0(q) \\
+r(t_0, y(t_0), \cdots, \tend, y(\tend), q) &= 0 \\
+\text{Punktweise Bedingungen: } &b(t_j, y(t_j), q, \phi_{i(j)} (t_j, q_{i(j)})) \quad j=1,\cdots, k \\
+&= \ov b(t_j, y(t_j), \ov q) \geq 0 \\
+\text{Steuerungsbeschränkungen: } q_l & \leq \ov q \leq q_u \\
+b_l & \leq A\ov q \leq b_u \quad \text{ mit geeigneten } q_l, q_u, b_l, b_u, A 
+\end{align*}
+
+zu tun bleibt: Parametrisierung der Zustandsvariablen.
+
+Beispiel: Bimolekulare Katalyse, siehe auch Kapitel 2.
+
+\begin{align*}
+A+B & \to C \\
+\intertext{Molzahlen } n_1, n_2, n_3, t \in [0,10] \\
+k &= k_1 + k_2 \\
+&= f_1 \exp \l( -\frac{E_1}{RT} \r) +c_{kat} \exp \l( -\lambda t \r) f_2 \exp \l( - \frac{E_2}{RT} \r)\\
+\dot n_1 &= - V k \frac{n_1}V \frac{n_2}V, n_1(0) = n_{10} \\
+\dot n_2 &= - V k \frac{n_1}V \frac{n_2}V, n_2(0) = n_{20} \\
+\dot n_3 &= V k \frac{n_1}V \frac{n_2}V, n_3(0) = 0 \\
+\end{align*}
+
+Der Prozessverlauf wird bestimmt durch:
+
+\bitm
+\item Parameter $f_1, E_1, f_2, E_2, \lambda$, jetzt Konstanten.
+\item Steuergrößen: \[ q = \begin{cases} V: & \text{ Volumen} \\
+n_{10}: & \text{ Anfangsmolzahl von A} \\
+n_{20}: & \text{ Anfangsmolzahl von B} \\
+c_{kat}: & \text{ Katalysatorkonzentration} \end{cases} \]
+\eitm
+
+Mögliche Zielfunktion: Maximiere die Molzahl des Reaktionsproduktes: $\min -n_3(\tend)$ (Meyer-Zielfunktion). Parametrisierung der Steuerfunktion: Stückweise linear und stetig auf 3 Intervallen:
+
+\begin{align*}
+t \in [0,2): T(t) &= q_5 + t q_6 \\
+t \in [2,8): T(t) &= q_7 + (t-2) q_8 \\
+t \in [8,10]: T(t) &= q_9 + (t-8)q_{10} \\
+\end{align*}
+
+Nebenbedingungen:
+
+\begin{align*}
+q_6 &= 0 \\
+q_7 &= q_5 \\
+q_7 + 6 q_8 &= q_9 \\
+q_{10} &= 0
+\end{align*}
+
+Grenzen:
+
+\begin{align*}
+q_5 &\in [293, 393] \\
+q_9 &\in [293, 393] \\
+\end{align*}
+
+\msection{9.2 Direktes Single-Shooting}
+
+Wähle Werte für die Anfangswerte $y(t_0) = s_0$ (oder konstant oder $q_j$) und für die Steuerungen $\ov q = (q,q_0,\cdots,q_{m-1})$. Löse Anfangswertproblem $\dot y 0 f(t,y(t),q,\phi_0(t,q_0))$, $t\in[\tau_0,\tau_1)$, $y(t_0) = s_0$. $\dot e = L(t,y(t),q,\phi_0(t,q_0))$, $t \in [\tau_0, \tau_1)$, $e(t_0) = 0$ (9.4) und sukzessive $\dot y = f(t,y,q,\phi_i(t,q_i))$, $\dot e = L(t,y,q,\phi_i(t,q_i))$, $t\in[\tau_i, \tau_{i+1})$. Liefert Lösung $y(t,s_0,q,q_0,q_1,\cdots,q_{m-1})$ und Zielfunktionswert $e(t,s_0,q,q_0,q_1,\cdots,q_{m-1})$. Interessant ist nur $e(\tend,s_0,q,q_0,\cdots,q_{m-1})$
+
+Bemerkung: $y(t,s_0,q,q_0,q_{m-1})$ hängt nur von den $q_i$, $i=0,\cdots,j$ ab für $t \leq \tau_{j+1}$. Damit ergibt sich ein endlichdimensionales Optimierungsproblem in den Variablen $X=(s_0,q,q_0,\cdots,q_{m-1})$ (9.3)
+
+\begin{align*}
+\min_x F_1(x) &= e(\tend, x) \\
+\text{\st } \quad F_2(x) &= r(t_0, y(t_0, x), \cdots, \tend, y(\tend, x), q) =: \ov r(x) = 0, \quad j=1,\cdots,k\\
+F_3(x) & \geq 0 \quad \text{ umfasst alle Ungleichungen: } \ov b(t_j,y(t_j,x),x) \geq 0, \quad q_l \leq \ov q \leq q_u, \\
+b_l & \leq A \ov q \leq b_u \\
+\end{align*}
+
+Zur Auswertung von Zielfunktion und Nebenbedingungen von (9.6) sind jeweils die Anfangswertprobleme (9.4) zu lösen. Das Optimierungsproblem:
+
+\begin{align*}
+\min_x F_1(x) \text{ s.\,t. } F_2(x) = 0 \text{ s.\,t. } F_3(x) \geq 0 
+\end{align*}
+
+ist ein NLP und kann mit NLP-Methoden gelöst werden, am besten mit SQP-Verfahren, siehe Kapitel 7.
 
 
 

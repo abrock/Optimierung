@@ -120,6 +120,146 @@ Zur Auswertung von Zielfunktion und Nebenbedingungen von (9.6) sind jeweils die 
 
 ist ein NLP und kann mit NLP-Methoden gelöst werden, am besten mit SQP-Verfahren, siehe Kapitel 7.
 
+\msection{9.3 Direktes Multiple Shooting}
+
+Problem beim Single-Shooting: Mit schlechten Startwerten starten wir weit weg von der Lösung und können Schierigkeiten bei der Konvergenz des SQP-Verfahrens bekommen. Wenn wir über die Steuergrößen $(q, q_0, \cdots,q_{m-1})$ keine Informationen haben, bekommen wir ggf. Trajektorien $y(t)$, die sehr weit von der optimalen Lösung entfernt sind oder evtl. nicht auf dem ganzen Intervall $[t_0, \tend]$ existieren. Aber: Der ungefähre Verlauf von $y(t)$ ist oft durchaus bekannt.
+
+\msection{Mehrzielmethode / Multiple Shooting}
+
+\bitm
+\item Wähle ein Gitter der Mehrzielknoten $t_0 = \tau_0 < \tau_1 < \cdots < \tau_m = \tend$ (9.7). Zur Vereinfachung: gleiches Gitter wie für Parametrisierung der Steuerungen , aber das ist nicht notwendig.
+\item Wähle Werte für die Anfangswerte der Zustände in den Mehrzielknoten: $y(\tau_i) = s_i$, $i=0,\cdots,m-1$. Hier: Möglichkeit, Vorinformationen einzubringen.
+\item Wähle Werte für die parametrisierten Steuerungen $q_i$, $i=0,\cdots,m-1$. \obda diskutieren wir die nicht zeitabhängigen Steuergrößen $q$ weg. Dafür gibt es zwei Möglichkeiten:
+\bitm
+\item Formuliere sie als stückweise konstant und stetig parametrisierte Steuerfunktion.
+\item Formuliere zusätzliche Zustände.
+\[ \bpm y_{n_y +1} \\ \vdots \\ y_{n_y +n_q} \epm \]
+mit $\dot y_{n_y +j} \equiv 0$.
+\eitm
+Der Integrator sollte diese Zustände nicht mitintegrieren und keine VDE dafür lösen.
+\item Variablen sind also $X = (s_0, q_0, s_1, q_1, \cdots, s_{m-1}, q_{m-1})$ (9.8) 
+\item Löse Anfangswertproblem
+\begin{align*}
+\dot y &= f(t,y,\phi_i(t,q_i)) = \ov f(t,y,q_i) \quad (9.9) \
+y(\tau_i) &= s_1 \\
+\dot e &= L(t,y,\phi_i(t,q_i)) = \ov L(t,y,q_i) \\
+e(\tau_i) &= 0 \quad i = 0,1,\cdots,m-1
+\end{align*}
+Es wird eine unstetige Trajektorie, bestehend auf Teiltrajektorien $y(t,\tau_i, s_i, q_i)$, $t \in [\tau_i,\tau_{i+1})$.
+\item Die Gesamttrajektorie muss stetig gemacht werden durch Anschlussbedingungen:
+\begin{align*}
+h_i(s_i,q_i,s_{i+1}) :&= y(\tau_{i+1}, \tau_i, s_i, q_i) - s_{i+1} = 0 \quad i=0,\cdots, m-2 \
+\end{align*}
+Anfangsbedingung bei $t_0 = \tau_0$: $y(t_0) = s_0$. Das sind insgesamt $((m-1)+1)\cdot n_y = m \cdot n_y$ Bedingungen für die $m \cdot n_y$ Zustandsvariablen.
+\item Zielfunktional:
+\begin{align*}
+&\min \sum\limits_{i=0}^{m-1} e(\tau_{i+1}, \tau_i, 0, q_i)  \quad (9.11)\\
+&= F_1(X)
+\end{align*}
+\item Nebenbedingungen: Setze $y(t, \tau_i, s_i, q_i)$ ein in Randbedingungen: 
+\[ r(\tau_0, s_0, \tau_1, s_1, \cdots, \tau_{m-1}, s_{m-1}, \tend, y(\tend, \tau_{m-1}, s_{m-1}, q_i)) = 0 \]
+Besser: separierbare Randbedingungen:
+\[ \sum\limits_{i=0}^{m-1} r_i(\tau_i, s_i) + r_m(\tend, y(\tend, \tau_{m-1}, s_{m-1}, q_{m-1})) = 0  \quad (9.12)\]
+verwende diese Variante
+\bitm
+\item In Zustandsbeschränkung:
+\[ b(\tau_i, s_i, q_i) \geq 0, \quad i=0,\cdots,m-1 \]
+Zur Vereinfachung: gleiches Gitter (nicht notwendig).
+\eitm
+\eitm
+
+Weitere Nebenbedingungen: Anschlussbedingungen, Steuerungsbeschränkungen
+
+\begin{align*}
+q_{lo} & \leq q \leq q_{up} \\
+v_{lo} &\leq A q \leq b_{up} \
+\end{align*}
+
+Zur Auswertung von Zielfunktion und Nebenbedingungen werden als Anfangswertprobleme auf den Mehrzielintervallen gelöst: $t \in [\tau_i, \tau_{i+1} )$. Diese Integrationen sind entkoppelt und können unabhängig voneinander parallel durchgeführt werden, dadurch kann das Problem auf modernen Mehrprozessor-Rechnern schneller als mit Single-Shooting gelöst werden. Zielfunktion und Nebenbedingungen sind separierbar, sie bestehen aus Beiträgen der einzelnen Mehrzielintervalle, die höchstens linear (hier als Summanden) gekoppelt sind.
+
+Zielfunktion:
+
+\[ \sum\limits_{i=0}^{m-1} e(\tau_{i+1}, \tau_i, s_i, q_i) \]
+
+Anschlussbedingungen:
+
+\[ y(\tau_{i+1}, \tau_i, s_i, q_i) - s_{i+1} = 0 \]
+
+Randbedingungen:
+
+\[ \sum\limits_{i=0}^{m-1} r_i(\tau_i, s_i) + r_m(\tend, y(\tend, \tau_{m-1}, s_{m-1}, q_{m-1})) = 0 \]
+
+Resultierendes Optimierungsproblem:
+
+\begin{align*}
+\min_x &F_1(x) \quad (9.13) \\
+F_2(x) &= 0 \quad \text{ Anschlussbedingungen, Randbedingungen} \\
+F_3(x) & \geq 0 \quad \text{ Zustandsbeschränkungen, Steuerungsbeschränkungen}\\
+\end{align*}
+
+Das Optimierungsproblem (9.13) hat die gleiche Lösung wie das aus der Single-Shooting-parametrisierung hervorgehende (9.6). Einerseits hat (9.13) viel mehr Variablen: $m n_y + m n_u f$ gegenüber $n_y + m n_u f$, andererseits hat es auch viel mehr Struktur:
+
+\bitm
+\item 1): Die Jacobimatrix $A$ der Nebenbedingungen ist dün besetzt.
+\item 2): Die Hesse-Matrix der Lagrange-Funktion ist Block-diagonal.
+\eitm
+
+Zu 1):
+
+\begin{align*}
+& \text{Anschlussbedingungen:} \\
+\frac{\partial h_i}{\partial x} &= \l( 0,\cdots,0, \frac{\partial h_i}{\partial s_i}, \frac{\partial h_i}{\partial q_i}, \frac{\partial h_i}{\partial s_{i+1}}, 0, \cdots, 0 \r) \\
+&= \l( 0,\cdots,0, \frac{\partial y}{\partial s_i} (\tau_{i+1}, \tau_i, s_i, q_i), \frac{\partial y}{\partial q_i} (\tau_{i+1}, \tau_i, s_i, q_i), -I, 0, \cdots, 0 \r) \\
+&= (0,\cdots, 0, G_i, \Gamma_i, -I, 0,\cdots,0) \\
+& \text{Randbedingungen:} \\
+\frac{\partial r}{\partial x} &= \l( \frac{\partial r_0}{\partial s_0}, 0, \frac{\partial r_1}{\partial s_1}, 0, \cdots, \frac{\partial r_{m-1}}{\partial s_{m-1}} + \frac{\partial r_m}{\partial y}{\partial y}{\partial s_{m-1}} (\tend, \tau_{m-1}, s_{m-1}, q_{m-1}), \frac{\partial r_m}{\partial y} \frac{\partial y}{\partial q_{m-1}} (\tend, \tau_{m-1}, s_{m-1}, q_{m-1}) \r) \\
+\end{align*}
+
+$\nabla F_3(x)^T: $ Zustandsbeschränkungen:
+
+\begin{align*}
+\frac{\partial}{\partial x} b_i &= \l( 0,\cdots, 0, \frac{\partial b_i}{\partial s_i}, \frac{\partial b_i}{\partial q_i}, 0, \cdots, 0 \r) 
+\end{align*}
+
+Zu 2): 
+
+\begin{align*}
+\mathcal L(x,\lambda) &= \sum\limits_{i=0}^{m-1} e(\tau_{i+1}, \tau_i, 0, q_i) + \sum\limits_{i=0}^{m-1} \lambda_{Ai}^T h_i (s_i, q_i, s_{i+1}) + \lambda_R^T \l( \sum\limits_{i=0}^{m-1} r_i + r_m \r) \\
+&+ \sum\limits_{i=0}^{m-1} \lambda_{Bi}^T b_i(\tau_i, s_i, q_i) + \lambda_s^T (\text{Steuerbeschr.})
+\end{align*}
+
+Offenbar:
+
+\begin{align*}
+\frac{\partial^2 L}{\partial \bpm s_i \\ q_i \epm \partial \bpm s_j \\ q_j \epm } &= 0 \quad \text{ für } i\neq j
+\end{align*}
+
+$\RA$ Blockdiagonalität.
+
+Wir berechnen $H$ durch Low-Rank-Updates, z.\,B. BFGS, siehe Kapitel 7. Statt ganz $H$ aufzudatieren Rang 2 pro Schritt, kann man auch einzelne Blöcke mit BFGS aufdatieren, Rang 2 pro Block, Rang $2\cdot m$ insgesamt. Die Hessematrix wird viel besser approximiert, dadurch verbessert sich das Konvergenzverhalten des SQP-Verfahrens drastisch, siehe Satz von Dennis-More.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

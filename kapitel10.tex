@@ -1,0 +1,127 @@
+\chaptr{10 Indirekter Ansatz der optimalen Steuerung}
+
+\msection{Optimalsteuerungsproblem}
+
+\begin{align*}
+\min &\int\limits_{t_0}^\tend L(t,y(t),u(t)) \dd t + \Phi(\tend, y(tend)) \quad (10.1) \\
+\text{s.\,t. } \dot y(t) &= f(t, y(t), u(t)) \quad (10.2) \\
+u & \in \Omega \quad (10.3) \\
+y(t_0) &= y_0, r(\tend, y(\tend)) = 0 \quad (10.4) \\
+b(t,y(t), u(t)) & \geq 0 \quad (10.5)
+\end{align*}
+
+Variablen: $u,y$, ggf. $\tend, t_0, y_0$.
+
+Grundannahme: $L, \Phi, f, r, b$ sind $C^3$
+
+\msubsection{Definition 10.1}
+
+Eine Steuerung $u$ heißt zulässig, wenn $y$ auf $[t_0, \tend]$ existiert, so dass $(u,y)$ die Nebenbedingungen (10.2) - (10.5) erfüllt. Die Steuerung $u^*$ heißt optimal, wenn $u^*$ zulässig ist und $(u^*, y^*)$ den kleinsten Zielfunktionswert aller zulässigen $(u,y)$ ergibt.
+
+\msubsection{Notewendige Optimalitätsbedingung}
+
+Satz 10.2: Pontryaginsches Maximumsprinzip (1959).
+
+Sei $u^*$ eine optimale Steuerung mit zugehörigem $y^*$. Definiere:
+
+\bitm
+\item Hamiltonfunktion: $H(t,y,u,\lambda) := - \gamma L(t,y,u) + \lambda^T f(t,y,u)$ (10.6) \\
+\item Erweiterte Zielfunktion $\Psi(\tend, y(\tend), \alpha) = \gamma \Phi(\tend, y(\tend)) + \alpha^T r(\tend, y(\tend))$ (10.7). $\lambda(t) \in \R^{n_y}, \alpha \in \R^{n_r}, \gamma \in \R$, \obda $\gamma = 1$ falls $\gamma \neq 0$.
+\eitm
+
+Dann gilt: $\exists \gamma \geq 0, \alpha \in \R^{n_y}, \lambda : [t_0, \tend] \to \R^{n_y}$ und $(\alpha, \lambda(t)) \neq 0$ ($\alpha, \gamma$ heißen "`Lagrange-Parameter"' bzw. adjungierte Variablen), so dass:
+
+\bitm
+\item $\lambda(t)$ erfüllen die adjungierten Differentialgleichungen $\dot\lambda(t)^T = \gamma L_y (t, y^*, u^*(t)) - \lambda(t)^T f_y(t, y^*(t), u^*(t)) = - H_y (t, y^*(t), u^*(t), \lambda(t))$ (10.8).
+\item Transversalitätsbedingung: $\lambda(\tend)^T = - \Psi_y (\tend, y^*(\tend), \alpha)$ (10.9). Falls $\tend$ frei: $H(\tend, y^*(\tend), u^*(\tend), \lambda(\tend)) = \Psi_\tend(\tend, y^*(\tend), \alpha)$ (10.10)
+\item $u^*$ erfüllt das Maximumsprinzip: $H(t, y^*(t), u^*(t), \lambda(t)) \geq H(t,y^*(t), v(t), \lambda(t))$ fast überall auf $[t_0, \tend]$ für $v \in \Omega$ beliebig. D.\,h. $u^*$ ist die Lösung von $\max_{v\in \Omega} H(t, y^*(t), v(t), \lambda(t)) = H(t, y^*(t), u^*(t), \lambda(t))$ fast überall (10.12) bzw. $u^*(t) = \arg\max_{v\in \Omega} H(t, y^*(t), v(t), \lambda(t))$ fast überall (10.13).
+\eitm 
+
+\msubsection{Anwendungsbeispiel: Energieoptimaler Raketenwagen}
+
+\begin{align*}
+\dot s &= v \quad s(0) = 0 \quad s(T) = d \\
+\dot v &= u \quad v(0) = 0 \quad v(T) = 0 \quad u \in [-1,1]\\
+\min & \int\limits_0^T \frac 12 u(t)^2 \dd t \\
+y :&= \bpm s \\ v \epm \\
+y(0) &= y_0 &= \bpm 0 \\ 0 \epm \\
+r(T, y(T)) &= \bpm s(T)-d \\ v(T) \epm = \bpm 0 \\ 0 \epm \\
+t_0 &= 0 \\
+\tend &= T \text{ fest} \\
+\end{align*}
+
+Hamiltonfunktion: 
+
+\begin{align*}
+H &= - \frac{u^2}{2} + \lambda_s v + \lambda_v u = H(v, \lambda_s, \lambda_v, u)  \\
+\intertext{adjungierte Differentialgleichung:} \\
+\dot \lambda_s &= - \frac{\partial H}{\partial s} = 0 \RA \lambda_s \text{ konstant} \\
+\dot \lambda_v &= -\frac{\partial H}{\partial v} = - \lambda_s \RA \lambda_v \text{ Gerade} \\
+\end{align*}
+
+Maximumsprinzip
+
+\begin{align*}
+H_u &= - u + \lambda_v = 0 \RA u = \lambda v \\
+u \text{ Gerade: } u &= at+b \\
+\RA v \text{ Parabel: } v &= \frac a2 t^2 + tb + c, \quad c = 0 \\
+\RA s \text{ kubisches Polynom: } s &= \frac a6 t^3 + \frac b2 t^2 + c' \quad c' = 0 \\
+\end{align*}
+
+$T$ einsetzen, $a,b$ ausrechnen:
+
+\begin{align*}
+a &= - \frac{12 d}{T^3} \\
+b &= 6 \frac d{T^2} \\
+\end{align*}
+
+TODO: Bildchen malen mit Geraden (fallend), Parabeln (konkav)
+
+Falls $b \leq 1$ ist diese Lösung zulässig $\LRA 6d \leq T^2$. Was passiert, wenn $T < \sqrt{6d}$, d.\,h. $6d > T^2$? Genauer: 
+
+\begin{align*}
+\max_{u\in [-1,1]} H(v, \lambda_s, \lambda_v, u) &= - \frac{u^2}2 + \lambda_s v + \lambda_v u \\
+\end{align*}
+
+Fälle:
+
+\bitm
+\item $u = \lambda v$, falls $\lambda v \in (-1,1)$
+\item $u = -1$, falls $\lambda v \leq -1$
+\item $u = 0$, falls $\lambda v \geq 1$
+\eitm 
+
+$H$ ist hier konkav in $u$, d.\,h. $H_{uu} \leq 0$. Es gilt: Falls $y, \lambda$ stetig sind, $H_{uu}$ strikt negativ definit und $\Omega$ konvex $\RA u^*(t)$ stetig. Annahme: Struktur der Lösung:
+Erst $u=1$ von $0$ bsi $t_1$, dann $u = \lambda v$ von $t_1$ bis $t_2$, dann $u = -1$ von $t_2$ bis $T$.
+
+Erfüllt Maximumprinzip falls $b < 1$, falls $b>1$ wegen Konkavität von $H$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

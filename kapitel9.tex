@@ -238,9 +238,39 @@ $\RA$ Blockdiagonalität.
 
 Wir berechnen $H$ durch Low-Rank-Updates, z.\,B. BFGS, siehe Kapitel 7. Statt ganz $H$ aufzudatieren Rang 2 pro Schritt, kann man auch einzelne Blöcke mit BFGS aufdatieren, Rang 2 pro Block, Rang $2\cdot m$ insgesamt. Die Hessematrix wird viel besser approximiert, dadurch verbessert sich das Konvergenzverhalten des SQP-Verfahrens drastisch, siehe Satz von Dennis-More.
 
+Bei der QP-Lösung können/müssen die Strukturen in der Mehrzielmatrix ausgewertet werden:
 
+\[ \bpm H & A^t \\ A & 0 \epm \]
 
+\msubsection{Kondensieralgorithmus (Plitt 1981, Bock, Plitt 1984}
 
+wird alle $\Delta s_i$, $i=1,\cdots,m-1$ aus QP raus
+
+\[ \Delta s_{i+1} = G_i s_i + \Gamma_i \Delta q_i + h_i \quad \mathcal O(n_y^2) \]
+
+Neues QP in den Variablen $\Delta s_0$, $\Delta q_0, \cdots, \Delta q_{m-1}$:
+
+\[ \bpm H_{voll} & B^T \\ B & 0 \epm \]
+
+Matrix hat keine "`schöne"' Struktur mehr, Lösen in $\mathcal O(n^3)$
+
+Problem wird reduziert auf Dimension Anzal $s_0 + $ Anzahl $q_0,\cdots,q_{m-1} \RA$ gleiche Problemgröße wie bei Single Shooting.
+
+\msubsection{Umsortieren der Variablen}
+
+$(s_0, q_0, \lambda_0, s_1, q_1, \lambda_1, \cdots ) \RA$ Blockstruktur der Gesamtmatrix, symmetrisch aber nicht positiv definit. $\RA$ Benutze iterative oder Sparse-Löser. Aufwand: $\mathcal O(m)$.
+
+\msubsection{Vorteile von Multiple Shoting gegenüber Single Shooting}
+
+\bitm
+\item Es können Informationen über den Verlauf der Trajektorien benutzt werden. Dadurch startet man ggf. näher bei der Lösung und im Einzugsbereich der lokalen Konvergenz des SQP-Verfahrens.
+\item Durch die kürzeren Integrationsintervalle wird die Nichtlinearität des Problems reduziert (Trompetenabschätzung). Die Existenz der Zustandstrajektorie ist auf dem ganzen Intervall gesichert.
+\item Die Integration auf den Teilintervallen ist entkoppelt und kann parallel erfolgen, in Realtime somit schneller als Single-Shooting.
+\item Die Blockbandstruktur der Hessematrix erlaubt Updates von höherem Rang und damit bessere Approximation der Hessematrix der Lagrange-Funktion und schnellere Konvergenz
+\item das QP hat zwar mehr Variablen und mehr Nebenbedingungen, aber auch Strukturen. Werden diese z.\,B. durch Kondensierung ausgenutzt ist der Aufwand zum Lösen des QP im wesentlichen auch nicht größer als beim Single-Shooting.
+\eitm
+
+Bemerkung: Auch Kollokation kann für die direkte Methode der Optimalsteuerung eingesetzt werden, analog zu Kapitel 4(2).
 
 
 

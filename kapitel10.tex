@@ -96,15 +96,170 @@ Erst $u=1$ von $0$ bsi $t_1$, dann $u = \lambda v$ von $t_1$ bis $t_2$, dann $u 
 
 Erfüllt Maximumprinzip falls $b < 1$, falls $b>1$ wegen Konkavität von $H$.
 
+Zurück zum Raketenwagen:
+
+\begin{align*}
+v(t) &= \begin{cases} t & t \in [0, t_1] \\ a t^2/2 + bt + c & t \in [t_1, t_2] \\T -t & t \in [t_2, T] \end{cases} \
+s(t) &= \int\limits_0^t v(\tau) \dd \tau \\
+\end{align*}
+
+Bestimmung der Variablen: $a,b,c,t_1, t_2$. Stetigkeit von $v$: $a t_1^2 /2 + b t_1 + c = t_1$, $a t_2^2/2 + b t_2 + c = T -t_2$. Randbedingung: $s(T) = d$. Stetigkeit von $u$: $a t_1 + b = 1$, $a t_2 +b = -1$. 5 (nichtlineare) Bedingungen für 5 Variablen.
+
+Formulierung als Mehrpunkt-Randwertproblem:
+
+\begin{align*}
+u(t) &= \begin{cases} 1 & 0 \leq t \leq t_1 \\ \lambda v & t_1 \leq t \leq t_2 \\ -1 & t_2\leq t \leq T \end{cases}
+\dot s &= v \\
+\dot \lambda_v &= -\lambda_s \\
+\dot v &= u \\
+\dot \lambda_s &= 0 \\
+\end{align*}
+
+Randbedingungen:
+
+\begin{align*}
+s(0) &= 0 \\
+s(T) &= d \\
+v(0) &= 0 \\
+v(T) &= 0 \\
+\end{align*}
+
+Innere-Punkt-Bedingungen:
+
+\begin{align*}
+\lambda v(t_s) &=  1 \\
+\lambda v(t_2) &= -1 \\
+\end{align*}
+
+Das ist ein Randwertproblem mit 4 Differentialgleichungen, 2 zu bestimmenden Größen und 4 Randbedingungen, ist also im Prinzip lösbar, numerisch mit einem Randwertproblemlöser.
 
 
+\msubsection{Prinzip der indirekten Methode}
+
+\bitm
+\item Stelle adjungierte Gleichung auf
+\item Stelle Transversalitätsbedingungn auf
+\item Werte Maximumsprinzip aus: vermute Struktur der Steuerung
+\item Formuloere als Mehrpunktrandwertproblem
+\item Löse durch numerische "`Diskretisierung"'
+\eitm
+
+(First optimize, then discretize).
+
+Beweis von Satz 10.2 (Maximumprinzip):
+
+Wir beweisen das Maximumprinzip zunächst für das Problem
+
+\begin{align*}
+\min_{u,y} &\int\limits_{t_0}^\tend L(t,y,u) \dd t + \Phi(\tend, y(\tend))  =: J(y,u) \quad (10.14) \\
+\dot y &= f(t,y,u) \\
+y(t_0) &= y_0 \\
+t & \in [t_0, \tend] \\
+u &\in \Omega
+\end{align*}
+
+d.\,h. ohne $r$, $b$ und mit $t_0, \tend$ fest. Grundidee: Konstruktion zulässiger Konkurrenten (Variationen) zur optimalen Lösung $u^*$ mit Antwort $y^*$.
+
+$\ov u(t) := u^*(t) + \delta u(t)$ mit zugehöriger Antwort $\ov y(t) := y^*(t) + \delta y(t)$, die wie folgt konstruiert wird:
+
+\bitm
+\item Wähle $\delta u \RA \ov u$
+\item Löse DGL $\RA \ov y$
+\item $\delta y = \ov y - y^*$
+\eitm
+
+$\delta y$ löst die DGL $\delta \dot y = \dot{\ov y} - \dot y^* = f(t,y^* + \delta y, u^* + \delta u) - f(t,y^*,u^*)$.
+
+Aus Stabilitätssatz (Satz 1.1) folgt:
+
+\[ \|\delta y\| = \mathcal O(\|\delta u\|) \text{ Norm im Funktionenraum } \]
+
+Konstruktion der Störung: Beispiel 1: $\Delta u(t)$ beliebig, $\delta_\eps u(t) := \eps \Delta u(t)$, $\eps > 0$ klein, so dass
+
+\begin{align*}
+\ov u &= u^* + \eps \Delta u \in \Omega \RA \|\delta_\eps u \| = \mathcal O(\eps) \\
+\delta_\eps \dot y(t) &= f(t,y^* + \delta_\eps y, u^* + \delta_\eps u) - f(t,y^*, u^*) \\
+&= \frac{\partial f}{\partial y} \delta_\eps y(t) + \frac{\partial f}{\partial u} \delta_\eps u(t) + \mathcal O(\delta_\eps^2) \\
+\delta_\eps y(t_0) &= 0 \\
+A(t) :&= \frac{\partial f}{\partial y} \\
+B(t) :&= \frac{\partial f}{\partial u} \\
+\delta_\eps y(t) &= \int\limits_{t_0}^t A(\tau) \delta_\eps y(t\tau) + B(\tau) \delta_\eps u(\tau) \dd \tau + \mathcal O(\delta_\eps^2) \\
+\RA \|\delta_\eps y\| &= \mathcal O(\eps) \\
+\end{align*}
+
+Beispiel:
+
+\begin{align*}
+\ov u(t) &= \begin{cases} u^*(t) & \text{ falls } t \notin [\hat t, \hat t + \eps) \\ v \in \Omega \text{ bel. } & t \in [\hat t, \hat t + \eps) \end{cases} \\
+\|\delta_\eps u\| &= \|\ov u - u^*\| = \mathcal O(\eps) \\
+\end{align*}
+
+Im Sinne einer Integralnorm (nicht $\|\cdot\|_\infty$).
+
+Setze Variation in problem (10.14) ein:
+
+\begin{align*}
+0 & \leq J(\ov y, \ov u) - J(y^*, u^*) \\
+&= \Phi(\tend, \ov y(\tend)) - \Phi(\tend, y^*(\tend)) + \int\limits_{t_0}^\tend L(t, \ov y, \ov u) - L(t, y^*, u^*) \dd t \\
+&+ \int\limits_{t_0}^\tend \lambda(t)^T \underbrace{ (\dot{\ov y} - f(t,\ov y, \ov u) + f(t,y^*, u^*) - \dot y^*) }_{=0 \text{ für bel. } \lambda(t) \text{ und bel. } \ov u \text{ mit zug. } \ov y } \dd t \\
+&= \Phi(\tend, \ov y(\tend)) - \Phi(\tend, y^*(\tend)) \\
+&+ \int\limits_{t_0}^\tend -L(t,y^*, u^*) + \lambda^T f(t, y^*, u^*) + L(t, \ov y, \ov u) - \lambda^T f(t, \ov y, \ov u) \dd t \\
+&+ \int\limits_{t_0}^\tend \lambda(t)^T \delta \dot y (t) \dd t \\
+&= \Phi(\tend, \ov y(\tend)) - \Phi(\tend, y^*(\tend)) \\
+&+ \int\limits_{t_0}^\tend H(t, y^+, u^*, \lambda) - H(t, \ov y, \ov u, \lambda) \dd t \\
+&+ \l[ \lambda(t)^T \delta y(t) \r]_{t_0}^\tend - \int\limits_{t_0}^\tend \dot \lambda(t)^T \delta y(t) \dd t \\
+\end{align*}
+
+Taylorentwicklung von $H$, erst nach $y$ um $y^*$, dann nach $u$ um $u^*$.
+
+\begin{align*}
+&= \frac{\partial \Phi}{\partial y} (\tend, y^*(\tend)) \delta y(\tend) + \mathcal O(\eps^2) \\
+&+ \int\limits_{t_0}^\tend H(t, y^*, u^*, \lambda) - H(t, y^*, \ov u, \lambda) - \frac{\partial H}{\partial y} (t, y^*, \ov u, \lambda) \delta y(t) + \mathcal O(\eps) \dd t \\
+& + \lambda(\tend)^T \delta y(\tend) - \lambda(t_0)^T \underbrace{\delta y (t_0)}_{=0} - \int\limits_{t_0}^\tend \lambda(t)^T \delta y(t) \dd t \\
+&= \l( \frac{\partial \Phi}{\partial y} (\tend, y^*(\tend)) + \lambda(\tend)^T \r) - \int\limits_{t_0}^\tend \dot \lambda(t)^T \delta y (t) \dd t + \mathcal O(\eps^2) \\
+&+ \int\limits_{t_0}^\tend H(t, y^*, u^*, \lambda)- H(t, y^*, \ov u, \lambda) - \frac{\partial H}{\partial y} (t, y^*, u^*, \lambda) \delta y(t) - \underbrace{\frac{\partial^2 H}{\partial u\partial y} (t, y^*, u^*, \lambda) \delta u \delta y}_{= \mathcal O(\eps^2)} + \mathcal O(\eps^2) \\
+&= (\lambda(\tend)^T + \frac{\partial \Psi}{\partial y} (\tend, y^*(\tend)) \delta y(\tend)) \\
+& + \int\limits_{t_0}^\tend (-\dot \lambda(t)^T - \frac{\partial H}{\partial y} (t, y^*, u^*, \lambda)) \delta y(t) \dd t \\
+& + \int\limits_{t_0}^\tend H(t, y^*, u^*, \lambda) - H(t, y^*, \ov u, \lambda) \dd t + \mathcal O(\eps^2) 
+\end{align*}
+
+Wähle $\lambda(t)$, das Transversalitätsbedingung und adjungierte Differentialgleichung erfüllt. $\lambda(t)$ ist eindeutig bestimmt.
+
+\begin{align*}
+\RA 0 &\leq \int\limits_{t_0}^\tend H(t, y^*, u^*, \lambda) - H(t, y^*, \ov u, \lambda) \dd t + \mathcal O(\eps^2) \\
+\end{align*}
+
+Für Beispiel 2:
+
+\begin{align*}
+0 & \leq \int\limits_{\hat t}^{\hat t + \eps} H(t, y^*, u^*, \lambda) - H(t, y^*, v, \lambda) \dd t + \mathcal O(\eps^2) \\
+\end{align*}
+
+Lasse $\eps$ gegen Null gehen:
 
 
+\begin{align*}
+0 & \leq \eps(H(\hat t, y^*(\hat t), u^*(\hat t), \lambda(\hat t)) - H(\that, y^*(\that), v(\that), \lambda(\that)) + \mathcal O(\eps^2) \\
+0 & \leq H(\that, y^*(\that), u^*(\that), \lambda(\that)) - H(\that, y^*(\that), v(\that), \lambda(\that)) + \mathcal O(\eps) \\
+\RA H(\that, y^*(\that), u^*(\that), \lambda(\that)) & \geq H(t, y^*(t), v(t), \lambda(t)) \forall v \in \Omega \forall t \in [t_0, \tend] \\
+\to & \text{Maximumprinzip}
+\end{align*}
 
+\msubsection{Bemerkung 10.3: Variation, Beispiel 1}
 
+\begin{align*}
+\delta_\eps u(t) &= \eps \Delta u(t) \\
+0 & \leq \int\limits_{t_0}^\tend H(t, y^*, u^*, \lambda) - H(t, y^*, u^* + \delta_\eps u, \lambda) \dd t + \mathcal O(\eps^2) \\
+&= \int\limits_{t_0}^\tend \frac{\partial H}{\partial u} (t, y^*, u^*, \lambda) ( - \eps \Delta u(t)) \dd t + \mathcal O(\eps^2)
+\end{align*}
 
+Wähle $\Delta u = \eta \cdot \frac{\partial H^T}{\partial u}$, $\eta > 0$ hinreichend klein, so dass $u^* + \delta u \in \Omega$.
 
-
+\begin{align*}
+\cdots &= \int\limits_{t_0}^\tend - \eps \eta \frac{\partial H}{\partial u}{\partial H^T}{\partial u} \dd t + \mathcal O(\eps^2) \\
+\eps \to 0 & \RA \int\limits_{t_0}^\tend \frac{\partial H}{\partial u} \frac{\partial H}{\partial u}^T \dd t = 0 \\
+\RA 0 &= \frac{\partial H}{\partial u} (t, y^*(t), u^*(t), \lambda(t)) = 0 \text{ fast überall } \\
+\end{align*}
 
 
 

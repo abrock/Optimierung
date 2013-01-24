@@ -261,17 +261,182 @@ Wähle $\Delta u = \eta \cdot \frac{\partial H^T}{\partial u}$, $\eta > 0$ hinre
 \RA 0 &= \frac{\partial H}{\partial u} (t, y^*(t), u^*(t), \lambda(t)) = 0 \text{ fast überall } \\
 \end{align*}
 
+\begin{align*}
+H(t,y,u,\lambda( :&= -L(t,y,u)+\lambda^T f(t,y,u) \\
+\Psi(\tend, y(\tend), \alpha) :&= \Phi(\tend, y(\tend)) + \alpha^T r(\tend, y(\tend)) \\
+\end{align*}
+
+Seien $u^*, y^*$ optimal, dann existieren $\lambda, \alpha$ so dass:
+
+\begin{align*}
+\dot \lambda(t)^T &= -\frac{\partial H}{\partial y} (t,y^*(t), u^*(t), \lambda(t)) \\
+\lambda(\tend) &= - \frac{\partial \Psi}{\partial y} (\tend, y^*(\tend), \alpha) \\
+H(\tend, y^*(\tend), u^*(\tend), \lambda(\tend)) &= \frac{\partial \Psi}{\partial t} (\tend, y^*(\tend), \alpha) \\
+\end{align*}
+
+$u^*$ erfüllt $H(t,y^*(t), u^*(t), \lambda(t)) \geq H(t, y^*(t), u^*(t), v(t), \lambda(t))$ $\forall v \in \Omega$.
+
+\msubsection{Bemerkung 10.4: Maximumprinzip mit Randbedingungen}
+
+\begin{align*}
+0 & \leq J(\ov y, \ov u) - J(y^*, u^*) + \int\limits_\tn^\tend \lambda^T(\dot{\ov y} - f(t,\ov y,\ov u)+ \dot y^* + f(t,y^*, u^*)) \dd t \\
+&+ \alpha^T (\underbrace{r(\tend, \ov y(\tend)) - r(\tend, y^*(\tend))}_{=0}) \\
+\end{align*}
+
+Dabei sind $u^*, y^*$ optimal und $\ov u = u^* + \delta u$, $\ov y = y^* + \delta y$ sind zulässige Konkurrenten.
+Taylorentwicklung:
+
+\begin{align*}
+0 & \leq \l( \frac{\partial \Phi}{\partial y} (\tend, y^*(\tend)) + \lambda(\tend)^T \r) \delta y(\tend) \\
+&+ \int\limits_\tn^\tend \l( -\dot \lambda(t)^T - \frac{\partial H}{\partial y} (t,y^*,u^*,\lambda)\r) \delta y(t) \dd t \\
+& + \int\limits_\tn^\tend H(t,y^*,u^*,\lambda) - H(t, y^*, \ov u, \lambda) \dd t\\
+&+ \alpha^T \frac{\partial r}{\partial y} (\tend, y^*(\tend)) \delta y(\tend) + \text{ Terme höherer Ordnung } 
+\end{align*}
+
+Wenn wir $\alpha, \lambda$ haben, die folgendes erfüllen:
+
+\bitm
+\item adjungierte Differentialgleichung
+\item Transversalitätsbedingung: \[ \lambda(\tend)^T = \l( -\frac{\partial \Phi}{\partial y} (\tend, y(\tend)) - \alpha^T \frac{\partial r}{\partial y} (\tend, y(\tend))\r) \]
+\eitm
+
+folgt wie oben das Maximumsprinzip.
+
+Nicht gezeigt: Existenz von $\alpha$ und $\lambda$
+
+\bemerkung{10.5: freie Endzeit $\tend$}
+
+Es gibt eine optimale Endzeit $\tend^*$, eine optimale Steuerung $u^*$ und die zugehörige $y^*$.
+$\delta \tend := \ov \tend - \tend^*$
+zu $\ov u$ und $\ov y$. Setze $\tend^*$ und $\ov \tend$ analog zu (10.15) an, Taylorentwicklung auch in $\tend$ um $\tend^*$. Zusätzliche Terme sind dann:
+
+% eieiei, immer wenn's spannend wird ist die Tafel zu Ende.
+
+\begin{align*}
+\frac{\partial \Phi}{\partial t} (\tend^*, y(\tend^*)) + \alpha^T \frac{\partial r}{\partial t} (\tend^*, y(\tend^*)) \delta \tend \\
+&+ \underbrace{\int\limits_{\tend^*}^{\tend^*+\delta\tend} L(t,\ov y, \ov u) - \lambda(t)^T f(t, \ov y, \ov u) \dd t}_{= - H(\tend, y(\tend))} \\
+&+ \underbrace{\int\limits_{\tend^*}^{\tend^*+\delta\tend}\lambda(t)^T \dot{\ov y}(t) \dd t}_{= 0 \text{ durch Wahl von $\lambda\equiv 0$ auf $[\tend^*, \tend^*+\delta\tend]$}} \\
+&+ \text{Terme höherer Ordnung} + TODO
+\end{align*}
+
+Wennes $\alpha, \lambda$ gibt, die die adjungierte Differentialgleichung, obige Transversalitätsbedingung und $H(\tend^*, y^*(\tend^*),u^*(\tend^*),\lambda(\tend^*)) = \frac{\partial \Phi}{\partial t} (\tend^*, y^*(\tend^*)) + \alpha^T \frac{\partial r}{\partial t} (\tend^*, y^*(\tend^*))$ erfüllen, folgt das Maximumprinzip.
+
+Andere Möglichkeit: Transformation auf feste Endzeit.
+
+Beispiel:
+
+Zielfunktional: $\min \tend$ ($\tn = 0$)
+
+\bitm
+\item a) $\Phi = \tend$, $L=0$
+\item b) $\Phi = 0$, $L=1$
+\eitm
+
+Randbedingung $r(y(\tend))$ hängt nicht explizit von $\tend$ ab.
+
+Transversalitätsbedingungen:
+
+\bitm
+\item a) $H = \lambda^T f(t,y,u)$, $H(\tend)=1$
+\item b) $H = -1 + \lambda^T f(t,y,u)$, $H(\tend) = 0$
+\eitm
+
+Transversalitätsbedingung zum Eliminieren von $\alpha$:
+
+\begin{align*}
+\lambda(\tend) &= -\frac{\partial \Phi}{\partial y} (\tend, y(\tend))^T - \frac{\partial r}{\partial y} (\tend, y(\tend))^T \alpha \\
+H(\tend) &= \frac{\partial \Phi}{\partial t} + \frac{\partial r}{\partial t}^T \alpha  \text{ Wenn $\tend$ frei} 
+\end{align*}
+
+Wenn $\frac{\partial r}{\partial y}^T$ Vollrang hat, können wir die $\alpha$ eliminieren:
+
+\begin{align*}
+\frac{\partial r}{\partial y}^T &= \bpm A_1 \\ A_2 \epm
+\end{align*}
+
+mit $A_1$ regulär (ggf. nach Zeilenpermutationen)
+
+\begin{align*}
+\alpha &= A_1^{-1} \bpm -\lambda_I & - \frac{\partial \Phi}{\partial y_I} \epm \\
+\lambda_I &= \bpm \lambda_1 \\ \hdots \\ \lambda_\nu \epm \\
+\lambda_{II} &= \bpm \lambda_{\nu+1} \\ \hdots \\ \lambda_n \epm \\
+\lambda_{II} &= - \frac{\partial \Phi}{\partial y_{II}}^T - A_2 \alpha, \text{ $\alpha$ einsetzen} \\
+\end{align*}
+
+Es fallen die $\alpha$ und $\nu$ Bedingungen weg.
+
+\msubsection{Spezialfälle des Maximumprinzips}
+
+$H$ heißt regulär, wenn $\Omega$ konvex ist und $-\frac{\partial^2 H}{\partial^2 u}$ positiv definit ist.
+
+\[ \forall t, y^*(t), \lambda(t), u\in \Omega \]
+
+Dann ist das Maximierungsproblem im Maximumsprinzip konvex. Es hat eine eindeutige Lösung $u^*(t)$.
+
+\[ h^*(t) := \max_{u\in\Omega} h(t,u) := \max_{u\in \Omega} H(t,y^*,u(t),\lambda(t)) \]
+
+Dann ist $u^*(t)$ stetig und $h^*(t)$ stetig.
+
+Beweis: Annahme $\exists \that$ mit $u(\that_-) \neq u(\that_+)$. Sei $h(\that, u(\that_-)) < h(\that, u(\that_+))$, $h(t,u) = H(t,y^*, u, \lambda)$ ist stetig in $u$. $\exists \eps: h(t,u(t)) < h(t,u(\that_+)) \forall t \in (\that-\eps,\that)$. Widerspruch zum Maximumprinzip. Auf ganz $(\that-\eps,\that)$ ist $u(t)$ nicht optimal.
+
+Wenn $\Omega$ nicht konvex ist kann $u^*$ von einer Ecke in einer andere springen am Zeitpunkt $\that$. Wenn $h^*(t)$ stetig ist muss gelten: $h(u(\that_-),\that) = h(u(\that_+),\that)$. Das legt den Sprungzeitpunkt $\that$ fest.
+
+$h(u,t)$ hängt nichtlinear von $u$ ab. Möglichkeiten:
+
+\bitm
+\item a) $u^* \in \circ{\Omega} \RA \frac{\partial h}{\partial u} (u^*(t),t) = 0$ und $\frac{\partial^2 h}{\partial^2 u} (u^*(t), t) \leq 0 \RA$ Wir können lokal eine Funktion $\hat u(t,y,\lambda) := \arg\max H(t,y^*,u,\lambda)$ finden.
+\item b) $u^* \in \partial \Omega$ Dann gelten die KKT-Bedingungn, falls $\partial \Omega$ lokal durch Ungleichungen und Gleichungen beschrieben wird.
+\eitm
+
+Beim Übergang von a) nach b) und umgekehrt treten Schaltpunkte auf.
+
+Beispiel: Raketenwagen $u \in [-1,1] \RA$ entweder $u \in \{-1,1\}$ oder $\frac{\partial h}{\partial u} = 0$.
+
+$H$ ist linear in $u$.
+
+\begin{align*}
+H(t,y,u,\lambda) &= H_0(t,y,\lambda) + H_u (t,y,\lambda) u \\
+\dot y(t,y,u) &= f_0 (t,y) + f_u(t,y)u \\
+L &= L_0(t,y) + L_u(t,y)u \\
+H_0 &= - L_0 + \lambda^T f_0 \\
+H_u &= - L_u + \lambda^T f_u \\
+\end{align*}
+
+Sei \zb $u\in[-1,1]$.
+
+\bitm
+\item a) $H_u > 0 \RA u^* = +1$
+\item b) $H_u < 0 \RA u^* = -1$
+\eitm
 
 
+Fall 1:
 
+\[ u^*(t) = \begin{cases} +1 & t < \that \\ -1 & t > \that \end{cases} \]
 
+Im Punkt $\that$ gilt ($H$ stetig in $u$):
 
+\begin{align*}
+H(\that_-) &= H_0 + H_u \cdot (+1) = H_0 + H_u \cdot (-1) = H(\that_+) \\
+\RA H_u &= 0 = -L_u + \lambda^T f_u
+\end{align*}
 
+Heißt Schaltfunktion. Die Nullstelle legt den Schaltpunkt in $\that$ fest.
 
+Fall 2: 
 
+b) $H_u = 0$ gilt auf einem ganzen Intervall $[t_1,t_2]$
 
+\[ \frac{\partial H}{\partial u} (t,y,(t),\lambda(t)) \equiv 0 \text{ auf } [t_1, t_2] \]
 
+$u^*$ kann nicht durch das Maximumprinzip bestimmt werden. Dann gilt ("`Indexreduktion"'):
 
+\bitm
+\item $\l( \frac{\partial}{\partial t}\r)^T H_u (t,y(t),\lambda(t)) \equiv 0 $ $\forall i$ auf $[t_1,t_2]$
+\item Dies hängt, wenn überhaupt, nur für $i = 2j$ von $u$ ab. Das kleinste solche $j$ heißt Ordnung.
+\eitm
+
+Sei \zb $j=1$: Singulärer Bogen der Ordnung $1$. $u$ wird festgelest durch $\ddot U_u \equiv 0$. $H_u(t_1) = 0 = \dot H_u(t_1)$ oder $H_u(t_1) = 0 = H_u(t_2) = 0$ legen $t_1$ und $t_2$ fest.
 
 
 

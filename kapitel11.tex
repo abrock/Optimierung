@@ -1,0 +1,220 @@
+\chaptr{11 Optimale Versuchsplanung}
+
+\msection{11.1 Anwendungsbeispiel Urethan-Reaktion}
+
+\begin{align*}
+A + B & \stackrel{1}{\to} C \\
+A + C &\stackrel{2,3}{\LRA} D \\
+3 A & \stackrel{4}{\to} E
+\end{align*}
+
+\bitm
+\item A: Isocyanat
+\item B: Butanol
+\item C: Urethan
+\item D: Allophanat
+\item E: Isozyanurat
+\item L: Dimethylsulfonid
+\eitm
+
+TODO: Bild und so
+
+DAE-Modell: $n_1, \cdots, n_6$: Molzahlen von $A,\cdots,L$
+
+\begin{align*}
+\dot n_3 &= V (r_1 - r_2 + r_3) \\
+n_3(t_0) &= 0 \\
+\dot n_4 &= V(r_2 - r_3) \\
+n_4(t_0) &= 0 \\
+\dot n_5 &= V r_4 \\
+n_5(t_0) &= 0 \\
+0 &= n_1 + n_3 + 2n_4 + 3n_5 - n_{1,0} - n_{1,0,Z_1} feed_1(t) \quad \text{ $Z_1$: Zulauf 1 } \\
+0 &= n_2 + n_3 + n_4 - n_{2,0} - n_{2,0,Z_2} feed_2(t) \\
+0 &= n_6 - n_{6,0} - n_{6,0,Z_1} feed_1(t) - n_{6,0,z_2} feed_2(t) 
+\end{align*}
+
+Algebraische Gleichungen ergeben sich aus Stöchioetrie.
+
+\begin{align*}
+\dot T &= \dd T (t) \\
+T(t_0) &= T_0 \\
+\dot{feed}_1 &= dfeed_1(t) \\
+feed_1(t_0) &= 0 \\
+\dot{feed}_2 &= dfeed_2(t) \\
+feed_2(t_0) &= 0 \\
+\end{align*}
+
+Reaktionsgeschwindigkeiten:
+
+\begin{align*}
+r_1 &= k_1 \frac{n_1}V \frac{n_2}V \\
+r_2 &= k_2 \frac{n_1}V \frac{n_3}V \\
+r_3 &= k_3 \frac{n_4}V \\
+r_4 &= k_4 \l( \frac{n_1}V \r)^2
+\end{align*}
+
+Geschwindigkeitskoeffizienten:
+
+\begin{align*}
+%k_i &= k_{ref} \exp l( -\frac{E_{ai}}R \l( \frac 1{T(t)} - \frac 1{T_{refi}} \r) \r) \quad i = 1,2,4 \\
+\frac{k_2}{k_3} &= K_{c,2} \exp \l( - \frac{\Delta H_2}{R} \l( \frac{1}{T(t)} - \frac1{T_{g2}} \r) \r) \\
+\end{align*}
+
+Volumen:
+
+\[ V = \sum\limits_{i=1}^6 \frac{M_i n_i}{\rho_i} \]
+
+Das Modell enthält:
+
+\bitm
+\item 9 Zustände: $n_1, \cdots, n_6, T, feed_1, feed_2$
+\item 8 unbekannte Parameter: $k_{ref1}, E_{a1}, k_{ref2}, E_{a2}, k_{ref4}, E_{a4}, K_{c2}, \Delta H_2$ 
+\item 3 Steuerfunktionen $u(t)$: $\dd T(t), dfeed_1(t), dfeed_2(t)$
+\item 8 Steuergrößen: $n_{1,0}, n_{2,0}, n_{6,0}, n_{1,0,Z_1}, n_{6,0, Z_1}, n_{2,0,Z_2},n_{6,0,Z_2}$
+\item Restliche Größen sind Konstanten: $R, T_{ref}, M_i, \rho_i$
+\eitm
+
+Ziele:
+
+\bitm
+\item Schätzungen der Modellparameter auf experimentellen Daten.
+\item Design der Experimente, so dass die geschätzten Parameter möglichst kleine statistische Unsicherheiten haben, also optimale Versuchsplanung.
+\eitm
+
+\msection{Statistische Analyse der Lösung des Parameterschätzproblems}
+
+Modellgleichung (\obda ODE-RWP).
+
+\begin{align*}
+\dot y &= f(t,y(t),p,q,u(t)) \quad (11.1) \\
+y(t_0) &= y_0(p,q) 
+\end{align*}
+
+\bitm
+\item $p \in \R^{n_p}$: Parameter, werden durch die Natur bestimmt und sind erstmal unbekannt bzw. müssne geschätzt werden.
+\item $q \in \R^{n_q}$: Steuergrößen und $u\colon [\tn, \tend] \to \R^{n_u}:$ Steuerfunktionen werden durch den Experimentator festgelegt.
+\item $r(t_1, y(t_1), \cdots, t_k, y(t_k), p, q) = 0$: Randbedingungen (11.2)
+\eitm
+
+\msubsection{Modell für die Messungen}
+
+\begin{align*}
+\eta_i &= h_i(t_i, y(t_i), p, q) + \eps_i, \quad i = 1,\cdots,M \quad (11.3) \\
+\eps_i & \sim \mathcal N \l( 0, \frac{\sigma_i^2}{w_i} \r), \cov (\eps_1, ¸eps_j) = 0, i\neq j \\
+\end{align*}
+
+$w_i \in \{0,1\}:$ Wird Messung $i$ tatsächlich durchgeführt? Für gegebene Daten: alle $w_i=1$. Für zu planende Experimente: Die Wahl von $w$ entscheidet über die Durchführung der Messung $i$.
+
+\bitm
+\item $w_1 = 1$: $\eps_i \sim \mathcal N(0, \sigma_i^2)$
+\item $w_i = 0$: Die Messung $i$ hat unendliche Varianz.
+\item $w_i \in [0,1]$, \zb $w_i = \frac 12$. "`Halbe Messung"' mit doppelter Varianz ($\to$ sinnvolle Relaxierung).
+\eitm
+
+Parameterschätzproblem:
+
+\begin{align*}
+\min_{p,y} \frac 12 &\sum\limits_{i=1}^M \frac{w_i}{\sigma_i^2} \l( \eta_i - h_i(t_i, y(t_i), p, q) \r)^2 \\
+\text{s.\,t. } \dot y &= f(t,y,p,q,u) \\
+y(t_0) &= y_0(p,q) \\
+r(t_1, y(t_1), \cdots, t_k, y(t_k)) &= 0 \\
+\text{mit } \xi :&=  (q,u,w) \text{ fest} \\
+\end{align*}
+
+Nach Parametrisierung der Dynamik, diehe Kapitel 3:
+
+\begin{align*}
+v &= (p,s) \\
+\min_{v} \frac 12 \|F_1(v,\xi)\|_2^2 \quad (11.5) \\
+\text{s.\,t. } 0 &= F_2(v, \xi) \\
+F_1(v,\xi) &= \l( \frac{\sqrt{w_i}}{\sigma_i} \l( j_i(t_i,y(t_i, v, \xi), p, q) \r) \r)_{i=1,\cdots,M} \\
+\end{align*}
+
+$F_2(v,\xi)$ enthält die Randbedingungen und die zusätzlichen Gleichungsbeschränkungen aus der Parametriierung.
+
+Jacobi-Matrix:
+
+\begin{align*}
+%\partial_{1ij} &= \frac{\partial F_{1i}{\partial v_j} = - \frac{\sqrt{w_i}}{\sigma_i} \l( \frac{\partial h_i}{\partial y} \frac{\partial y(t_i)}{\partial v_j} + \frac{\partial h_i}{\partial v_j} \r) \\
+%\partial_{2ij} &= \frac{\partial F_{2i}{\partial v_j} = \frac{\partial F_{2i}}{\partial y} \frac{\partial y}{\partial v_j} + \frac{\partial F_{2i}{\partial v_j} \\
+\end{align*}
+
+$\frac{\partial y}{\partial v}$ sind Lösungen von Variationsdifferentialgleichungen nach Parametern und Anfangswerten.
+
+Verallgemeinerte Inverse:
+
+Lineares Problem:
+
+\begin{align*}
+\min &\frac 12 \|J_1 \Delta v + F_1\|_2^2 \\
+\text{s.\,t. } 0 &= J_2 \Delta v + ?????
+\end{align*}
+
+Lösungsoperator:
+
+\begin{align*}
+J^\dagger &= \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} \bpm J_1^T & 0 \\ 0 & I \epm \\
+&\text{unbeschränkter Spezialfall: } J^\dagger &= (J_1^T J_1)^{-1} J_1^T \\
+\Delta v &= -J^\dagger F, \quad F = \bpm F_1 \\ F_2 \epm
+\end{align*}
+
+Im Beispiel: Messwerte gegeben für Massenprozente von $A,C,D,E$ mit verschiedenen Varianzen an 5 Messzeitpunkten.
+
+TODO: Bildchen
+
+Ergebnis: Gesamtresiduum wird reduziert von $3\cdot 10^6$ auf $4\cdot 10^1$, die Kurven werden gut gefittet $\to$ "`Guter Fit"'
+
+Aber: Ist das auch eine gute Schätzung der Parameter?
+
+Es gilt: die Messdaten sind Zufallsgrößen. Der Lösungsalgorithmus des Parameterschätzproblems bildet die Messdaten auf den Parameterschätzer $\hat v_{ab}$. Also sind auch die geschätzten Parameter Zufallsgrößen.
+
+TODO: mehr Bildchen wagen
+
+Wir betrachten die Fehlerfortpflanzung für das linearisierte Parameterschätzproblem im Lösungspunkt $\hat v$. Dann gilt:
+
+\[ \hat v \sim \mathcal N(v,C) \]
+
+(ist die Kovarianzmatrix des Parameterschätzers).
+
+Erwartungswert $E$:
+
+\begin{align*}
+E(\hat v) &= E(v_{wahr} + \Delta v) = E(\vwahr) + E(-J^\dagger F) \\
+&= E(\vwahr) - J^\dagger E(F) = E(\vwahr) - J^\dagger E \bpm S^{-\frac 12} (\eta-h) \\ F_2 \epm \\
+&= E(\vwahr) - J^\dagger 0 = \vwahr \\
+\text{mit } S &= \diag \l( \frac{\sigma_i^2}{w_i}, i=1,\cdots,M \r) \\
+\eta &= \bpm \eta_1 \\ \hdots \\ \eta_M \epm \\
+h &= \bpm h_1 \\ \hdots \\ h_M \epm \\
+C &= E(\hat v \hat v^T) = E( (\vwahr + \Delta v) (\vwahr + \Delta v)^T ) = E(\Delta v \Delta v^T) \\
+&= E(J^\dagger F F^T (J^\dagger)^T \\
+&= J^\dagger E \bpm F_1 F_1^T & F_1 F_2^T \\ F_2 F_1^T & F_2 F_2^T \epm (J^\dagger)^T \\
+&= J^\dagger \bpm E(F_1 F_1^T) & 0 \\ 0 & 0 \epm (J^\dagger)^T \\
+\text{mit } E(F_1 F_1^T) &= E( S^{-\frac 12} (\eta-h)(\eta-h)^T S^{-\frac 12}) \\
+&= S^{-\frac 12} E(\eps \eps^T) S^{-\frac 12 } \\
+&= S^{-\frac 12} S S^{-\frac 12} = I \\
+\end{align*}
+
+Also: $\hat v$ ist multinomialverteilt mit Erwartungswert $\vwahr$ und Kovarianzmatrix $C = J^\dagger \bpm I & 0 \\ 0 & 0 \epm (J^\dagger)^T$.
+
+\msubsection{Bemerkung 11.1: Eigenschaften von C}
+
+\bitm
+\item a) $C$ existiert und ist eindeutig, wen CQ und PD erfüllt sind.
+\item b) $C$ ist positiv semidefinit
+\item c) $C$ hängt von Ableitungen des Parameterschätzproblems ab.
+\item d) Wenn das Modell nichtlinear in $v$ ist hängt $C$ von den Parametern $\hat v$ ab.
+\item e) $C$ hängt von dern Versuchsplanungsgrößen $\xi = (q,u,v)$ ab.
+\item f) $C$ hängt nicht von den Messwerten ab.
+\eitm
+
+
+
+
+
+
+
+
+
+
+
+

@@ -207,6 +207,147 @@ Also: $\hat v$ ist multinomialverteilt mit Erwartungswert $\vwahr$ und Kovarianz
 \item f) $C$ hängt nicht von den Messwerten ab.
 \eitm
 
+Unbeschränkter Fall:
+
+\[ J^\dagger = (J_1^T J_1)^{-1} J_1^T \]
+
+\[ C = (J_1^T J_1)^{-1}J_1^T J_1 (J_1^T J_1)^{-1} = (J_1^T J_1)^{-1} \]
+
+Beschränkter Fall:
+
+\[ J^\dagger = \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm \bpm J_1^T & 0 \\ 0 & I \epm \]
+
+\[ C = \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} \bpm J_1^T J_1 & 0 \\ 0 & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm \bpm I \\ 0 \epm \quad (11.7) \]
+
+\msubsection{Lemma 11.2}
+
+Sei
+
+\[ \bpm X & Y^T \\ Y & Z \epm := \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} =:M^{-1} \]
+
+Dann ist die Kovarianzmatrix $C=X$ und erfüllt
+
+\begin{align*}
+I &= J_1^T J_1 C + J_2^T Y \\
+0 &= J_2 C
+\end{align*}
+
+Beweis: Multipliziere Matrix mit $M^{-1}$:
+
+\begin{align*}
+I &= J_1^T J_1 X + J_2^T Y \\
+0 &= J_1^T J_1 Y + J_2^T Z \\
+0 &= J_2 X \\
+I &= J_2 Y^T \\
+\end{align*}
+
+Setze in (11.7) ein:
+
+\begin{align*}
+C &= \bpm I & 0 \epm M^{-1} \bpm J_1^T J_1 & 0 \\ 0 & 0 \epm M^{-1} \bpm I \\ 0 \epm \\
+&= \bpm X & Y^T \epm \bpm J_1^T J_1 & 0 \\ 0 & 0 \epm \bpm X \\ Y \epm \\
+&= X J_1^T J_1 X\\
+&= X (\underbrace{J - J_2^T Y}_{=J_1^T J_1 X}) \\
+&= X - (\underbrace{J_2 X}_{=0})^T Y \\
+&= X \\
+\end{align*}
+
+\msubsection{Korollar 11.3}
+
+\begin{align*}
+C &= \bpm I & 0 \epm \bpm J_1^T J_1 J_2^T \\ J_2 & 0 \epm^{-1} \bpm I \\ 0 \epm \\
+\end{align*}
+
+\msection{Konfidenzgebiete}
+
+Das $(100\cdot\alpha)\%$-Konvergenzgebiet ist das Gebiet, in dem die wahren aber unbekannten Parameter $\vwahr$ mit einer Sicherheit von $\alpha \in (0,1]$ liegen. Als Näherung betrachten wir das Konfidenzgebiet im Lösungspunkt $\hat v$ des Gauß-Newton-Verfahrens:
+
+\begin{align*}
+G(\alpha, \hat v) &= \{ v \in \R^n : F_2(x) = 0 \wedge \|F_1(v)\|_2^2 - \|F_1(\hat v)\|_2^2 \leq \gamma(\alpha)^2 \} \\
+\text{mit } \gamma(\alpha)^2 &= \Chi_{n-n_2}^2 (a-\alpha)
+\end{align*}
+
+(Quantil der $\Chi^2$-Verteilung zum Wert $\alpha$ mit $n-n_2$ Freiheitsgraden, $v \in \R^n$, $F_1(v) \in \R^{n_1}$, $F_2(v) \in \R^{n_2}$).
+
+\msubsection{Linearisierte Näherung}
+
+\begin{align*}
+G_L(\alpha) &= \{ v \in \R^n : F_2(\hat v) + J_2(\hat v) (v-\hat v) = 0, \\
+& \|F_1(\hat v) + J_1(\hat v)(v-\hat v) \|_2^2 - \|F_1(\hat v)\|_2^2 \leq \gamma(\alpha)^2 \} \quad (11.10) \\
+\end{align*}
+
+\msubsection{Lemma 11.4}
+
+Das linearisierte Konfidenzgebiet lässt sich in folgender Form schreiben:
+
+\[ G_L(\alpha, \hat v) = \ov G_L(\alpha, \hat v) := \l\{ v \in \R^n, v - \hat v = J^\dagger(\hat v) \bpm \delta w \\ 0 \epm, \delta w \in \R^{n_1}, \|\delta w\|\leq \gamma(\alpha) \r\} \]
+
+Beweis: siehe \zb Skript zu Numerik 3.
+
+\msubsection{Korollar 11.5}
+
+Sei $\theta_i = \gamma(\alpha) \sqrt{c_{ii} ( \hat v) }$, $i=1,\cdot,n$. Dann gilt: $G_L(\alpha, \hat v)$ wird durch einen Quader mit den Seitenlängen $2\theta_i$ eingeschlossen:
+
+\[ G_L(\alpha,\hat v) \subseteq [ \hat v_1 - \theta_1, \hat v_1 + \theta_1] \times \cdots \times [\hat v_n - \theta_n, \hat v_n + \theta_n ] \quad (11.12)\]
+
+Beweis:
+
+\begin{align*}
+|v_1-\hat v_1| &\leq \l\| \l( J^\dagger(\hat v) \bpm I \\ 0 \epm \r)^T e_i \r\| \|\delta w\|_2 \\
+&= \l( e_i^TJ^\dagger(\hat v) \bpm I \\ 0 \epm \bpm I & 0 \epm J^\dagger (\hat v)^T e_i \r)^{\frac 12} \|\delta w\|_2 \\
+&\leq \sqrt{c_{ii}(\hat v)} \gamma(\alpha) \\
+\end{align*}
+
+\msection{11.3 Das Versuchsplanungs- und Optimierungsproblem}
+
+Wie kann die Güte des parameterschätzproblems verbessert werden?
+
+Unbeschränkter Fall: $C = (J_1^T J_1)^{-1}$ Konfidenzintervall $\sqrt{c_{ii}}$. Mehr Messungen durchführen:
+
+\begin{align*}
+C_+ &= \l( \bpm J_1 \\ \hdots \\ J_1 \epm^T \bpm J_1 \\ \hdots \\ J_1 \epm \r)^{-1} = (m J_1^T J_1)^{-1} = \frac 1m (J_1^T J_1)^{-1} \\
+\end{align*}
+
+Die Konfidenzintervall werden nur um den Faktor $m^{-\frac 12}$ kleiner: $\sqrt{c_{+ii}} = \sqrt{m^{-1} c_{ii}} = m^{-\frac 12} \sqrt{c_{ii}}$.
+
+Stattdessen: Entweder Experimente, die die statistische Unsicherheit der Parameterschätzung minimieren.
+
+Versuchsplanungsgrößen: $\xi = (q,u,w)$:
+
+\bitm
+\item Steuergrößen $q \in \R^{n_q}$
+\item Steuerfunktionen $u\colon [\tn, \tend] \to \R^{n_u}$
+\item Auswahl der Messungen $w\in \{0,1\}^M$
+\eitm
+
+\[ w_i = \begin{cases} 1 & \text{ Messung wird durchgeführt} \\ 0 & \text{ Messung wird nicht durchgeführt} \end{cases} \]
+
+Zielfuktion: Informationsfunktion auf $C$ ($C$ ist positiv semidefinit, symmetrisch).
+
+Üblich sind:
+
+\bitm
+\item $\Phi(C) = \sqrt[n]{\det C}$ D-Kriterium 
+\item $\Phi(C) = \frac 1n \mathrm{Spur} C$ A-Kriterium
+\item $\Phi(C) = \|C\|_2 = \lambda_{max} (C)$ E-Kriterium
+\item $\Phi(C) = \max_{i=1,\cdots,n} \sqrt{c_{ii}}$ U-Kriterium
+\eitm
+
+\msubsection{11.6}
+
+Statt auf $C$ kann man die Kriterien auch auf $K^T C K$, die Projektion auf den $n_k$-dimensionalen Teilraum, $K \in \R^{n\times n_k}$ vollrangig, anwenden. Insbesondere für das D-Kriterium, wenn $C$ nicht positiv definit ist.
+
+\msubsection{Bemerkung 11.7}
+
+Im unbeschränkten Fall korrespondiert das D-Kriterium zum Volumen des Konfidenzellipsoids, das A-Kriterium zur Länge der durchschnittlichen Halbachsen, das E-Kriterium zur längsten Halbachsenlänge und das M-Kriterium zum größten Konfidenzintervall.
+
+
+
+
+
+
+
+
 
 
 

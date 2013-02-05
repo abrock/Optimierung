@@ -322,7 +322,7 @@ Versuchsplanungsgrößen: $\xi = (q,u,w)$:
 
 \[ w_i = \begin{cases} 1 & \text{ Messung wird durchgeführt} \\ 0 & \text{ Messung wird nicht durchgeführt} \end{cases} \]
 
-Zielfuktion: Informationsfunktion auf $C$ ($C$ ist positiv semidefinit, symmetrisch).
+Zielfunktion: Informationsfunktion auf der Kovarianzmatrix $C$ ($C$ ist positiv semidefinit, symmetrisch).
 
 Üblich sind:
 
@@ -341,11 +341,146 @@ Statt auf $C$ kann man die Kriterien auch auf $K^T C K$, die Projektion auf den 
 
 Im unbeschränkten Fall korrespondiert das D-Kriterium zum Volumen des Konfidenzellipsoids, das A-Kriterium zur Länge der durchschnittlichen Halbachsen, das E-Kriterium zur längsten Halbachsenlänge und das M-Kriterium zum größten Konfidenzintervall.
 
+\msubsection{Optimale Versuchsplanung}
 
+Entwirf Experimente, die die statistische Unsicherheit der Parameterschätzung minimieren. 
 
+Versuchsplanungsgrößen: $\xi = (q,u,w)$
 
+\msubsection{Versuchsraum}
 
+Nebenbedingungen
 
+\bitm
+\item Steuerbeschränkungen: $q_i \in [L_{q_i}, U_{q_i}]$, $u_i(t) \in [L_{u_i}, U_{u_i}]$, $L_c \leq c(q) \leq U_c$
+\item Zustandsbeschränkungen: $L_b \leq b(t,y(t),p,q,u(t)) \leq U_b$ $\forall t \in [\tn, \tend]$. Spezialfall: $L_{y_i} \leq y_i(t) \leq U_{y_i}$.
+\item Auswahl von Messungen: Sei $I_j \subseteq \{1,\cdots,M\}$ eine Teilmenge aller möglichen Messungen, \zb alle Messungen an einem Zeitpunkt, alle Messungen mit einem bestimmten Verfahren. $L_{I_j} \leq \sum_{i\in I_j} w_i \leq U_{I_j}$.
+\item Kostenbeschränkung (lineare Kosten): \[ \sum\limits_{i=1}^M c_i^w w_i + \sum\limits_{i=1}^{n_q} c_i^q + \sum\limits_{i=1}^{n_u} \int\limits_\tn^\tend c_i^u(t) u(t) \dd t \leq C_{max}\]
+\bitm
+\item $c_i^w$: Kosten pro Messung
+\item $c_i^q$: Kosten pro Einheit Steuergröße
+\item $c_i^u$: Kosten für Steuerfunktion
+\eitm
+\eitm
+
+Insgesamt:
+
+\bitm
+\item Ungleichungsbeschränkungen: $L \leq \Psi(t,y(t),p,q,u(t),w) \leq U$ (11.16)
+\item Gleichungsbeschränkungen: $\Chi (t,y(t),p,q,u(t),w) = 0$ (11.17)
+\item Ganzzahligkeitsbedingungen: $w_i \in \{0,1\}$, $i=1,\cdots,M$.
+\item Variationsdifferentialgleichung für $\frac{\partial y}{\partial v} =: G$
+\eitm
+
+Versuchsplanungsproblem (11.19)
+
+\begin{align*}
+\min_{q,u,w} &\Phi \l( \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} \bpm I \\ = \epm \r) \\
+\text{s.\,t. } J_1 &= \l( - \frac{\sqrt{w_i}}{\sigma_i} \l( \frac{\partial h_i}{\partial y} G(t_i) + \frac{\partial h_i}{\partial v} \r) \r)_{i=1,\cdots,M} \\
+J_2 &= \frac{\partial F_2}{\partial y} G + \frac{\partial F_2}{\partial v} \\
+\dot y &= f(t,y,p,q,u), \quad y(t_0) &= y_0 \\
+r(t_1, y(t_1), \cdots, t_k, y(t_k), p, q) &= 0 \\
+\dot G &= \frac{\partial f}{\partial y} G + \frac{\partial f}{\partial v}, \quad G(t_0) &= \frac{\partial y_0}{\partial v} (p,q) \\
+L & \leq \Psi(t,y(t),p,q,u(t),w) \leq U \\
+0 &= \Chi(t,y(t),p,q,u(t),q) \\
+w_i & \in \{0,1\} \quad i = 1,\cdots, M \\
+\end{align*}
+
+Eigenschaften:
+
+\bitm
+\item Optimalsteuerungsproblem
+\item mit ODE und VDE-Nebenbedingung
+\item Nicht-Standard-Zielfunktion: hochgradig nicht-separiert
+\item Ganzzahligkeitsbedingungen
+\eitm
+
+\msubsection{Varianten}
+
+\bitm
+\item Mehrfachexperimente: Ein Experiment besteht aus einer Durchführung des Prozesses für gegebene Versuchsplanungsgrößen $\xi = (q,u,w)$. Oft benötigt man aber Daten aus mehreren Experimenten, um alle Parameter zu schätzen.
+Wir erlauben, dass die Experimente durch verschiedene Modelle beschrieben werden, diese müssen nur die Parameter gemeinsam haben. $j=1,\cdots,N_{ex}$. Pro Experiment:
+\bitm
+%\item Modellgleichungen: $\dot y^j = f(t,y^j,p,q^j,u^j)$, $y^j(t_0^j) = y_0^j(p,q^j)$, $r^j(t_1^j, y^j(t_1^j), \cdots, t_{k^j}^j, y^j(t_{k^j}^j), p, q^j) = 0$ mit $t \in [t_0^j, \t_{end}^j]$
+%\item Messungen: $\eta_i^j = h_i^j (t_i^j, y^j(t_i^j),p,q_i^j) + \eps_i^j$, $i = 1,\cdots,M^j$, $\eps_i^j \sim \mathcal N \l(0, \frac{{\sigma_i^j}^2}{\w_i^j} \r)$, $\cov (\eps_i^j, \eps_k^l) = 0$, $i\neq k$ oder $j\neq l$
+\item
+\eitm
+\eitm
+
+Führt auf Mehrfachexperiment-Parameterschätz-Problem:
+
+\begin{align*}
+\min_{p,s^1, \cdots, s^{n_{ex}}} &\sum\limits_{j=1}^{N-{ex}} \|F_1^j(p,s^j)\|_2^2 \quad (11.20) \\
+\text{s.\,t. } F_2^j(p,s^j) &= 0 \quad j = 1,\cdots, N_{ex} \\
+\end{align*}
+
+Struktur. $F^h$ hängt nur von $s^j$ ab. Jacobi-Matrizen $J_i$, $i=1,2$:
+
+\begin{align*}
+J_i &= \frac{\partial F_i}{\partial (p,s)} = \bpm J_{ip}^1 & J_{is^1}^1 & 0 & \cdots & 0 \\ \vdots & & \ddots \\ \vdots &&& \ddots \\ J_{ip}^{N_{ex}} & 0 & 0 & \cdots & J_{is^{N_{ex}}}^{N_{ex}}  \epm
+\end{align*}
+
+\msubsection{Feste und variable Experimente}
+
+$N_{ex} = N_{fix} + N_{var}$
+
+\bitm
+\item $N_{fix}$: Bereits durchgeführte Experimente, für die schon Messdaten vorliegen und deren Sensitivitäten in der Versuchsplanung als Vorinformationen berücksichtigt werden sollen.
+\item $N_{var}$: neu zu planende Experimente, deren $\xi$-Variablen in der Versuchsplanung optimal bestimmt werden sollen.
+\eitm
+
+\begin{align*}
+J_i &= \bpm J_{ip}^{fix} & J_{is^{fix}}^{fix} & 0 & \cdots & 0 \\ \vdots && \ddots \\ \vdots &&& \ddots \\ J_{ip}^{var} & 0 & 0 &\cdots & J_{is^{var}}^{var} \epm i=1,2 \\
+J_1^T J_1 &= \bpm H_{pp} & H_{s^1p}^T & \cdots & H_{s^{N_{ex}}p}^T \\ H_{s^1p} & H_{s^1 s^1} & & 0 \\ \vdots && \ddots  & \vdots\\ H_{s^{N_{ex}}p} & 0 & \cdots & H_{s^{N_{ex}}s^{N_{ex}}} \epm \\
+H_{pp} &= \sum\limits_{j=1}^{N_{ex}} {J_{1p}^j}^T J_{1p} \\
+&= \underbrace{\sum\limits_{j=1}^{N_{fix}} {J_{1p}^j}^T J_{1p}}_{=: H_{pp}^{fix} \text{ fest}} + \underbrace{\sum\limits_{j=N_{fix+1}}^{N_{fix} + N_{var}} {J_{1p}^j}^T J_{1p}}_{\text{variabel}} \\
+\end{align*}
+
+\msubsection{Mehrfachexperiment-VP-Problem}
+
+\bitm
+\item Für die alten Experimente $j=1,\cdots,N_{fix}$ sind die $q^j, u^j, w^j$ Konstanten. Es müssen keine Steuer-, Zustands-, Ganzzahligkeits- oder Kostenconstraints berücksichtigt werden
+\item Für die neuen Experimente $j = N_{fix} +1, \cdots, N_{fix} + N_{neu}$ sind die $q^j, u^j, w^j$ Variablen und die Nebenbedingungen müssen berücksichtigt werden.
+\eitm
+
+\begin{align*}
+\min & \Phi \l( \bpm I & 0 \epm \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm^{-1} \bpm I \\ 0 \epm \r) \\
+\text{s.\,t. } J_1 &, J_2 \text{ wie oben} \\
+\end{align*}
+
+ODE-RWP für Experimente $q,\cdots,N_{ex}$. VDE für Experimente $1,\cdots,N_{ex}$, Ungleichungs- Gleichungs- und Ganzzahligkeitsbedingungen für Experimente $N_{fix}+1, \cdots N_{fix}+N_{var}$ (11.25) 
+
+\msubsection{Bemerkung 11.8}
+
+Das Mehrfachexperiment-VP-Problem (11.25) minimiert die statistische Unsicherheit einer PS aus allen (alten und neuen) Experimenten. Dabei werden die neuen Experimente so ausgelegt, dass sie gegenüber den alten einen maximalen Zuwachs an statistischer Güte ergeben.
+
+Sequentielle Vorgehensweise:
+
+Wenn die Modellantworten $h_i(t_i,y(t_i,p),p,q)$ nichtlinear in $p$ sind, d.\,h. $J_1 = J_1(p)$ hängt auch $C$, das VP-Problem und der optimale Versuchsplan von den aktuellen Werten von $p$ ab.
+
+Wir führen sukzessive und abwechselnd VP und PS durch:
+
+\bitm
+\item Startparametersatz
+\item Versuchsplanung
+\item Vorschlag für neue Experimente
+\item Versuchsdurchführung
+\item Messdaten
+\item Parameterschätzung
+\item Verbesserter Parametersatz
+\item Versuchsplanung
+\item $\cdots$
+\eitm
+
+\msubsection{Bemerkung 11.11}
+
+\bitm
+\item in der Versuchsplanung werden Mehrfach-Experimente geplant unter Berücksichtigung der alten Experimente aus der vorherigen Iterationen und mit Optimierung ggf. neuer Experimente
+\item Die Parameterschätzung wird mit allen Daten aus allen bisherigen Iterationen durchgeführt.
+\item Die Versuchsplanung kann robustifiziert werden (s.\,u.). Der Robustifizierungsanteil wird automatisch zurückgefahren. 
+\item Wenn nötig können in den Iterationen auch Modellmodifikationen vorgenommen werden.
+\item Man stoppt, wenn die Parameter hinreichend gut bestimmt sind, oder wenn das experimentelle Budget erschöpft ist.
+\eitm
 
 
 

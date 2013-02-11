@@ -56,7 +56,7 @@ r_4 &= k_4 \l( \frac{n_1}V \r)^2
 Geschwindigkeitskoeffizienten:
 
 \begin{align*}
-%k_i &= k_{ref} \exp l( -\frac{E_{ai}}R \l( \frac 1{T(t)} - \frac 1{T_{refi}} \r) \r) \quad i = 1,2,4 \\
+k_i &= k_{ref} \exp \l( -\frac{E_{ai}}R \l( \frac 1{T(t)} - \frac 1{T_{refi}} \r) \r) \quad i = 1,2,4 \\
 \frac{k_2}{k_3} &= K_{c,2} \exp \l( - \frac{\Delta H_2}{R} \l( \frac{1}{T(t)} - \frac1{T_{g2}} \r) \r) \\
 \end{align*}
 
@@ -135,8 +135,8 @@ $F_2(v,\xi)$ enthält die Randbedingungen und die zusätzlichen Gleichungsbeschr
 Jacobi-Matrix:
 
 \begin{align*}
-%\partial_{1ij} &= \frac{\partial F_{1i}{\partial v_j} = - \frac{\sqrt{w_i}}{\sigma_i} \l( \frac{\partial h_i}{\partial y} \frac{\partial y(t_i)}{\partial v_j} + \frac{\partial h_i}{\partial v_j} \r) \\
-%\partial_{2ij} &= \frac{\partial F_{2i}{\partial v_j} = \frac{\partial F_{2i}}{\partial y} \frac{\partial y}{\partial v_j} + \frac{\partial F_{2i}{\partial v_j} \\
+\partial_{1ij} &= \frac{\partial F_{1i}}{\partial v_j} = - \frac{\sqrt{w_i}}{\sigma_i} \l( \frac{\partial h_i}{\partial y} \frac{\partial y(t_i)}{\partial v_j} + \frac{\partial h_i}{\partial v_j} \r) \\
+\partial_{2ij} &= \frac{\partial F_{2i}}{\partial v_j} = \frac{\partial F_{2i}}{\partial y} \frac{\partial y}{\partial v_j} + \frac{\partial F_{2i}}{\partial v_j} \\
 \end{align*}
 
 $\frac{\partial y}{\partial v}$ sind Lösungen von Variationsdifferentialgleichungen nach Parametern und Anfangswerten.
@@ -401,8 +401,8 @@ Eigenschaften:
 \item Mehrfachexperimente: Ein Experiment besteht aus einer Durchführung des Prozesses für gegebene Versuchsplanungsgrößen $\xi = (q,u,w)$. Oft benötigt man aber Daten aus mehreren Experimenten, um alle Parameter zu schätzen.
 Wir erlauben, dass die Experimente durch verschiedene Modelle beschrieben werden, diese müssen nur die Parameter gemeinsam haben. $j=1,\cdots,N_{ex}$. Pro Experiment:
 \bitm
-%\item Modellgleichungen: $\dot y^j = f(t,y^j,p,q^j,u^j)$, $y^j(t_0^j) = y_0^j(p,q^j)$, $r^j(t_1^j, y^j(t_1^j), \cdots, t_{k^j}^j, y^j(t_{k^j}^j), p, q^j) = 0$ mit $t \in [t_0^j, \t_{end}^j]$
-%\item Messungen: $\eta_i^j = h_i^j (t_i^j, y^j(t_i^j),p,q_i^j) + \eps_i^j$, $i = 1,\cdots,M^j$, $\eps_i^j \sim \mathcal N \l(0, \frac{{\sigma_i^j}^2}{\w_i^j} \r)$, $\cov (\eps_i^j, \eps_k^l) = 0$, $i\neq k$ oder $j\neq l$
+\item Modellgleichungen: $\dot y^j = f(t,y^j,p,q^j,u^j)$, $y^j(t_0^j) = y_0^j(p,q^j)$, $r^j(t_1^j, y^j(t_1^j), \cdots, t_{k^j}^j, y^j(t_{k^j}^j), p, q^j) = 0$ mit $t \in [t_0^j, t_{end}^j]$
+\item Messungen: $\eta_i^j = h_i^j (t_i^j, y^j(t_i^j),p,q_i^j) + \eps_i^j$, $i = 1,\cdots,M^j$, $\eps_i^j \sim \mathcal N \l(0, \frac{{\sigma_i^j}^2}{w_i^j} \r)$, $\cov (\eps_i^j, \eps_k^l) = 0$, $i\neq k$ oder $j\neq l$
 \item
 \eitm
 \eitm
@@ -482,15 +482,187 @@ Wir führen sukzessive und abwechselnd VP und PS durch:
 \item Man stoppt, wenn die Parameter hinreichend gut bestimmt sind, oder wenn das experimentelle Budget erschöpft ist.
 \eitm
 
+\msection{Robustifizierung der Versuchsplanung gegenüber Parameterunsicherheit}
 
+Wenn $h$ nichtlinear in $p$ ist, ist $J = J(p)$ eine Funktion der Parameter und damit auch $C=C(p)$. Für schlecht bekannte Parameter können also auch schlechte Experimente berechnet werden.
+Unsicherheit der Parameter: (a-priori-Information) $p\sim \mathcal N(p_0, \Sigma)$, $\Sigma$ positiv definit mit Konfidenzgebiet $\{p:\|p-p_0\|_{2,\Sigma^{-1}} \leq \gamma \}$ mit der Norm
+$\|\cdots\|_{2,\Sigma^{-1}}$ aus dem Skalarprodukt $\la x,y\ra = x^T \Sigma^{-1} y$. Worst-Case-Design:
 
+\[ \min_{\xi \in \Omega} \max_{\|p-p_0\|_{2,\Sigma^{-1}} \leq \gamma} \Phi(C(\xi,p)) \]
 
+Das ist ein semi-infinites Optimierungsproblem. Die Lösung erfordert die Berechnung von globalen Optima von endlichdimensionalen Teilproblemen, das ist NP-schwer.
 
+Vereinfachte Problemstellung: Taylorentwicklung nach $p$ um $p_0$:
 
+\[ \min_{\xi \in\Omega} \max_{\|p-p_0\|_{2,\Sigma^{-1}} \leq \gamma} \Phi(C(\xi,p_0)) + \frac{\partial}{\partial p} \Phi(C(\xi,p_0))(p-p_0) \quad (11.27) \]
 
+Das innere Problem kann jetzt explizit gelöst werden:
 
+\msubsection{Lemma 11.9}
 
+\begin{align*}
+\max_{\|p-p_0\|_{2,\Sigma^{-1}} \leq \gamma} &\Phi(C(\xi, p_0)) + \frac{\partial }{\partial p} \Phi(C(\xi,p_0)) (p-p_0) \\
+&= \Phi(C(\xi,p_0)) + \gamma \l\| \frac{\partial}{\partial p} \Phi(C(\xi,p_0)) \r\|_{2,\Sigma} \quad (11.28) \\
+\end{align*}
 
+Beweis:
 
+Sei $\Delta p := p-p_0$, $a := \frac{\partial}{\partial p} \Phi(C(\xi,p_0))^T$. Das Minimum wird am Rand angenommen, betrachte
 
+\[ \min_{\|\Delta p\|_{2,\Sigma^{-1}}^2 = \gamma^2} a^T \Delta p \]
+
+Mit der Lagrangefunktion 
+
+\begin{align*}
+L(\Delta p, \lambda) &= a^T \Delta p + \lambda(\Delta p^T \Sigma^{-1} \Delta p - \gamma^2) \\
+\nabla_p L(\Delta p^*, \lambda) &= a + 2 \lambda \Sigma^{-1} \Delta p^* = 0 \RA \Delta p^* = \frac{-\Sigma a}{2\lambda} \\
+\Delta_\lambda L(\Delta p^*, \lambda) &= \Delta {p^*}^T \Sigma^{-1} \Delta p \gamma^2 = 0 \\
+&= \frac{a^T \Sigma a}{(2\lambda)^2} - \gamma^2 \\
+\RA \lambda &= \pm \frac{\|A\|_{2,\Sigma}}{2\gamma}
+\end{align*}
+
+Positive Lösung: Minimum. Maximum:
+
+\[ \Delta p^* = \gamma \frac{\Sigma a}{\|a\|_{2,\Sigma}} \]
+
+Zielfunktionswert:
+
+\[ a^T \Delta p^* = \gamma \frac{a^T \Sigma a}{\|a\|_{2,\Sigma}} = \gamma \|a\|_{2,\Sigma} \]
+
+Robustifiziertes Versuchsplanungsproblem:
+
+\[ \min_{\xi\in \Omega} \underbrace{\Phi(C(\xi,p_0))}_{\text{nicht robustes Gütekriterium}} + \gamma \underbrace{\l\| \frac{\partial}{\partial p} \Phi(C(\xi,p_0)) \r\|_{2,\Sigma}}_{\text{Sensitivität des Gütekriteriums nach den Parametern}} \]
+
+Gewichtung durch das Konfidenzlevel der Parameterunsicherheit.
+
+\msubsection{Bemerkung 11.10}
+
+\bitm
+\item Gegenüber der nichtrobusten Formulierung kommt eine zusätzliche Ableitung nach $p$ hinzu.
+\item Parameterabhängige Nebenbedingungen müssen ebenfalls robustifiziert werden.
+\eitm
+
+\msubsection{11.4 Numerische Methoden zur Lösung von Versuchsplanungsproblemen}
+
+\bitm
+\item Direkter Ansatz der optimalen Steuerung
+\item Diskretisierung der Zustandsbeschränkungen
+\item Parametrisierung der Dynamik durch Single Shooting oder mit einer geeigneten Umformulierung durch Multiple Shooting:
+\[ \min \Phi\l( \bpm I & 0 \epm \bpm H_m J_{2m}^T \\ J_{2m} & 0 \epm^{-1} \bpm I \\ 0 \epm \r) \\
+\text{s.\,t. } H_j = H_{j-1} + \sum\limits_{i: t_j \in [\tau_i, \tau_{i+1})} J_{1j.}^T J_{j1.} \\
+= H_{j-1} + \sum\limits_{i: t_j \in [\tau_i, \tau_{i+1})} \l( -\frac{\sqrt{w_i}}{\sigma_i} \frac{\partial h_i}{\partial y} G(t_i) + \frac{\partial h_i}{\partial v} \r)^T e_i^T e_i \l( - \frac{\sqrt{w_i}}{\sigma_i} \frac{\partial h_i}{\partial y} G(t_i) + \frac{\partial h_i}{\partial v} \r) \\
+H_0 = 0 \\
+J_{2j} = J_{2j-1} + \sum\limits_{i: t_i \in [\tau_i, \tau_{i+1})} \l( \frac{\partial F_2}{\partial y} G(t_i) + \frac{\partial F_{2i}}{\partial v} \r) e_i\\
+i=1,\cdots,m \quad J_{20} = 0 \]
++ Multiple-Shooting-Parametrisierung von ODE und VDE. Dann ist die ZF vom Mayer-Typ, das Problem kann auf Teilintervallen separiert ausgewertet werden. Aber: viele zusätzliche Variablen $H_0$, $J_{2j}$. Strukturen müssen ausgenutzt werden $\RA$ Aktuelle Doktorarbeit Dennis Janka.
+\item Behandlung der Ganzzahligkeit: \\
+0-1-Variablen. $w_i \in \{0,1\}$, $i=1,\cdots,M$. Relaxierung. $w_i \in [0,1]$, $i=1,\cdots,M$ $\RA$ Lösungen liefern untere Schranken für die ganzzahlige Optimallösung. Obere Schranken erhält man durch Heuristiken, \zb Runden der $w_i$ auf zulässige ganze Werte, Beispiel: Sum-Up-Rounding. TODO: Bildchen. Addiere Gewichte solange auf, bis die Summe $\geq 1$ wird und platziere dann eine Messung, fahre mit dem Rest und den weiteren Gewichten fort.
+
+Beobachtung bei numerischen Ergebnissen: Die Lösungen der relaxierten Probleme sind schon vollständig oder beinahe 0-1. Erklärungsansätze:
+\bitm
+\item Exakte lineare Designs (Pukelsheim, Rieder)
+\item Bang-Bang-Prinzip der optimalen Steuerung (Sager 2009)
+\eitm
+\item Lösung des endlichdimensionalen NLP:
+
+Benutze SQP-Verfahren, siehe Kapitel 7. Benötigte Ableitungen:
+\bitm
+\item Hessematrix der Lagrangefunktion durch Niedrigrang-Aufdatierungen, \zb BFGS.
+\item Jacobi-Matrix der Nebenbedingungen 
+\item Gradient der Zielfunktion
+\eitm
+\begin{align*}
+\Phi(C) &= \Phi \l( \bpm I & 0 \epm M^{-1} \bpm I \\ 0 \epm \r) \\
+M &= \bpm J_1^T J_1 & J_2^T \\ J_2 & 0 \epm \\
+J_1 &= \l( - \frac{\sqrt{w_i}}{\sigma_i} \frac{\partial h_i}{\partial y}{\partial y}{\partial v} (t_i) + \frac{\partial h_i}{\partial v} \r)_{i=1,\cdots,M} \\
+J_2 &= \frac{\partial F_2}{\partial y} \frac{\partial y}{\partial v} + \frac{\partial f_2}{\partial v} \\
+\end{align*}
+Gradient von $\Phi$ nach $\xi$:
+\[ \frac{\partial \Phi}{\partial \xi} = \frac{\partial \Phi}{\partial C} \frac{\partial C}{\partial M} \frac{\partial M}{\partial J} \frac{\partial J}{\partial \xi} \quad (11.30) \]
+$\frac{\partial \Phi}{\partial C}$: Ableitung von Funktionen auf Matrizen
+\begin{align*}
+\frac{\partial \trace C}{\partial C} \Delta C :&= \lim_{h\to 0} \frac{\trace(C+h\Delta C) - \trace C}{h} \quad (11.31) \\
+&= \trace \Delta C \\
+\frac{\partial \det C}{\partial C} \Delta c &= \sum\limits_{i,k} (\det C) (C^{-1})_{ik} \Delta C_{ik} \quad (11.32) \\
+\frac{\partial \lambda_{max} (C)}{\partial C} \Delta C &= z^T \Delta C z \\
+\end{align*}
+
+Wenn $z$ auf 1 normierter EV zum einfachen EW $\lambda_{max}(C)$ ist.
+
+\begin{align*}
+\frac{\partial C}{\partial M} \Delta M &= \bpm I & 0 \epm \frac{\partial M^{-1}}{\partial M} \Delta M \bpm I \\ 0 \epm \\
+\end{align*}
+
+\eitm
+
+\msubsection{Lemma 11.12: Ableitung der inversen Matrix}
+
+Sei $A \in R^{n\times n}$ invertierbar und $\Delta A \in \R^{n\times n}$. Dann ist
+
+\[ \frac{\partial A^{-1}}{\partial A} \Delta A = - A^{-1} \Delta A A^{-1} \quad (11.34) \]
+
+Beweis: Sei $X = A^{-1}$. Es gilt: $XA = I$. abgeleitet:
+
+\begin{align*}
+\frac{\partial X}{\partial A} \Delta A \cdot A + X \frac{\partial A}{\partial A} \Delta A = 0 \\
+\RA \frac{\partial X}{\partial A} \Delta A &= -X \Delta A A^{-1} = -A^{-1} \Delta A A^{-1} \\
+\frac{\partial C}{\partial M} \Delta M &= - \bpm I & 0 \epm M^{-1} \Delta M M^{-1} \bpm I \\ 0 \epm \\
+\frac{\partial M}{\partial J} \Delta J &= \bpm J_1^T \Delta J_1 + \Delta J_1^T J_1 & \Delta J_2^T \\ \Delta J_2^T & 0 \epm 
+\frac{\partial J_1}{\partial \xi}
+\end{align*}
+
+ableiten nach $w,q$ benötigt insbesondere $\frac{\partial}{\partial q} \frac{\partial y}{\partial p} =: GAQ$ Lösung einer VDE zweiter Ordnung:
+
+\begin{align*}
+\dot y &= f(t,y,p,q) \\
+y(t_0) &= y_0(p,q) \quad (11.35) \\
+\end{align*}
+
+Ableiten nach $p$: $G := \frac{\partial y_0}{\partial p}$
+
+Ableiten nach $q$: 
+
+\begin{align*}
+GAQ :&= \frac{\partial^2 y}{\partial q \partial p} \\
+GAQ(t_0) &= \frac{\partial^2 y_0}{\partial q \partial p} \\
+G\dot A Q &= \frac{\partial f}{\partial y} GAQ + \l( \frac{\partial^2 f}{\partial y \partial p} GQ + \frac{\partial^2 f}{\partial q \partial y} \r) G + \l( \frac{\partial^2 f}{\partial y \partial p} GQ + \frac{\partial^2 f}{\partial y \partial p} \r) \\
+\end{align*}
+
+Ableitung nachz $q$:
+
+\begin{align*}
+GQ &= \frac{\partial y}{\partial q} \\
+\dot Gq &= \frac{\partial f}{\partial y} GQ + \frac{\partial f}{\partial q} \\
+GQ(t_0) &= \frac{\partial y_0}{\partial q}
+\end{align*}
+
+Müssen als System für $y,G,GQ, GAQ$ gelöst werden.
+
+TODO: Fehlender Text
+
+\msection{5. Ausnutzung der Mehrfachexperimentstruktur}
+
+\msubsection{Anwendungsbeispiel: Ergebnisse}
+
+Urethan-Reaktion, siehe 11.1
+
+a) Intuitive Versuchsplanung (Chemiker, BASF): Batch-Versuche, isotherm, "`Trennung der Reaktion"', 15 Experimente, 90 Messungen
+
+Konfidenzintervalle nach Parameterschätzung:
+
+\bitm
+\item $k_{ref1}$ $\pm 0.93\%$
+\item $E_{a1}$ $\pm 0.88\%$
+\item $k_{ref2}$ $\pm 0.72\%$
+\item $E_{a2}$ $\pm 0.26\%$
+\item $k_{ref4}$ $\pm 0.01\%$
+\item $DH_2$ $\pm 32.96\%$
+\item $KL_2$ $\pm 22.4\%$
+\eitm
+
+b) Optimale Versuchsplanung mit VPLAN:
+
+Beschränkungen an die Steuergrößen, maximal 16 Messungen pro Experiment. Tag-Nacht-Schichtrhythmus 80h. Nachts keine Messungen und keine Änderungen der Steuerungen.
+
+$\to$ 2 Experimente sequentiell $\rho$ alle Parameter mit Standardabweichung $< 1\%$
 

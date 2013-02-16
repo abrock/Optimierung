@@ -22,9 +22,9 @@ Ein Punkt $c \in \R^n$ heißt zulässiger Punkt des Problems (6.1), wenn er alle
 
 \msubsection{Definition 6.2}
 
-Ein Punkt $x^* \in \R^n$ heißt lokales Minimum von (6.1) wenn er zulässig ist und wenn ein Zielfunktionswert kleiner oder gleich den Zielfunktionswerten aller zulässigen Punkte in einer Umgebung von $x^*$ ist.
+Ein Punkt $x^* \in \R^n$ heißt lokales Minimum von (6.1) wenn er zulässig ist und wenn sein Zielfunktionswert kleiner oder gleich den Zielfunktionswerten aller zulässigen Punkte in einer Umgebung von $x^*$ ist.
 
-\[ x^* \text{ lokales Minimum } \LRA g(x^*) = 0 \wedge h(x^*) \leq 0 \wedge \exists \text{ Umgebung } U \text{ von } x^*: \forall x \in U \text{ mit } g(x) = 0, h(x) \leq 0 \text{ ist } f(x^*) \leq f(x) (6.2) \]
+\[ g(x^*) = 0 \wedge h(x^*) \leq 0 \wedge \exists \text{ Umgebung } U \text{ von } x^*: \forall x \in U \text{ mit } g(x) = 0, h(x) \leq 0 \text{ ist } f(x^*) \leq f(x) (6.2) \]
 
 \msubsection{Definition 6.3}
 
@@ -114,7 +114,7 @@ Verallgemeinerung für $m$ Nebenbedingungen:
 
 \msubsection{Definition 6.10}
 
-Die Funktion $L: \R^n \times \R^m: (x,\lambda) \mapsto L(x,\lambda) := f(x) + \lambda^T g(x)$ (6.10) heißt Lagrangefunktion (Lagrangian) des beschränkten Optimierungsproblems $\min f(x) $ s.\,t. $g(x)=0$.
+Die Funktion $L\colon \R^n \times \R^m \to \R, (x,\lambda) \mapsto L(x,\lambda) := f(x) + \lambda^T g(x)$ (6.10) heißt Lagrangefunktion (Lagrangian) des beschränkten Optimierungsproblems $\min f(x) $ s.\,t. $g(x)=0$.
 
 \msubsubsection{Bemerkung 6.11}
 
@@ -132,7 +132,7 @@ Hessematrix der Lagrangefunktion:
 
 \msubsection{Satz 6.12 (Notwendige Bedingung erster Ordnung}
 
-Betrachte das Problem $\min f(x)$ s.\,t. $g(x)=0$ mit $f\in C^2(\R^n,\R)$, $g \in C^2(\R^m, \R^n)$, $m \leq n$. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann existiert $\lambda \in \R^m$, so dass $\nabla_x L(x^*,\lambda) = \nabla f(x^*) + \nabla g(x^*) \lambda = 0$ und $\nabla_\lambda L(x^*, \lambda) = g(x^*) ) 9$ (6.13) bzw. $\nabla L(x.\lambda)=0$.
+Betrachte das Problem $\min f(x)$ s.\,t. $g(x)=0$ mit $f\in C^2(\R^n,\R)$, $g \in C^2(\R^n, \R^m)$, $m \leq n$. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann existiert $\lambda \in \R^m$, so dass $\nabla_x L(x^*,\lambda) = \nabla f(x^*) + \nabla g(x^*) \lambda = 0$ und $\nabla_\lambda L(x^*, \lambda) = g(x^*) ) 9$ (6.13) bzw. $\nabla L(x.\lambda)=0$.
 
 Beweis:
 

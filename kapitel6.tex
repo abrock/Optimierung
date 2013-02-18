@@ -164,7 +164,7 @@ p &= \bpm p_y \\ p_z \epm = \bpm -g_y(x^*)^{-1} g_z(x^*) \\ I \epm p_z \text{ de
 Alle zulässigen Kurven laufen also in der Tangentialebene in $x^*$ ein:
 
 \begin{align*}
-\phi(o) &= x^* \\
+\phi(0) &= x^* \\
 \phi'(0) &\in T(x^*)
 \end{align*}
 
@@ -185,7 +185,7 @@ $x^*$ optimal $\RA \nabla L(x^*,\lambda) = 0$ für ein $\lambda \in \R^m$.
 
 \msection{Definition 6.14}
 
-Die notwendigen Bedingungen (6.13) heißen KKT-Bedingungen. Reguläre Punkte $x^* \in \R^n$, für die es $\lambda \in \R^n$ gibt, so dass $\nabla_{x,\lambda} L(x^*, \lambda) = 0$ heißen KKT-Punkte bzw. stationäre Punkte.
+Die notwendigen Bedingungen (6.13) heißen KKT(Karush-Kuhn-Tucker)-Bedingungen. Reguläre Punkte $x^* \in \R^n$, für die es $\lambda \in \R^m$ gibt, so dass $\nabla_{x,\lambda} L(x^*, \lambda) = 0$ heißen KKT-Punkte bzw. stationäre Punkte.
 
 \msection{Bemerkung 6.15}
 
@@ -193,7 +193,7 @@ Stationäre Punkte können Minima aber auch Maxima oder Sattelpunkte sein.
 
 \msection{Satz 6.16 (Notwendige Bedingungen zweiter Ordnung}
 
-Seien die Voraussetzungen wie in Satz 6.12. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann ist die Hessematrix von $L$ nach $x$ und $x$ positid semidefinit auf $T(x^*) = \ker g_x(x^*)$, d.\,h.
+Seien die Voraussetzungen wie in Satz 6.12. Sei $x^*$ ein lokales Minimum, $x^*$ regulär. Dann ist die Hessematrix von $L$ nach $x$ und $x$ positiv semidefinit auf $T(x^*) = \ker g_x(x^*)$, d.\,h.
 
 \[ p^T \nabla_{xx}^2 L(x^*, \lambda) p \geq 0 \quad \forall p \in T(x^*) \]
 

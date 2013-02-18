@@ -140,11 +140,11 @@ Definiere normierte Zeit
 \tau &\in [0,1] \\
 t &= t_0 + \tau (\tend-t_0) = \phi(\tau) \\
 \dd t &= (\tend -t_0) \dd \tau =: \hat t \dd \tau \\
-\text{also } \frac{\partial y}{\partial \tau} &= \tend - t_0 = \hat t \\
+\text{also } \frac{\dd \phi}{\dd \tau} &= \tend - t_0 = \hat t \\
 \text{Dann ist } y(t) &= y(\phi(\tau)) =: \ov y(\tau)  \\
 u(t) &= u(\phi(\tau)) =: \ov u(\tau) \\
-\frac{\partial \ov y}{\partial \tau} &= \frac{\partial y}{\partial t}{\partial \phi}{\partial \tau} = f(\phi(\tau), y(\phi(\tau)), q, u(\phi(\tau)))- \hat t \\
-&=: \ov f(\tau, \hat y(\tau), \hat q, \hat u(\tau)) \\
+\frac{\dd \ov y}{\dd \tau} &= \frac{\dd y}{\dd t} \cdot \frac{\dd \phi}{\dd \tau} = f(\phi(\tau), y(\phi(\tau)), q, u(\phi(\tau))) \cdot \hat t \\
+&=: \ov f(\tau, \ov y(\tau), \ov q, \ov u(\tau)) \\
 \text{mit } \ov q &= (q, \hat t) \\
 \end{align*}
 

@@ -197,6 +197,8 @@ Seien die Voraussetzungen wie in Satz 6.12. Sei $x^*$ ein lokales Minimum, $x^*$
 
 \[ p^T \nabla_{xx}^2 L(x^*, \lambda) p \geq 0 \quad \forall p \in T(x^*) \]
 
+Anschaulich: "`Die Krümmung von $f$ ist größer als die Krümmung von $g$ skaliert mit $\lambda$"'
+
 Beweis: Weiter im Beweis von 6.12:
 
 Es gilt:
@@ -264,7 +266,7 @@ Betrachte das gestörte Problem
 
 \begin{align*}
 &\min_x f(x, \tau) \quad (6.16) \\
-&\text{s.\,t.} g(x,\tau) = 0 \\
+&\text{s.\,t. } g(x,\tau) = 0 \\
 \end{align*}
 
 Gelten in $x^*$, $\tau = 0$ (ungestörter Lösungspunkt): Regularität, notwendige Bedingung erster Ordnung, hinreichende Bedingung zweiter Ordnung. Dann hängt die Lösung von (6.16) in einer Umgebung von $x^*$, $\tau=0$ stetig differenzierbar von $\tau$ ab. Die $x(\tau)$ sind alle strikte lokale Minima.
@@ -296,7 +298,7 @@ Die zulässige Menge von (6.18) ist $S := \{x: g(x)=0, h(x) \leq 0 \}$. Sei $J :
 Sei $x \in S$ zulässig und $I(x)$ die Indexmenge der in $x$ aktiven Ungleichungen. $x$ erfüllt die Mangasarian-Fromowitz-Constraint-Qualifications (MFCQ), wenn:
 
 \bitm
-\item die Gradienten $\nabla g_i(x=)$, $i=1,\cdots, m_1$ linear unabhängig sind.
+\item die Gradienten $\nabla g_i(x)$, $i=1,\cdots, m_1$ linear unabhängig sind.
 \item ein Vektor $p \in \R^n$ existiert mit $\nabla g_i(x)^T p = 0$, $i=1,\cdots,m_1$ und $\nabla h_i(x)^T p < 0$, $i \in I(x)$.
 \eitm
 
@@ -347,7 +349,7 @@ Beweis: betrachte Kurve $\phi$ mit $\dot \phi(0) = p$ mit
 \bpm \nabla g^T \\ \nabla \tilde h_1^T \\ \vdots \\ \nabla \tilde h_{i-1}^T \\ \nabla \tilde h_i^T \\ \nabla \tilde h_{i+1} \\ \vdots \\ \nabla \tilde h^T \epm (x^*) p = \bpm 0 \\ 0 \\ \vdots \\ 0 \\ -\eps \\ 0 \\ \vdots \\ 0 \epm
 \end{align*}
 
-$p$ ist tengential zu allen Gleichungsbedingungen und aktiven Ungleichungsbedingungen außer $i$.
+$p$ ist tangential zu allen Gleichungsbedingungen und aktiven Ungleichungsbedingungen außer $i$.
 
 \begin{align*}
 \tilde h_i(\phi(t)) &= \underbrace{\tilde h_i(x^*)}_{=0 \text{ aktiv}} + \underbrace{\nabla \tilde h_i (x^*)^T p}_{=-\eps \text{ nach Konstr.}} \cdot t + \underbrace{\mathcal O(\|p\|^2) t^2}_{\mathcal O(\eps^2)} \\

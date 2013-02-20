@@ -74,7 +74,7 @@ Der Beweis wurde bereits in Numerik 1 gegeben, er benutzt das Gronwall-Lemma.
 
 \emph{Korollar 1.2:} Trompetenabschätzung
 
-Sei $f$ wie in Satz $1.1$ mit $L < \infty$. Für die Abweichung $\delta y \colon= v-y$ der Lösungen $y$ und $v$ von
+Sei $f$ wie in Satz $1.1$ mit $L < \infty$. Für die Abweichung $\delta y := v-y$ der Lösungen $y$ und $v$ von
 
 \begin{align*}
 \dot y(t) &= f(t,y,p), \quad y(t_0) = y_0(p) \\
@@ -88,8 +88,8 @@ gilt:
 wobei
 
 \begin{align*}
-\|\delta y_0\| \colon&= \| \frac{\partial y_0}{\partial p} (p) \delta p \| \leq \eps_1 \\
-\|\delta f\| \colon&= \| \frac{\partial f}{\partial p} (t,y,p) \partial p \| \leq \eps_2
+\|\delta y_0\| :&= \l\| \frac{\partial y_0}{\partial p} (p) \delta p \r\| \leq \eps_1 \\
+\|\delta f\| :&= \l\| \frac{\partial f}{\partial p} (t,y,p) \delta p \r\| \leq \eps_2
 \end{align*}
 
 \emph{Beweis:}
@@ -130,9 +130,9 @@ Integraldarstellung der Lösung:
 \emph{Definition 1.4:} Ableitungen der Lösung des AWP
 
 \begin{itemize}
-\item Ableitung nach Anfangswerten: $G(t; t_0, y_0, p) \colon= \tfrac{\partial}{\partial y_0} y(t; t_0, y_0, p)$
-\item Ableitung nach Anfangszeitpunkt: $G_{t_0}(t; t_0, y_0, p) \colon= \frac{\partial}{\partial t_0} y(t; t_0, y_0, p)$
-\item Ableitung nach Parametern: $G_p(t; t_0, y_0, p) \colon= \frac{\partial}{\partial p} y(t; t_0, y_0, p)$
+\item Ableitung nach Anfangswerten: $G(t; t_0, y_0, p) := \tfrac{\partial}{\partial y_0} y(t; t_0, y_0, p)$
+\item Ableitung nach Anfangszeitpunkt: $G_{t_0}(t; t_0, y_0, p) := \frac{\partial}{\partial t_0} y(t; t_0, y_0, p)$
+\item Ableitung nach Parametern: $G_p(t; t_0, y_0, p) := \frac{\partial}{\partial p} y(t; t_0, y_0, p)$
 \end{itemize}
 
 \msubsection{Berechnung der Ableitungen:}
@@ -168,7 +168,7 @@ Dies ist äquivalent zum Anfangswertproblem
 
 \begin{align*}
 \dot G(t_0) (t) &= \frac{\partial f}{\partial y} G_{t_0} (t) & (1.16) \\
-G_{t_0} (t_0) &= -f(t_0 y(t_0), p) 
+G_{t_0} (t_0) &= -f(t_0, y(t_0), p) 
 \end{align*}
 
 zur VDE nach dem Anfangszeitpunkt.
@@ -208,14 +208,14 @@ Multipliziere $\dot G = \tfrac{\partial f}{\partial y} G$, $G(t_0) = I$ von rech
 \text{und } -G(t_0) f(t_0, y_0, p) &= -f(t_0, y_0, p)
 \end{align*}
 
-Also erfüllt $y \colon= -G f(t_0, y_0, p)$ die Differentialgleichung $\dot y = \tfrac{\partial f}{\partial y} y$ und die Anfangsbedingung $y(t_0) = -f(t_0, y_0, p)$. Das ist die VDE für $G_{t_0}$, also ist $y = -G f(t_0, y_0, p) = G_{t_0}$
+Also erfüllt $y := -G f(t_0, y_0, p)$ die Differentialgleichung $\dot y = \tfrac{\partial f}{\partial y} y$ und die Anfangsbedingung $y(t_0) = -f(t_0, y_0, p)$. Das ist die VDE für $G_{t_0}$, also ist $y = -G f(t_0, y_0, p) = G_{t_0}$
 
 \msubsection{Variationsdifferentialgleichungen für Richtungsableitungen}
 
 Gegeben sei eine Richtung $\Delta y_0 \in \R^{n_y}$. Die Richtungsableitung von $y$ nach $y_0$ in der Richtung $\Delta y_0$ ist gegeben durch
 
 \begin{align*}
-\frac{\partial y}{\partial y_0} (t; t_0, y_0, p) \Delta y_0 \colon&= \l. \frac \partial{\partial h} y(t; t_0, y_0 + h \Delta y_0, p) \r|_{h=0} \\
+\frac{\partial y}{\partial y_0} (t; t_0, y_0, p) \Delta y_0 :&= \l. \frac \partial{\partial h} y(t; t_0, y_0 + h \Delta y_0, p) \r|_{h=0} \\
 &= \lim_{h \to 0} \frac{y(t; t_0, y_0 + h \Delta y_0, p) - y(t; t_0, y_0, p)}{h} \in \R^{n_y} & (1.19a)
 \end{align*}
 
@@ -259,7 +259,7 @@ Nach dem Satz von Picard-Lindelöff ist die abschnittsweise Lösung die selbe wi
 
 \emph{Definition 1.7: Wronski-Matrix}
 
-\[W(t,s) \colon= G(t; s, y_s, p) \]
+\[W(t,s) := G(t; s, y_s, p) \]
 
 \emph{Satz 1.8: Eigenschaften der Wronski-Matrizen}
 
@@ -274,7 +274,7 @@ Nach dem Satz von Picard-Lindelöff ist die abschnittsweise Lösung die selbe wi
 
 \emph{Definition 1.9:}
 
-\[ W_p(t,s) \colon= G_p(t;s,y_s,p)\]
+\[ W_p(t,s) := G_p(t;s,y_s,p)\]
 
 \emph{Satz 1.10}
 

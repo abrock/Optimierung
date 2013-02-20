@@ -43,7 +43,7 @@ Lösung: $\Delta x^k$
 
 \msubsection{Bemerkung 4.2}
 
-Zur Globalisierung der Konvergenz kann z.\,B. Linesearch verwendet werden. Es ergeben sich gedämpfte Schritte $\alpha^k < 1$. In der Nähe der lösung können Vollschritte $\alpha^k=1$ erwartet werden.
+Zur Globalisierung der Konvergenz kann z.\,B. Linesearch verwendet werden. Es ergeben sich gedämpfte Schritte $\alpha^k < 1$. In der Nähe der Lösung können Vollschritte $\alpha^k=1$ erwartet werden.
 
 \msubsection{Annahmen 4.3: Regularitätsannahmen}
 
@@ -157,7 +157,7 @@ Der Lösungsoperator $J^+$ von (4.8) heißt verallgemeinerte Inverse von
 
 $J^+$ erfüllt das Moore-Penrose-Axiom $J^+ J J^+ = J^+$.
 
-Beweis: Setz
+Beweis: Setze
 
 \begin{align*}
 F = \begin{pmatrix} F_1 \\ F_2 \end{pmatrix} &= \begin{pmatrix} J_1 J^+ y \\ J_2 J^+ y \end{pmatrix}
@@ -236,7 +236,7 @@ J^\dagger &= V \begin{pmatrix} \sigma_1^{-1} \\ & \ddots & & 0 \\ & & \sigma_n^{
 
 \begin{itemize}
 \item 1. Variante ("`Bildraumvariante"'): $\Delta x$ ist Lösung von 
-\[ \begin{pmatrix} J_q^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix} \begin{pmatrix} \Delta x \\ \lambda \end{pmatrix} = - \begin{pmatrix} J_1^T F_1 \\ F_2 \end{pmatrix} \]
+\[ \begin{pmatrix} J_1^T J_1 & J_2^T \\ J_2 & 0 \end{pmatrix} \begin{pmatrix} \Delta x \\ \lambda \end{pmatrix} = - \begin{pmatrix} J_1^T F_1 \\ F_2 \end{pmatrix} \]
 Diese Matrix ist symmetrisch aber indefinit, also wende Gaußsche LR-Zerlegung an
 \item 2. Variante ("`Nullraumvariante"'): % "Man kann das Optimierungsproblem nicht oft genug hinschreiben"
 \[ \min_{\Delta x} \frac 12 \| F_1 + J_1 \Delta x\|_2^2 \text{ (4.10) s.\,t. } F_2 + J_2 \Delta x = 0 \text{ (4.11)} \]
@@ -290,7 +290,7 @@ R_2 \Delta y + D_2 \Delta z &= - L_2^{-1} P_2 F_2 \\
 \end{align*}
 \end{itemize}
 
-\msubsection{Lemma 4.11 (Berechnung der adjungierten }
+\msubsection{Lemma 4.11 (Berechnung der adjungierten Variablen}
 
 \begin{align*}
 \lambda &= - P_2 L_2^{-T} R_2^{-T} J_{11}^T (J_1 \Delta x + F_1) \\

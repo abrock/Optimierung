@@ -208,13 +208,13 @@ Sei $x^*$ ein lokales Minimum, $x^*$ regulär, gelte die hinreichende Bedingung 
 
 \[ \lim_{k \to \infty} \frac{\|P^k (H^k - \nabla_{xx}^2 L(x^*)) (x^{k+1} - x^k)\|}{\|x^{k+1} - x^k\|} = 0 \]
 
-Dabei ist $P^k$ eine Matrix, die auf dem Nullraum von $\nabla {g^k}^T$ projeziert.
+Dabei ist $P^k$ eine Matrix, die auf den Nullraum von $\nabla {g^k}^T$ projeziert.
 
 \msection{Bemerkung 7.9}
 
 \[ P^k = I - \nabla g^k (\nabla {g^k}^T \nabla g^k)^{-1} \nabla {g^k}^T \]
 
-bzw. $P^k = Z^k {Z^k}^T$, wenn die Spalten von $Z^k$ den Nullraum von ${\nabla g^k}^T$ aufspannen, z.\,B. $\nabla g^k = \bpm Q_1^T & Q_2^T \epm \bpm L \\ = \epm$, $Z^k = Q_2^T$.
+bzw. $P^k = Z^k {Z^k}^T$, wenn die Spalten von $Z^k$ den Nullraum von ${\nabla g^k}^T$ aufspannen, z.\,B. $\nabla g^k = \bpm Q_1^T & Q_2^T \epm \bpm L \\ 0 \epm$, $Z^k = Q_2^T$.
 
 Nebenrechnung:
 
@@ -230,7 +230,7 @@ p^k p &= Q_2^T Q_2  \\
 
 \msection{Satz 7.10 (Superlineare Konvergenz von BFGS-SQP-Verfahren}
 
-Gelten die Annahmen wie in Satz 7.8. Seien $\nabla_{xx} L(x^*)$ und $H^0$ symmetrisch und positiv definit. Wenn $\|x^0 - x^*\|$ genügend klein und $\|\nabla_{xx}^2 L(x^*) - H^0\|$ genügend kleine sind erfüllen die BFGS-Approximationen $H^k$ die Formel (7.12). Die Iterierten konvergieren superlinear gegen $x^*$. Dieses Resultat gilt auch für Ungleichungsbeschränkungen.
+Gelten die Annahmen wie in Satz 7.8. Seien $\nabla_{xx} L(x^*)$ und $H^0$ symmetrisch und positiv definit. Wenn $\|x^0 - x^*\|$ und $\|\nabla_{xx}^2 L(x^*) - H^0\|$ genügend klein sind erfüllen die BFGS-Approximationen $H^k$ die Formel (7.12). Die Iterierten konvergieren superlinear gegen $x^*$. Dieses Resultat gilt auch für Ungleichungsbeschränkungen.
 
 \msection{7.4 SQP-Verfahren für NLPs mit Ungleichungsbeschränkungen}
 
@@ -288,7 +288,7 @@ QP: Schreibe $x$ statt $\Delta x$, eigentlich Unterproblem des SQP-Verfahrens. A
 b_i &\geq a_i^T x, i \in I \text{ (Ungleichungsbeschränkungen)} \\
 \end{align*}
 
-$A(x) := \{ i \in E \cup I : a_i^T x = b \}$ Indexmenge alle mit Gleichheit erfüllten Beschränkungen. Wenn man $A(x^*)$ kennt kann man die lösung $x^*$ durch lösen des Gleichungsbeschränkten QPs
+$A(x) := \{ i \in E \cup I : a_i^T x = b \}$ Indexmenge alle mit Gleichheit erfüllten Beschränkungen. Wenn man $A(x^*)$ kennt kann man die Lösung $x^*$ durch Lösen des Gleichungsbeschränkten QPs
 
 \[ \min \frac 12 x^T H x + g^T x \text{ s.\,t. } b_i = a_i^T x, i \in A(x^*) \]
 
@@ -307,7 +307,7 @@ Starte mit einer Schätzung $W^0$ des active Set, ändere $W^k$ ("`Working Set"'
 
 Iteriere $k=0,1,2,\cdots$
 \item Bestimme Schritt $p^k$ durch Lösung von  $\min \frac 12 p^T H p + {c^k}^T p$ so dass $0 = a_i^T p$, $i \in W^k$ mit $c^k = H x^k + g$. $p^k$ erfüllt $a_i^T (x^k + \alpha p^k) = a_i^T x^k = b_i \forall i \in W^k$, d.\,h. Schritte in Richtung $p^k$ bleiben zulässig $\forall i \in W^k \forall \alpha \in \R$.
-\item Wen $p^k = 0$: Berechne Lagrangemultiplikatoren $\lambda^k$ für (7.17). Diese erfüllen
+\item Wenn $p^k = 0$: Berechne Lagrangemultiplikatoren $\lambda^k$ für (7.17). Diese erfüllen
 \begin{align*}
 0 &= H p^k + x^k + \sum\limits_{i\in W^k} \lambda_i^k a_i \\
 \RA - \sum\limits_{i\in W^k} \lambda_i^k a_i &= c^k = H x^k + g \\

@@ -43,7 +43,7 @@ Kann angewendet werden:
 \item Bei SQP-Verfahren ist $M(x, \lambda) = \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$ oder 
 $M(x, \lambda) \cong \nabla_{x,\lambda}^2 L(x, \lambda)^{-1}$
 \item Bei Gauß-Newton-Verfahren ist $M(x) = (J(x)^T J(x))^{-1} J(x)^T$ die Moore-Penrose-Pseudoinverse.
-\item Bei Verallgemeinerten Gauß-Newton-Verfahren ist \[ M(x) = \bpm I & 0 \epm \bpm J_1(x)^T J_1(x) & J_2(x)^T \\ J_2(x) & 0 \epm^{-1} \bpm J_1(x)^T 0 \\ 0 & I \epm \] die verallgemeinerte Inverse von $J$.
+\item Bei Verallgemeinerten Gauß-Newton-Verfahren ist \[ M(x) = \bpm I & 0 \epm \bpm J_1(x)^T J_1(x) & J_2(x)^T \\ J_2(x) & 0 \epm^{-1} \bpm J_1(x)^T & 0 \\ 0 & I \epm \] die verallgemeinerte Inverse von $J$.
 \eitm
 
 \msection{Satz 5.3: Lokaler Kontraktionssatz (Bock 1987)} % Enorm wichtig
@@ -56,7 +56,7 @@ Für alle $x,y \in D$ mit $y-x = -M(x) F(x)$ und $\theta \in [0,1]$ gelte:
 \item Es existiert ein $\omega < \infty$ so dass $\| M(y) (J(x+\theta(y-x)) - J(x)) (y-x) \| \leq \omega \theta \|x-y\|^2$ (5.4)
 \item Es existiert ein $\kappa(x) \leq \kappa < 1$, so dass $\| M(y) R(x) \| \leq \kappa(x) \|y-x\|$ (5.5) für das Residuum $R(x) := F(x) - J(x)M(x)F(x)$
 \item Sei $x_0 \in D$ gegeben mit $\Delta x^j := -M(x^j) F(x^j)$, $\delta_j := \kappa + \frac \omega 2 \| \Delta x^j \|$, $\delta_0 = \kappa + \frac \omega 2 \|\Delta x^0 \| < 1$ (5.6)
-\item \[ D^0 := \l\{ z : \|z-z_0\| \leq \frac{\|\Delta x^0\|}{1-\delta 0} \r\} \subset D \]
+\item \[ D^0 := \l\{ z : \|z-z_0\| \leq \frac{\|\Delta x^0\|}{1-\delta_0} \r\} \subset D \]
 \eitm
 
 Dann gilt:
@@ -64,8 +64,8 @@ Dann gilt:
 \bitm
 \item a) Die Iterierten $x^{j+1} = y^j + \Delta x^j$ sind wohldefiniert und bleiben in $D^0$.
 \item b) Es existiert ein $x^* \in D^0$ so dass $x^j \to x^*$ ($j \to \infty$)
-\item c) \[ \| x^{j+k} - x^*\| \leq \frac{\Delta x^0}{1-s_j} s_j^k \text{ "`hoch k"' (a-priori-Abschätzung)} \]
-\item d) \[ \| \Delta x^{j+1} \| \leq s_j \| \Delta x^j \| = \kappa \| \Delta x^j \| + \frac \omega 2 \| \Delta x^j\|^2 \text{ (5.7)} \]
+\item c) \[ \| x^{j+k} - x^*\| \leq \frac{\Delta x^0}{1-\delta_j} \delta_j^k \text{ "`hoch k"' (a-priori-Abschätzung)} \]
+\item d) \[ \| \Delta x^{j+1} \| \leq \delta_j \| \Delta x^j \| = \kappa \| \Delta x^j \| + \frac \omega 2 \| \Delta x^j\|^2 \text{ (5.7)} \]
 \eitm
 
 Beweis:
@@ -173,7 +173,7 @@ Beweis: siehe Vorlesung Algorithmische Optimierung 1.
 \item Halte $M(x^j)$ fest
 \bitm
 	\item für alle Iterationen: $M(x^j) = J(x_0)^{-1}$
-	\item für einige Iterationen: $M(x^j) = J(x^{\ov j})^{-1}$ solange $\frac{\Delta x^{j+1}}{\|\Delta x^j\|} \leq \delta$ z.\,B. $\delta = \frac 14$, danach neues $\overline j = j$ 
+	\item für einige Iterationen: $M(x^j) = J(x^{\ov j})^{-1}$ solange $\frac{\| \Delta x^{j+1} \|}{\|\Delta x^j\|} \leq \delta$ z.\,B. $\delta = \frac 14$, danach neues $\overline j = j$ 
 \eitm
 \item Nähere $J(x^j)$ bzw. $M(x^j)$ durch Update-Formeln aus $J(x^{j-1})$ bzw. $M(x^{j-1})$ an, siehe unten.
 \eitm
@@ -302,13 +302,13 @@ ist die Summe aus
 
 \msection{Satz 5.12: Kleine-Residuen-Probleme}
 
-Äquivalent zu $\kappa < 1$ ist $\rho (B(x^*)1{-1} E(x^*)) < 1$ (5.14), $\rho: $ Spektralradius.
+Äquivalent zu $\kappa < 1$ ist $\rho (B(x^*)^{-1} E(x^*)) < 1$ (5.14), $\rho: $ Spektralradius.
 
 Beweis:
 
 \begin{align*}
 M &= J^\dagger \\
-&= (J^T j)^{-1} J \\
+&= (J^T J)^{-1} J \\
 R &= F - J J^\dagger F \\
 y-x &= - J^\dagger(x) F(x) \\
 J^\dagger(y) R(x) &= \underbrace{J^\dagger(x) R(x)}_{=0} + \l( \l. \frac{\partial J^\dagger}{\partial y} (y)\r|_{y=x} (y-x) \r) R(x) + \mathcal O(\|y-x\|^2) \\
@@ -412,7 +412,7 @@ Für Große-Residuen-Problem ($\kappa>1$ bzw. $\rho (B(x^*)^{-1} E(x^*)) > 1$) k
 
 Sei $F(x) = ( \eta_i - h_i(x))_{i=1,\cdots,M}$, (o.\,B.\,d.\,A. $\sigma_i \equiv 1$), $\eta:$ Messdaten
 
-wobei mit den wahren werten $\ov x: \eta_j - h_i(\ov x) \sim \mathcal N(0,1)$ und unabhängig
+wobei mit den wahren Werten $\ov x: \eta_j - h_i(\ov x) \sim \mathcal N(0,1)$ und unabhängig
 
 \[ F(x^*) = \eta - h(x^*), \quad \eta = h(x^*) + F(x^*) \]
 

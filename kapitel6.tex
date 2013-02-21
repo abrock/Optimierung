@@ -60,7 +60,7 @@ Sei $f : \R^n \to \R$, $f \in C^2$. $x^*$ sei ein lokales Minimum von $f$.
 
 \bitm
 \item a) $\nabla f(x^*) = 0$ (6.4)
-\item b) $\nabla^2 f(x^*) = 0$ (6.5)
+\item b) $\nabla^2 f(x^*) \geq 0$ (6.5)
 \eitm
 
 Beweis: Zurückführung auf den eindimensionalen Fall entlang beliebiger Kurven von Konkurrenten.
@@ -72,7 +72,7 @@ Sei $p \in \R^n$ beliebig. Die Funktion $\tilde f(t) := f(x^*+tp)$, $t\in \R$ ha
 \item b) $0 \leq \tilde f''(0) = \frac{\partial^2}{\partial t^2} f(x^* + tp)|_{t=0} = p^T \nabla^2 f(x^*) p \RA \nabla^2 f(x^*)$ ist positiv semidefinit.
 \eitm
 
-\msubsection{Satz 6.7 (Heinreichende Bedingung)}
+\msubsection{Satz 6.7 (Hinreichende Bedingung)}
 
 % ... Terme höherer Ordnung irgendwie wegdiskutieren
 Sei $f: \R^n \to \R$, $f \in C^2$. Sei $x^* \in \R^n$ mit $\nabla f(x^*) = 0$ und $\nabla^2 f(x^*)$ positiv definit (6.6). Dann gilt: $x^*$ ist ein striktes lokales Minimum von $f$.
@@ -82,7 +82,7 @@ Entwicklung in eine Taylorreihe um $x^*$:
 
 \begin{align*}
 f(x) &= f(x^*) + \nabla f(x^*)^T (x-x^*) + \underbrace{\frac 12 (x-x^*)^T \nabla^2 f(\tilde x) (x-x^*)}_{>0} \text{ mit } \tilde x \in U \\
-i\RA f(x) &> f(x^*) \\
+\RA f(x) &> f(x^*) \\
 \end{align*}
 
 \msubsection{6.4 Gleichungsbeschränkter Fall}
@@ -223,7 +223,7 @@ $\phi'(0)$ ist irgendein Vektor aus $T(x^*) \RA \nabla_{xx}^2 L(x^*, \lambda)$ i
 
 Seien die Voraussetzungen wie in Satz 6.12, aber $f,g\in C^3$. Wenn gilt: $\exists \lambda \in \R^n$, so dass $\nabla \lambda L(x^*, \lambda) = 0$ und $p^T \nabla_{xx}^2 L(x^*, \lambda) p > 0 \forall p \in T(x^*), p \neq 0$. Für einen regulären Punkt $x^*$, dann ist $x^*$ striktes lokales Minimum.
 
-Beweis: Erfülle $x^*$ die hinreichende bedingung. Sei $\hat x \neq x^*$ zulässig und hinreichend nahe bei $x^*$. Betrachte die Kurve $\phi(t)$ mit $\phi(0) = x^*$, $\phi(1) = \hat x$,
+Beweis: Erfülle $x^*$ die hinreichende Bedingung. Sei $\hat x \neq x^*$ zulässig und hinreichend nahe bei $x^*$. Betrachte die Kurve $\phi(t)$ mit $\phi(0) = x^*$, $\phi(1) = \hat x$,
 
 \[ \phi(t) := \bpm \gamma(z(t)) \\ x^* + t(\hat z - z^*) \epm \]
 
@@ -399,7 +399,7 @@ Bemerkung: Wenn strikte Komplementarität gilt ist $T^+(x^*) = T(x^*)$. In der h
 \msection{Satz 6.27: Stabilität}
 
  
-Sei $(x^*, \lambda^*, \mu^*)$ ein KKT-Punkt, gelte strikte komplementarität, sei $x^*$ regulär und die hinreichende Bedingung zweiter Ordnung sei erfüllt. Dann ist das Minimierungsproblem
+Sei $(x^*, \lambda^*, \mu^*)$ ein KKT-Punkt, gelte strikte Komplementarität, sei $x^*$ regulär und die hinreichende Bedingung zweiter Ordnung sei erfüllt. Dann ist das Minimierungsproblem
 
 \[ \min f(x,\tau) \text{ s.\,t. } g(x,\tau)=0, h(x,\tau) \leq 0 \]
 
